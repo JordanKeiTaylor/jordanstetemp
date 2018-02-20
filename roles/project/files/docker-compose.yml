@@ -1,0 +1,80 @@
+version: '3.2'
+services:
+  prometheus:
+    image: $PROMETHEUS_IMAGE
+    ports:
+      - target: 9090
+        published: 9090
+        mode: host
+    volumes:
+      - ./prometheus.yml:/prometheus.yml
+      - $PROM_SCRAPE_CONFIG_FILE:/fabric_scrape_configs.yml
+      - $PROM_RULES_DIR:/rules
+    command: >
+           /prometheus/prometheus
+            -log.level=${PROM_LOGLEVEL}
+            -config.file=/prometheus.yml
+            -query.timeout=45s
+            -query.max-concurrency=100
+            -query.staleness-delta=${PROM_QUERYSTALENESS}
+            -storage.local.chunk-encoding-version=2
+            -storage.local.retention=${PROM_RETENTION_DURATION}
+            -storage.local.path=/prometheus-data
+            -storage.local.memory-chunks=${PROM_MEMORY_CHUNKS}
+            -storage.local.max-chunks-to-persist=${PROM_MEMORY_CHUNKS_TO_PERSIST}
+            -storage.local.index-cache-size.fingerprint-to-metric=209715200
+            -storage.local.index-cache-size.fingerprint-to-timerange=104857600
+            -storage.local.index-cache-size.label-name-to-label-values=209715200
+            -storage.local.index-cache-size.label-pair-to-fingerprints=419430400
+            -web.console.libraries=/go/src/github.com/prometheus/prometheus/console_libraries
+            -web.listen-address=:9090
+            -web.console.templates=/consoles
+
+  toolbelt:
+    image: $TOOLBELT_IMAGE
+    ports:
+     - target: 21000
+       published: 21000
+       mode: host
+    volumes:
+     - $SPATIAL_PROJECT_DIR:/improbable/project
+     - $HOME/.improbable/local_inspector:/root/.improbable/local_inspector
+    command: >
+           local launch
+            --enable_pre_run_check=false
+            --no_fabric
+            --runtime_ip=toolbelt
+            --master_ip=fabric-master
+            --disable_networking
+            --snapshot=/improbable/project/snapshots/$SNAPSHOT
+            /improbable/project/launch.pb.json
+            --fabric_bundle_path=/improbable/project/build/assembly/fabric/fabric_bundle.zip
+
+  fabric-master:
+    image: $FNANNY_IMAGE
+    ports:
+     - "5006:5006"
+    environment:
+      - COREOS_PRIVATE_IPV4=fabric-master
+      - COREOS_PUBLIC_IPV4=fabric-master
+    # volumes:
+    #   - ./master-logs:/improbable/logs
+    command: $FNANNY_COMMAND --node=master
+
+  fabric-slave-1:
+    image: $FNANNY_IMAGE
+    ports:
+     - "5007:5006"
+    environment:
+      - COREOS_PRIVATE_IPV4=fabric-slave-1
+      - COREOS_PUBLIC_IPV4=fabric-slave-1
+    command: $FNANNY_COMMAND --node=slave1
+  fabric-slave-2:
+      image: $FNANNY_IMAGE
+      ports:
+       - "5008:5006"
+      environment:
+        - COREOS_PRIVATE_IPV4=fabric-slave-2
+        - COREOS_PUBLIC_IPV4=fabric-slave-2
+      command: $FNANNY_COMMAND --node=slave2
+  

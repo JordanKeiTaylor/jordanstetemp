@@ -1,0 +1,15 @@
+global:
+  scrape_interval:     5s
+  evaluation_interval: 5s
+
+rule_files:
+  - "/rules/*.rules"
+  - "/rules/genfiles/*.rules"
+
+scrape_configs:
+  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+  - job_name: 'cluster '
+    metrics_path: /_metrics
+    file_sd_configs:
+      - files:
+        - "/fabric_scrape_configs.yml"

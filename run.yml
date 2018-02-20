@@ -1,0 +1,24 @@
+- hosts: manager
+  tasks:
+    - shell: |
+        cd ~/project
+        export TOOLBELT_IMAGE=eu.gcr.io/disappointing-tode/toolbelt:latest
+        export FNANNY_IMAGE=eu.gcr.io/disappointing-tode/fnanny:latest
+        export PROMETHEUS_IMAGE=eu.gcr.io/disappointing-tode/prometheus:latest
+        export SPATIAL_PROJECT_DIR=.
+
+        export PROM_QUERYSTALENESS=300s
+        export PROM_LOGLEVEL=debug
+        physical_memory_kb=$(grep MemTotal /proc/meminfo | awk '{print $2}')
+    
+        export PROM_MEMORY_CHUNKS=${PROM_MEMORY_CHUNKS-$(($physical_memory_kb / 8))}
+        export PROM_MEMORY_CHUNKS_TO_PERSIST=${PROM_MEMORY_CHUNKS_TO_PERSIST-$(($PROM_MEMORY_CHUNKS * 3 / 4))}
+        export PROM_RETENTION_DURATION=${PROM_RETENTION_DURATION-"216h0m0s"}
+
+        export PROM_SCRAPE_CONFIG_FILE=~/scrape_config.yml
+        export PROM_RULES_DIR=~/prometheus_rules
+
+        export SNAPSHOT=sanfran-sane-10k.snapshot
+
+        docker-compose config > stack.yml
+        sudo docker stack deploy --compose-file stack.yml fabric

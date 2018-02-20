@@ -1,0 +1,31 @@
+---
+- name: Pre-pull toolbelt
+  command: gcloud docker -- pull eu.gcr.io/disappointing-tode/toolbelt:latest
+  become: true
+
+- name: Pre-pull fnanny
+  command: gcloud docker -- pull eu.gcr.io/disappointing-tode/fnanny:latest
+  become: true
+
+- name: Pre-pull prometheus
+  command: gcloud docker -- pull eu.gcr.io/disappointing-tode/prometheus:latest
+  become: true
+
+- name: Extract local_inspector
+  unarchive:
+    src: local_inspector.tar.gz
+    dest: ~/
+
+- name: Extract bundle_resolution_cache
+  unarchive:
+    src: bundle_resolution_cache.tar.gz
+    dest: ~/
+
+- file:
+    dest: ~/prometheus_rules
+    state: directory
+
+- name: Extract prometheus rules
+  unarchive:
+    src: prometheus_rules.tar.gz
+    dest: ~/prometheus_rules

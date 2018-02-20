@@ -1,0 +1,24 @@
+---
+- name: Check if docker is installed
+  command: docker --version
+  register: docker_check
+  ignore_errors: yes
+
+- name: Install docker
+  shell: |
+    curl -fsSL get.docker.com -o get-docker.sh
+    sh get-docker.sh
+  when: docker_check.rc != 0
+  become: true
+
+- name: Check if docker-compose is installed
+  command: docker-compose --version
+  register: docker_compose_check
+  ignore_errors: yes
+
+- name: Install docker-compose
+  shell: |
+    curl -L https://github.com/docker/compose/releases/download/1.19.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+    chmod +x /usr/local/bin/docker-compose 
+  when: docker_compose_check.rc != 0
+  become: true
