@@ -1,14 +1,13 @@
 ---
-- name: Check if docker is installed
-  command: docker --version
-  register: docker_check
-  ignore_errors: yes
+- import_tasks: redhat.yml
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'RedHat'
 
-- name: Install docker
-  shell: |
-    curl -fsSL get.docker.com -o get-docker.sh
-    sh get-docker.sh
-  when: docker_check.rc != 0
+- import_tasks: debian.yml
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- service:
+    name: docker
+    state: started
   become: true
 
 - name: Check if docker-compose is installed
@@ -22,3 +21,17 @@
     chmod +x /usr/local/bin/docker-compose 
   when: docker_compose_check.rc != 0
   become: true
+
+- name: Create docker group
+  become: true
+  group:
+    name: docker
+    state: present
+
+- name: Add user to docker group
+  become: true
+  user:
+    name: "{{ ansible_user_id }}"
+    groups: docker
+    append: true
+

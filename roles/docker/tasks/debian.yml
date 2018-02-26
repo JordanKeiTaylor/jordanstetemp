@@ -1,0 +1,23 @@
+---
+- name: Check if docker is installed
+  command: docker --version
+  register: docker_check
+  ignore_errors: yes
+
+- name: Install docker
+  shell: |
+    curl -fsSL get.docker.com -o get-docker.sh
+    sh get-docker.sh
+  when: docker_check.rc != 0
+  become: true
+
+- name: Install dbus
+  become: true
+  apt:
+    name: dbus
+    state: latest
+
+# Note: Can't seem to do this via the apt module as you need --allow-downgrades
+- name: Downgrade docker
+  command: apt install -y --allow-downgrades  docker-ce=18.01.0~ce-0~debian
+  become: true

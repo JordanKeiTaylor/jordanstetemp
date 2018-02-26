@@ -16,6 +16,6 @@ mkdir -p roles/project/files
 tar cvz -C ~ -f roles/fabric/files/local_inspector.tar.gz .improbable/local_inspector/
 tar cvz -C ~ -f roles/fabric/files/bundle_resolution_cache.tar.gz .improbable/cache/bundle_resolution_cache
 tar cvz --exclude .git -C "$PROMETHEUS_RULES_DIR" -f roles/fabric/files/prometheus_rules.tar.gz .
-tar cvz -C $PROJECT_DIR --exclude="*.csv" -f roles/project/files/project.tar.gz snapshots/ spatialos.json build/assembly
+tar cvz -C $PROJECT_DIR --exclude="*.csv" -f roles/project/files/project.tar.gz snapshots/ configs/ spatialos.json build/assembly
 
-cp $FABRIC_BUNDLE roles/project/files
+cp $FABRIC_BUNDLE roles/project/files/fabric_bundle.zip

@@ -18,7 +18,7 @@
         export PROM_SCRAPE_CONFIG_FILE=~/scrape_config.yml
         export PROM_RULES_DIR=~/prometheus_rules
 
-        export SNAPSHOT=sanfran-sane-10k.snapshot
+        export SNAPSHOT=sanfran-sane-50k.snapshot
 
         docker-compose config > stack.yml
         sudo docker stack deploy --compose-file stack.yml fabric

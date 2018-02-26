@@ -1,11 +1,17 @@
 version: '3.2'
+networks:
+  outside:
+    external:
+      name: "host"
 services:
   prometheus:
     image: $PROMETHEUS_IMAGE
-    ports:
-      - target: 9090
-        published: 9090
-        mode: host
+    networks:
+      - outside
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == master
     volumes:
       - ./prometheus.yml:/prometheus.yml
       - $PROM_SCRAPE_CONFIG_FILE:/fabric_scrape_configs.yml
@@ -32,10 +38,8 @@ services:
 
   toolbelt:
     image: $TOOLBELT_IMAGE
-    ports:
-     - target: 21000
-       published: 21000
-       mode: host
+    networks:
+      - outside
     volumes:
      - $SPATIAL_PROJECT_DIR:/improbable/project
      - $HOME/.improbable/local_inspector:/root/.improbable/local_inspector
@@ -43,38 +47,67 @@ services:
            local launch
             --enable_pre_run_check=false
             --no_fabric
-            --runtime_ip=toolbelt
-            --master_ip=fabric-master
+            --runtime_ip=master
+            --master_ip=master
             --disable_networking
             --snapshot=/improbable/project/snapshots/$SNAPSHOT
-            /improbable/project/launch.pb.json
+            /improbable/project/configs/launch/local_50k.pb.json
             --fabric_bundle_path=/improbable/project/build/assembly/fabric/fabric_bundle.zip
-
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == master
+ 
   fabric-master:
     image: $FNANNY_IMAGE
-    ports:
-     - "5006:5006"
+    networks:
+      - outside
     environment:
-      - COREOS_PRIVATE_IPV4=fabric-master
-      - COREOS_PUBLIC_IPV4=fabric-master
+      - COREOS_PRIVATE_IPV4=master
+      - COREOS_PUBLIC_IPV4=master
     # volumes:
     #   - ./master-logs:/improbable/logs
     command: $FNANNY_COMMAND --node=master
-
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == master
+ 
   fabric-slave-1:
     image: $FNANNY_IMAGE
-    ports:
-     - "5007:5006"
+    networks:
+      - outside
     environment:
-      - COREOS_PRIVATE_IPV4=fabric-slave-1
-      - COREOS_PUBLIC_IPV4=fabric-slave-1
+      - COREOS_PRIVATE_IPV4=slave1
+      - COREOS_PUBLIC_IPV4=slave1
     command: $FNANNY_COMMAND --node=slave1
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == slave1
+
   fabric-slave-2:
       image: $FNANNY_IMAGE
-      ports:
-       - "5008:5006"
+      networks:
+        - outside
       environment:
-        - COREOS_PRIVATE_IPV4=fabric-slave-2
-        - COREOS_PUBLIC_IPV4=fabric-slave-2
+        - COREOS_PRIVATE_IPV4=slave2
+        - COREOS_PUBLIC_IPV4=slave2
       command: $FNANNY_COMMAND --node=slave2
-  
+      deploy:
+        placement:
+          constraints:
+            - node.hostname == slave2
+
+  fabric-slave-3:
+    image: $FNANNY_IMAGE
+    networks:
+      - outside
+    environment:
+      - COREOS_PRIVATE_IPV4=slave3
+      - COREOS_PUBLIC_IPV4=slave3
+    command: $FNANNY_COMMAND --node=slave3
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == slave3

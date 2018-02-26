@@ -1,0 +1,19 @@
+all:
+  hosts:
+    master:
+      ansible_host: 35.205.201.198
+    slave1:
+      ansible_host: 35.189.195.182
+    slave2:
+      ansible_host: 104.199.16.62
+    slave3:
+      ansible_host: 35.205.197.53
+  children:
+    manager:
+      hosts:
+        master:
+    worker:
+      hosts:
+        slave1:
+        slave2:
+        slave3:

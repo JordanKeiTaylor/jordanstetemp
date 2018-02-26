@@ -1,50 +1,48 @@
 ---
-- file:
+- name: Check project dir exists
+  file:
     dest: ~/project
     state: directory
+
 - name: Extract project
   unarchive:
     src: project.tar.gz
     dest: ~/project
-- copy:
+- name: Copy docker-compose.yml
+  copy:
     src: docker-compose.yml
     dest: ~/project
-- copy:
+- name: Copy .env file
+  copy:
     src: .env
     dest: ~/project
 
-- file:
+- name: "[HACK] Create gsim dir"
+  file:
     dest: ~/project/build/assembly/gsim
     state: directory
 
-- file:
+- name: Create fabric bundle dir
+  file:
     dest: ~/project/build/assembly/fabric
     state: directory
 
-- copy:
+- name: Copy fabric bundle
+  copy:
     src: fabric_bundle.zip
     dest: ~/project/build/assembly/fabric
-    
-- copy:
-    src: docker-compose.yml
-    dest: ~/project/
-
-- copy:
-    src: .env
-    dest: ~/project/
-
-- copy:
-    src: launch.pb.json
-    dest: ~/project/
 
 # TODO: The nodes should probably be tracked in ansible config
 - shell: cd ~/project && docker-compose config --services 2>/dev/null | grep fabric
   register: fabric_svcs
 
-- copy:
+- name: Copy prometheus.yml
+  copy:
     src: prometheus.yml
     dest: ~/project/
 
-- template:
+- name: Create scrape_config
+  template:
     src: scrape_config.yml.j2
     dest: ~/scrape_config.yml
+

@@ -1,7 +1,8 @@
 - targets:
-{% for fabric_svc in fabric_svcs.stdout_lines %}
-    - "{{ fabric_svc }}:5006"
-{% endfor %}
+    - "master:5006"
+    - "slave1:5006"
+    - "slave2:5006"
+    - "slave3:5006"
   labels:
         app: "docker_app"
         dpl: "docker_dpl" 
