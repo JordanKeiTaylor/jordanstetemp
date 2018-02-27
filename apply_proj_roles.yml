@@ -1,7 +1,5 @@
 ---
 - hosts: all
   roles:
-    - { role: base, tags: "base" }
-    - { role: docker, tags: "docker" }
     - { role: fabric, tags: "fabric" }
     - { role: project, tags: "project" }
