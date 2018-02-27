@@ -1,6 +1,6 @@
 ---
 - name: Pre-pull toolbelt
-  command: gcloud docker -- pull eu.gcr.io/disappointing-tode/toolbelt:latest
+  command: gcloud docker -- pull eu.gcr.io/disappointing-tode/toolbelt:20180226.174955.manual
   become: true
 
 - name: Pre-pull fnanny

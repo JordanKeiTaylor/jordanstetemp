@@ -15,3 +15,12 @@
     allow_downgrade: yes
   when: ansible_distribution == 'CentOS' or ansible_distribution == 'RedHat'
   become: true
+
+# GCE boxes are configured to automatically update boxes. This puts us on the wrong docker version and causes a bounce
+# so we disable.
+- name: Disable autoupdates
+  lineinfile:
+    path: /etc/yum/yum-cron.conf
+    regexp: '^apply_updates ='
+    line: 'apply_updates = no'
+  become: true

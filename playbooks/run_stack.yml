@@ -2,7 +2,8 @@
   tasks:
     - shell: |
         cd ~/project
-        export TOOLBELT_IMAGE=eu.gcr.io/disappointing-tode/toolbelt:latest
+        export TOOLBELT_IMAGE=eu.gcr.io/disappointing-tode/toolbelt:20180226.174955.manual
+
         export FNANNY_IMAGE=eu.gcr.io/disappointing-tode/fnanny:latest
         export PROMETHEUS_IMAGE=eu.gcr.io/disappointing-tode/prometheus:latest
         export SPATIAL_PROJECT_DIR=.

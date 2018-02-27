@@ -11,7 +11,7 @@ services:
     deploy:
       placement:
         constraints:
-          - node.hostname == master
+          - node.hostname == slave1
     volumes:
       - ./prometheus.yml:/prometheus.yml
       - $PROM_SCRAPE_CONFIG_FILE:/fabric_scrape_configs.yml
@@ -47,8 +47,8 @@ services:
            local launch
             --enable_pre_run_check=false
             --no_fabric
-            --runtime_ip=master
-            --master_ip=master
+            --runtime_ip=slave1
+            --master_ip=slave1
             --disable_networking
             --snapshot=/improbable/project/snapshots/$SNAPSHOT
             /improbable/project/configs/launch/local_50k.pb.json
@@ -56,7 +56,7 @@ services:
     deploy:
       placement:
         constraints:
-          - node.hostname == master
+          - node.hostname == slave1
  
   fabric-master:
     image: $FNANNY_IMAGE
