@@ -1,0 +1,13 @@
+---
+# docker_registry: eu.gcr.io/disappointing-tode
+docker_registry: master:5000
+
+docker_images:
+  toolbelt: 
+    tag: 273c0f1e56
+  fnanny:
+    tag: 273c0f1e56
+  prometheus: 
+    tag: 273c0f1e56-prometheus.e9cd0b5
+
+gcloud_docker: "{{ docker_registry | match(\".*.gcr.io\")}}"

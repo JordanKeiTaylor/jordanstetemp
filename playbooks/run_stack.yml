@@ -2,10 +2,10 @@
   tasks:
     - shell: |
         cd ~/project
-        export TOOLBELT_IMAGE=eu.gcr.io/disappointing-tode/toolbelt:20180226.174955.manual
+        export TOOLBELT_IMAGE={{ docker_registry }}/toolbelt:{{ docker_images.toolbelt.tag }}
 
-        export FNANNY_IMAGE=eu.gcr.io/disappointing-tode/fnanny:latest
-        export PROMETHEUS_IMAGE=eu.gcr.io/disappointing-tode/prometheus:latest
+        export FNANNY_IMAGE={{ docker_registry }}/fnanny:{{ docker_images.fnanny.tag }}
+        export PROMETHEUS_IMAGE={{ docker_registry }}/prometheus:{{ docker_images.prometheus.tag }}
         export SPATIAL_PROJECT_DIR=.
 
         export PROM_QUERYSTALENESS=300s

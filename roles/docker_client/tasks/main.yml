@@ -1,0 +1,16 @@
+---
+- name: Setup insecure registry
+  copy:
+    src: daemon.json
+    dest: /etc/docker/daemon.json
+  become: true
+  notify:
+  - restart docker
+  when: not gcloud_docker
+
+- name: Pre-pull docker images
+  command: "gcloud docker -- pull {{ docker_registry }}/{{ item.key }}:{{ item.value.tag }}"
+  become: true
+  with_dict: "{{ docker_images }}"
+  when: gcloud_docker
+

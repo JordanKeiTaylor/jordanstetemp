@@ -39,7 +39,7 @@ fi
 run_playbook() {
 	local playbook=playbooks/${1}
 	set -x
-	ansible-playbook -i ${INVENTORY_FILE} ${playbook} ${@:2}
+	ansible-playbook -e @vars.yml -i ${INVENTORY_FILE} ${playbook} ${@:2}
 	set +x
 }
 

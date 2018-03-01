@@ -1,0 +1,4 @@
+---
+- name: load docker images
+  command: docker load -i ~/repository.tar
+  become: true

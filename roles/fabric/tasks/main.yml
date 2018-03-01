@@ -1,16 +1,4 @@
 ---
-- name: Pre-pull toolbelt
-  command: gcloud docker -- pull eu.gcr.io/disappointing-tode/toolbelt:20180226.174955.manual
-  become: true
-
-- name: Pre-pull fnanny
-  command: gcloud docker -- pull eu.gcr.io/disappointing-tode/fnanny:latest
-  become: true
-
-- name: Pre-pull prometheus
-  command: gcloud docker -- pull eu.gcr.io/disappointing-tode/prometheus:latest
-  become: true
-
 - name: Extract local_inspector
   unarchive:
     src: local_inspector.tar.gz
