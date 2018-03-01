@@ -9,5 +9,7 @@ docker_images:
     tag: 273c0f1e56
   prometheus: 
     tag: 273c0f1e56-prometheus.e9cd0b5
+  node-exporter:
+    tag: latest
 
 gcloud_docker: "{{ docker_registry | match(\".*.gcr.io\")}}"

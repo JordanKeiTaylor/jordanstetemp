@@ -41,8 +41,14 @@
     src: prometheus.yml
     dest: ~/project/
 
-- name: Create scrape_config
+- name: Create fabric scrape config
   template:
-    src: scrape_config.yml.j2
-    dest: ~/scrape_config.yml
+    src: fabric_scrape_configs.yml.j2
+    dest: ~/project/fabric_scrape_configs.yml
+
+- name: Create node scrape config
+  template:
+    src: node_scrape_configs.yml.j2
+    dest: ~/project/node_scrape_configs.yml
+
 

@@ -8,8 +8,14 @@ rule_files:
 
 scrape_configs:
   # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
-  - job_name: 'cluster '
+  - job_name: 'cluster'
     metrics_path: /_metrics
     file_sd_configs:
       - files:
         - "/fabric_scrape_configs.yml"
+
+  - job_name: 'nodes'
+    metrics_path: /metrics
+    file_sd_configs:
+      - files:
+        - "/node_scrape_configs.yml"

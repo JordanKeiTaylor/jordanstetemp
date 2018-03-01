@@ -14,7 +14,8 @@ services:
           - node.hostname == slave1
     volumes:
       - ./prometheus.yml:/prometheus.yml
-      - $PROM_SCRAPE_CONFIG_FILE:/fabric_scrape_configs.yml
+      - ./fabric_scrape_configs.yml:/fabric_scrape_configs.yml
+      - ./node_scrape_configs.yml:/node_scrape_configs.yml
       - $PROM_RULES_DIR:/rules
     command: >
            /prometheus/prometheus
@@ -35,6 +36,14 @@ services:
             -web.console.libraries=/go/src/github.com/prometheus/prometheus/console_libraries
             -web.listen-address=:9090
             -web.console.templates=/consoles
+
+  exporter:
+    image: $NODE_EXPORTER_IMAGE
+    networks:
+      - outside
+    pid: host
+    deploy:
+        mode: global
 
   toolbelt:
     image: $TOOLBELT_IMAGE
