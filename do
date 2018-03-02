@@ -16,7 +16,8 @@ usage() {
 	echo "    apply_proj_roles         - apply project roles (fabric,project) to all hosts"
 	echo "    run_stack                - start the SpatialOS stack"
 	echo "    stop_stack               - stop the SpatialOS stack"
-	echo "    proxy_prometheus         - proxy prometheus port 9090"
+	echo "    proxy_prometheus <host>  - proxy Prometheus to localhost:9092"
+	echo "    proxy_inspector <host>   - proxy Inspector to localhost:21002"
 	echo "    cmd <role|all> <command> - Run an ad-hoc command on hosts"
 	echo "OPTIONS will be passed through to ansible-playbook or ansible"
 	exit 0
@@ -71,10 +72,13 @@ do_stop_stack() {
 	run_playbook stop_stack.yml ${@}
 }
 
-do_proxy_prometheus() {
-	local host="$1"
+do_proxy() {
+	local remote_host="$1"
+	local remote_port="$2"
+	local local_host="$3"
+	local local_port="$4"
 	set -x
-	ssh -N -L 9092:localhost:9090 $host &
+	ssh -N -L $local_port:$local_host:$remote_port $remote_host
 	set +x
 }
 
@@ -110,11 +114,19 @@ case "$1" in
 	;;
 	proxy_prometheus)
 		if [ -z "$2" ]; then
-			echo "CMD MISSING HOST" >&2
+			echo "MISSING REMOTE_HOST" >&2
 			echo
 			usage
 		fi
-		do_proxy_prometheus $2
+		do_proxy $2 9090 localhost 9092
+	;;
+	proxy_inspector)
+		if [ -z "$2" ]; then
+			echo "MISSING REMOTE_HOST" >&2
+			echo
+			usage
+		fi
+		do_proxy $2 21000 localhost 21002
 	;;
 	cmd)
 		if [ -z "$2" ] || [ -z "$3" ]; then

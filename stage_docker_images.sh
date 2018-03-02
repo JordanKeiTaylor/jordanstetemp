@@ -7,7 +7,7 @@ docker tag quay.io/prometheus/node-exporter node-exporter
 docker save \
     registry \
     node-exporter \
-    fnanny:273c0f1e56 \
-    toolbelt:273c0f1e56 \
-    prometheus:273c0f1e56-prometheus.e9cd0b5 \
+    fnanny:17b8242f39 \
+    toolbelt:17b8242f39 \
+    prometheus:17b8242f39-prometheus.e9cd0b5 \
     -o roles/docker_registry/files/repository.tar
