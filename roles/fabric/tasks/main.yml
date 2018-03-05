@@ -4,11 +4,6 @@
     src: local_inspector.tar.gz
     dest: ~/
 
-- name: Extract bundle_resolution_cache
-  unarchive:
-    src: bundle_resolution_cache.tar.gz
-    dest: ~/
-
 - file:
     dest: ~/prometheus_rules
     state: directory
