@@ -8,10 +8,12 @@
   unarchive:
     src: project.tar.gz
     dest: ~/project
-- name: Copy docker-compose.yml
-  copy:
-    src: docker-compose.yml
-    dest: ~/project
+
+- name: Create docker-compose.yml
+  template:
+    src: docker-compose.yml.j2
+    dest: ~/project/docker-compose.yml
+
 - name: Copy .env file
   copy:
     src: .env
@@ -51,4 +53,8 @@
     src: node_scrape_configs.yml.j2
     dest: ~/project/node_scrape_configs.yml
 
-
+- name: Create run.sh
+  template:
+    src: run.sh.j2
+    dest: ~/project/run.sh
+    mode: +x

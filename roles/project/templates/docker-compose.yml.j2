@@ -60,7 +60,7 @@ services:
             --master_ip=slave1
             --disable_networking
             --snapshot=/improbable/project/snapshots/$SNAPSHOT
-            /improbable/project/configs/launch/local_50k.pb.json
+            /improbable/project/configs/launch/$CONFIG_FILE
             --fabric_bundle_path=/improbable/project/build/assembly/fabric/fabric_bundle.zip
     deploy:
       placement:

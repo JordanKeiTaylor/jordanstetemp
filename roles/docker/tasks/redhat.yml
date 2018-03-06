@@ -24,3 +24,14 @@
     regexp: '^apply_updates ='
     line: 'apply_updates = no'
   become: true
+
+# Swarm doesn't support currently support ulimits: https://github.com/moby/moby/issues/25209
+# so we set the docker services limits and bounce it. These get inherited by containers.
+- name: Up dockerd file limit
+  lineinfile:
+    path: /usr/lib/systemd/system/docker.service
+    regexp: '^LimitNOFILE='
+    line: 'LimitNOFILE=1048576'
+  become: true
+  notify:
+    - restart docker

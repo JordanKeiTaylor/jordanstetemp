@@ -13,3 +13,6 @@ docker_images:
     tag: latest
 
 gcloud_docker: "{{ docker_registry | match(\".*.gcr.io\")}}"
+
+snapshot: poland-100k.snapshot
+config_file: local_100k.pb.json
