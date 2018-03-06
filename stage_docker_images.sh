@@ -4,7 +4,7 @@ docker pull registry
 docker pull quay.io/prometheus/node-exporter
 docker tag quay.io/prometheus/node-exporter node-exporter
 
-PLATFORM_VERSION=273c0f1e56
+PLATFORM_VERSION=17b8242f39
 docker save \
     registry \
     node-exporter \

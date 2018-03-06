@@ -4,11 +4,11 @@ docker_registry: master:5000
 
 docker_images:
   toolbelt: 
-    tag: 273c0f1e56
+    tag: 17b8242f39
   fnanny:
-    tag: 273c0f1e56
+    tag: 17b8242f39
   prometheus: 
-    tag: 273c0f1e56-prometheus.e9cd0b5
+    tag: 17b8242f39-prometheus.e9cd0b5
   node-exporter:
     tag: latest
 
