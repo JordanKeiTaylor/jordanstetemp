@@ -1,6 +1,6 @@
 #!/bin/sh
 
-REPO_PATH=roles/docker_registry/files/repository2.tar
+REPO_PATH=roles/docker_registry/files/repository.tar
 PLATFORM_REV=17b8242f39
 PROMETHEUS_REV=e9cd0b5
 set -e
