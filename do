@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 set -e
 set -o posix
 
@@ -47,7 +47,7 @@ run_playbook() {
 
 do_bootstrap() {
 	local remote_user="$1"
-	run_playbook bootstrap.yml -e @ssh_keys.yml -u "$remote_user" ${@:2}
+	run_playbook bootstrap.yml -e @ssh_keys.yml -e "ansible_user=$remote_user" ${@:2}
 }
 
 do_swarm_up() {
@@ -151,4 +151,3 @@ case "$1" in
 		do_adhoc_command "$2" "$3" ${@:4}
 	;;
 esac
-		
