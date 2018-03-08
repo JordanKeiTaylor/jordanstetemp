@@ -72,8 +72,18 @@ To start a `docker swarm` on a set of hosts:
 There is a utility script to create an SSH tunnel to the Prometheus port (9090) so that the prometheus UI/API can be accessed locally. To run this;
 
 ```
-./do proxy_prometheus <slave1_ip>
+./do proxy_prometheus demo@<slave1_ip>
 ```
+and open http://localhost:9092/
+
+### Proxying Inspector
+There is a utility script to create an SSH tunnel to the Inspector port (21000) so that the inpsector UI/API can be accessed locally. To run this;
+
+```
+./do proxy_inspector demo@<slave1_ip>
+````
+
+and open http://localhost:21002/inspector
 
 ## Handy commands
 ### Stopping the stack
