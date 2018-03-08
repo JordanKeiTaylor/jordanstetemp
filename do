@@ -9,6 +9,7 @@ usage() {
 	echo "   INVENTORY_FILE - env variable pointing to ansible inventory file"
 	echo "Commands"
 	echo "    -h/help                  - This help message"
+	echo "    bootstrap               - bootstrap machines"
 	echo "    swarm_up                 - bring up the swarm"
 	echo "    swarm_down               - take down the swarm"
 	echo "    apply_roles              - apply all roles to all hosts"
@@ -42,6 +43,11 @@ run_playbook() {
 	set -x
 	ansible-playbook -e @vars.yml -i ${INVENTORY_FILE} ${playbook} ${@:2}
 	set +x
+}
+
+do_bootstrap() {
+	local remote_user="$1"
+	run_playbook bootstrap.yml -e @ssh_keys.yml -u "$remote_user" ${@:2}
 }
 
 do_swarm_up() {
@@ -91,6 +97,14 @@ do_adhoc_command() {
 }
 
 case "$1" in
+	bootstrap)
+		if [ -z "$2" ]; then
+			echo "MISSING REMOTE USER" >&2
+			echo
+			usage
+		fi
+		do_bootstrap $2
+	;;
 	swarm_up)
 		do_swarm_up ${@:2}
 	;;

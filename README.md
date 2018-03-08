@@ -18,43 +18,62 @@ For instance, to launch a deployment of 4 nodes using the `ff-hexadeca-rhel7` te
 First you need to grab some files from your SpatialOS project, a `fabric` bundle zip and prometheus rules:
 
 ```
-./prepare.sh <spatial_project_dir> <path_to_fabric_bundle_zip> <prometheus_rules_repo>
+./stage_dependencies.sh <spatial_project_dir> <prometheus_rules_repo> <path_to_fabric_bundle_zip>
 ```
-This will tar/copy files into `roles/project/files` and `roles/fabric/files`.
 
-NOTE: Changes to the code, snapshots or configuration files will necessitate rerunning this script.
+This will tar/copy files into `roles/project/files` and `roles/fabric/files`. NOTE: Changes to the code, snapshots or configuration files will necessitate rerunning this script.
+
+You also need a repository of `docker` images built from platform. Once these are built, run:
+
+```
+./stage_docker_images.sh
+```
 
 ### Configuring the machines
-To configure one or more machines to run `spatial local cluster`
+To configure one or more machines to run `spatial local cluster`, first point `ansible` at your inventory file, e.g.
 ```
-ansible-playbook prepare.yml -i <inventory_file>
+export INVENTORY_FILE=<inventory_file>
 ```
+
+NOTE: There is an example inventory file under `inventories/gce.yml.tmpl`. First copy it to a new file: `cp inventories/gce.yml{.tmpl,}` You'll need to change the IP addresses.
+
+Then bootstrap the machines to create/setup the demo user:
+```
+./do bootstrap <remote_username>
+```
+
+NOTE: `remote_username` should be an existing user on the remote host with `sudo` or `root` privileges.
+
+Then setup the machines with:
+```
+./do apply_roles
+```
+
 This should be idempotent so can be rerun if needed.
 
-NOTE: There is an example inventory file under `inventories/gce.yml`. You'll need to change the IP addresses.
-
 ### Start a `docker swarm`
-To sart a `docker swarm` on a set of hosts:
+To start a `docker swarm` on a set of hosts:
 
 ```
-ansible-playbook swarm.yml -i <inventory_file>
+./do swarm_up
 ```
-**NOTE: Rerunning this will probably not work.** You'll need to run `docker swarm leave` on the relevant hosts.
 
-### Launching `fabric`
+### Launching deployment
 ```
-ansible-playbook run.yml -i <inventory_file>
+./do run_stack
 ```
-**NOTE: Rerunning this will probably not work.** You'll need to `docker stack rm fabric` first.
+
+### Stopping deployment
+```
+./do stop_stack
+```
 
 ### Proxying Prometheus
 There is a utility script to create an SSH tunnel to the Prometheus port (9090) so that the prometheus UI/API can be accessed locally. To run this;
 
 ```
-./proxy.sh <master_ip>
+./do proxy_prometheus <slave1_ip>
 ```
-
-This backgrounds the `ssh` process so you will need to kill it if you want to proxy to a different IP (e.g. if you spin up a new cluster).
 
 ## Handy commands
 ### Stopping the stack
