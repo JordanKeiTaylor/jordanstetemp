@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 REPO_PATH=roles/docker_registry/files/repository.tar
 PLATFORM_REV=17b8242f39
