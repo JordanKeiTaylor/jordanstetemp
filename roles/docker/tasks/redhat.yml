@@ -16,6 +16,11 @@
   when: ansible_distribution == 'CentOS' or ansible_distribution == 'RedHat'
   become: true
 
+- name: Check if yum cron is configured
+  stat:
+    path: /etc/yum/yum-cron.conf
+  register: yum_cron_check
+
 # GCE boxes are configured to automatically update boxes. This puts us on the wrong docker version and causes a bounce
 # so we disable.
 - name: Disable autoupdates
@@ -24,6 +29,7 @@
     regexp: '^apply_updates ='
     line: 'apply_updates = no'
   become: true
+  when: yum_cron_check.stat.exists == False
 
 # Swarm doesn't support currently support ulimits: https://github.com/moby/moby/issues/25209
 # so we set the docker services limits and bounce it. These get inherited by containers.
@@ -35,3 +41,9 @@
   become: true
   notify:
     - restart docker
+
+- name: Disable firewall
+  systemd:
+    name: firewalld
+    enabled: no
+    state: stopped

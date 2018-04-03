@@ -16,3 +16,5 @@ gcloud_docker: "{{ docker_registry | match(\".*.gcr.io\")}}"
 
 snapshot: poland-100k.snapshot
 config_file: local_100k.pb.json
+swarm_iface: eth0 # Cloud
+#swarm_iface: em1 # Hardware

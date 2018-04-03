@@ -2,4 +2,4 @@
     tasks:
       - name: leave docker swarm
         shell: >
-          docker swarm leave
+          docker swarm leave --force

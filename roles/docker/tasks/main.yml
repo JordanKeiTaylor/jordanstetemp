@@ -8,6 +8,7 @@
 - service:
     name: docker
     state: started
+    enabled: true
   become: true
 
 - name: Check if docker-compose is installed
