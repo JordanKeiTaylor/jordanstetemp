@@ -1,5 +1,4 @@
-﻿using Improbable;
-using System.Windows;
+﻿using System.Windows;
 
 namespace Shared.Projections
 {

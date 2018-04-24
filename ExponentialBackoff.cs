@@ -90,7 +90,7 @@ namespace Shared
             }
         }
 
-        public Boolean AtMaximum()
+        public bool AtMaximum()
         {
             return (nextDelay.Ticks < maximum.Ticks);
         }

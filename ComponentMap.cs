@@ -9,7 +9,7 @@ namespace Shared
     public class ComponentMap<T> : IEnumerable<KeyValuePair<EntityId, IComponentData<T>>>
         where T : IComponentMetaclass
     {
-        private readonly static Random random = new Random();
+        private static readonly Random random = new Random();
 
         readonly HashSet<EntityId> authority;
         readonly Dictionary<EntityId, IComponentData<T>> components;

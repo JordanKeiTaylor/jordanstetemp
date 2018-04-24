@@ -1,6 +1,4 @@
-﻿using Improbable.Worker;
-
-namespace Shared
+﻿namespace Shared
 {
     /// <summary>
     /// Indicates that the class can handle changes to the Connection state - used in conjunction with the IConnectionManager.

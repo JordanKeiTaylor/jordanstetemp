@@ -107,7 +107,7 @@ namespace Shared
             private double total = 0.0;
             private string name;
 
-            private readonly Object Lock = new Object();
+            private readonly object Lock = new object();
 
             internal MinMaxAvgMetric(string name)
             {

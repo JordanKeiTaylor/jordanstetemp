@@ -8,22 +8,18 @@ namespace Shared
 {
     public class Logger : IConnectionReceiver
     {
-        public static Logger DefaultLogger = new Logger();
+        public static readonly Logger DefaultLogger = new Logger();
         public static LogLevel AlwaysConsoleLogAtLogLevel = LogLevel.Error;
         private ISet<IConnection> connections = new HashSet<IConnection>();
 
-        public Logger()
-        {
-        }
-
         public void AttachConnection(IConnection c)
         {
-            this.connections.Add(c);
+            connections.Add(c);
         }
 
         public void DetachConnection(IConnection c)
         {
-            this.connections.Remove(c);
+            connections.Remove(c);
         }
 
         public NamedLogger CreateWithName(string name)
@@ -74,6 +70,8 @@ namespace Shared
 
         public interface ILogger
         {
+            void Log(LogLevel level, string message, Option<EntityId> entityId = default(Option<EntityId>));
+
             void Fatal(string message, Option<EntityId> entityId = default(Option<EntityId>));
             void Fatal(string message, Exception e, Option<EntityId> entityId = default(Option<EntityId>));
 
@@ -100,6 +98,11 @@ namespace Shared
                 this.alwaysConsole = alwaysConsole;
             }
 
+            public void Log(LogLevel level, string message, Option<EntityId> entityId = default(Option<EntityId>))
+            {
+                parent.Log(level, name, message, entityId, alwaysConsole);
+            }
+
             public void Fatal(string message, Option<EntityId> entityId = default(Option<EntityId>))
             {
                 parent.Log(LogLevel.Fatal, name, message, entityId, alwaysConsole);
@@ -107,12 +110,12 @@ namespace Shared
 
             public void Fatal(string message, Exception e, Option<EntityId> entityId = default(Option<EntityId>))
             {
-                parent.Log(LogLevel.Fatal, name, message + "\n" + e.ToString(), entityId, alwaysConsole);
+                parent.Log(LogLevel.Fatal, name, message + "\n" + e, entityId, alwaysConsole);
             }
 
             public void Error(string message, Exception e, Option<EntityId> entityId = default(Option<EntityId>))
             {
-                parent.Log(LogLevel.Error, name, message + "\n" + e.ToString(), entityId, alwaysConsole);
+                parent.Log(LogLevel.Error, name, message + "\n" + e, entityId, alwaysConsole);
             }
 
             public void Error(string message, Option<EntityId> entityId = default(Option<EntityId>))

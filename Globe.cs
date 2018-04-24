@@ -5,7 +5,6 @@ namespace Shared
 {
     public class Globe
     {
-        public const double EarthRadiusM = 6371e3;
         public const double MilesPerHourToMetersPerSecondConversionFactor = 0.44704;
 
         public static double DegreesToRadians(double n)
