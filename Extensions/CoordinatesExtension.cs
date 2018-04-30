@@ -3,7 +3,7 @@ using Improbable;
 
 namespace Shared.Extensions
 {
-    public static class CoordinateExtensions
+    public static class CoordinatesExtension
     {
         /// <summary>
         /// Converts this coordinate to a vector3d.

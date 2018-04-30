@@ -5,7 +5,6 @@
     /// </summary>
     public interface IConnectionReceiver
     {
-
         /// <summary>
         /// Called when a connection is established.
         /// </summary>
@@ -15,6 +14,5 @@
         /// Called when a connection is lost.
         /// </summary>
         void DetachConnection(IConnection c);
-
     }
 }

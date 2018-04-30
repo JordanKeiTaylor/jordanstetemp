@@ -9,21 +9,21 @@ namespace Shared.Projections
     /// </summary>
     public class AzimuthalEquidistant : IMapProjection
     {
-        private readonly double EarthRadius = 6371e3;
+        private readonly double _earthRadius = 6371e3;
 
-        private double latROrig;
-        private double lonROrig;
+        private readonly double _latROrig;
+        private readonly double _lonROrig;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:Shared.Projections.AzimuthalEquidistant"/> 
+        /// Initializes a new instance of the <see cref="T:Shared.Projections.AzimuthalEquidistant"/>
         /// class centered at the specified lat/lon position.
         /// </summary>
         /// <param name="lat">Latitude origin.</param>
         /// <param name="lon">Longitude origin.</param>
         public AzimuthalEquidistant(double lat, double lon)
         {
-            latROrig = degreesToRadians(lat);
-            lonROrig = degreesToRadians(lon);
+            _latROrig = DegreesToRadians(lat);
+            _lonROrig = DegreesToRadians(lon);
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace Shared.Projections
         /// <param name="lon">Longitude coordinate (degrees).</param>
         public Point ToPlane(double lat, double lon)
         {
-            return convertToPlane(lat, lon);
+            return ConvertToPlane(lat, lon);
         }
 
         /// <summary>
@@ -65,41 +65,41 @@ namespace Shared.Projections
         /// <param name="y">Planar y coordinate.</param>
         public Point ToSphere(double x, double y)
         {
-            return convertToSphere(x, y);
+            return ConvertToSphere(x, y);
         }
 
-        private Point convertToPlane(double lat, double lon)
-        {
-            var latR = degreesToRadians(lat);
-            var lonR = degreesToRadians(lon);
-
-            var c = Math.Acos(Math.Sin(latROrig) * Math.Sin(latR) + Math.Cos(latROrig) * Math.Cos(latR) * Math.Cos(lonR - lonROrig));
-            var k = c / Math.Sin(c);
-
-            var x = k * Math.Cos(latR) * Math.Sin(lonR - lonROrig);
-            var y = k * (Math.Cos(latROrig) * Math.Sin(latR) - Math.Sin(latROrig) * Math.Cos(latR) * Math.Cos(lonR - lonROrig));
-
-            return new Point(x * EarthRadius, y * EarthRadius);
-        }
-
-        private Point convertToSphere(double x, double y)
-        {
-            var c = Math.Sqrt(x * x + y * y);
-
-            var latR = Math.Asin(Math.Cos(c) * Math.Sin(latROrig) + (y * Math.Sin(c) * Math.Cos(latROrig)) / c);
-            var lonR = lonROrig + Math.Atan((x * Math.Sin(c)) / (c * Math.Cos(latROrig) * Math.Cos(c) - y * Math.Sin(latROrig) * Math.Sin(c)));
-
-            return new Point(radiansToDegrees(latR), radiansToDegrees(lonR));
-        }
-
-        private double degreesToRadians(double n)
+        private static double DegreesToRadians(double n)
         {
             return n / 360.0f * 2 * Math.PI;
         }
 
-        private double radiansToDegrees(double n)
+        private static double RadiansToDegrees(double n)
         {
             return n / (2 * Math.PI) * 360.0f;
+        }
+
+        private Point ConvertToPlane(double lat, double lon)
+        {
+            var latR = DegreesToRadians(lat);
+            var lonR = DegreesToRadians(lon);
+
+            var c = Math.Acos(Math.Sin(_latROrig) * Math.Sin(latR) + Math.Cos(_latROrig) * Math.Cos(latR) * Math.Cos(lonR - _lonROrig));
+            var k = c / Math.Sin(c);
+
+            var x = k * Math.Cos(latR) * Math.Sin(lonR - _lonROrig);
+            var y = k * (Math.Cos(_latROrig) * Math.Sin(latR) - Math.Sin(_latROrig) * Math.Cos(latR) * Math.Cos(lonR - _lonROrig));
+
+            return new Point(x * _earthRadius, y * _earthRadius);
+        }
+
+        private Point ConvertToSphere(double x, double y)
+        {
+            var c = Math.Sqrt((x * x) + (y * y));
+
+            var latR = Math.Asin((Math.Cos(c) * Math.Sin(_latROrig)) + (y * Math.Sin(c) * Math.Cos(_latROrig)) / c);
+            var lonR = _lonROrig + Math.Atan((x * Math.Sin(c)) / (c * Math.Cos(_latROrig) * Math.Cos(c) - y * Math.Sin(_latROrig) * Math.Sin(c)));
+
+            return new Point(RadiansToDegrees(latR), RadiansToDegrees(lonR));
         }
     }
 }

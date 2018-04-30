@@ -8,7 +8,11 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Shared</RootNamespace>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <CodeAnalysisRuleSet>stylecop.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <ItemGroup>
+    <AdditionalFiles Include="stylecop.json" />
+  </ItemGroup>
   <Import Project="../BuildTargets.targets" />
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'DebugWindows|x64' ">
     <DebugSymbols>true</DebugSymbols>
@@ -47,9 +51,14 @@
       <Name>GeneratedCode</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <ItemGroup>
     <Folder Include="Interpolations\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.0-beta006" PrivateAssets="All" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

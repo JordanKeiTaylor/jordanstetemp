@@ -6,13 +6,22 @@ using Improbable.Worker;
 
 namespace Shared
 {
+    [Flags]
+    public enum ComponentMapEvent
+    {
+        AddComponent = 1,
+        UpdateComponent = 2,
+        RemoveEntity = 4,
+        AuthorityChange = 8,
+    }
+
     public class ComponentMap<T> : IEnumerable<KeyValuePair<EntityId, IComponentData<T>>>
         where T : IComponentMetaclass
     {
-        private static readonly Random random = new Random();
+        private static readonly Random Rand = new Random();
 
-        readonly HashSet<EntityId> authority;
-        readonly Dictionary<EntityId, IComponentData<T>> components;
+        private readonly HashSet<EntityId> _authority;
+        private readonly Dictionary<EntityId, IComponentData<T>> _components;
 
         private bool _hasUpdated = true;
 
@@ -21,68 +30,62 @@ namespace Shared
         /// </summary>
         /// <param name="dispatcher">Dispatcher.</param>
         /// <param name="disableEvents">
-        /// Events to disable. 
+        /// Events to disable.
         /// Note: Can pass in multiple flags using bitwise OR. For example, AddComponent | UpdateComponent.
         /// </param>
         public ComponentMap(IDispatcher dispatcher, ComponentMapEvent? disableEvents = null)
         {
-            authority = new HashSet<EntityId>();
-            components = new Dictionary<EntityId, IComponentData<T>>();
+            _authority = new HashSet<EntityId>();
+            _components = new Dictionary<EntityId, IComponentData<T>>();
 
-            if (!hasFlag(disableEvents, ComponentMapEvent.AddComponent))
+            if (!HasFlag(disableEvents, ComponentMapEvent.AddComponent))
             {
-                dispatcher.OnAddComponent<T>(addComponent);
+                dispatcher.OnAddComponent<T>(AddComponent);
             }
 
-            if (!hasFlag(disableEvents, ComponentMapEvent.RemoveEntity))
+            if (!HasFlag(disableEvents, ComponentMapEvent.RemoveEntity))
             {
-                dispatcher.OnRemoveEntity(removeEntity);
+                dispatcher.OnRemoveEntity(RemoveEntity);
             }
 
-            if (!hasFlag(disableEvents, ComponentMapEvent.UpdateComponent))
+            if (!HasFlag(disableEvents, ComponentMapEvent.UpdateComponent))
             {
-                dispatcher.OnComponentUpdate<T>(updateComponent);
+                dispatcher.OnComponentUpdate<T>(UpdateComponent);
             }
 
-            if (!hasFlag(disableEvents, ComponentMapEvent.AuthorityChange))
+            if (!HasFlag(disableEvents, ComponentMapEvent.AuthorityChange))
             {
-                dispatcher.OnAuthorityChange<T>(setAuthority);
+                dispatcher.OnAuthorityChange<T>(SetAuthority);
             }
         }
 
-        public Dictionary<EntityId, IComponentData<T>>.KeyCollection Keys
-        {
-            get { return components.Keys; }
-        }
+        public Dictionary<EntityId, IComponentData<T>>.KeyCollection Keys => _components.Keys;
 
-        public Dictionary<EntityId, IComponentData<T>>.ValueCollection Values
-        {
-            get { return components.Values; }
-        }
+        public Dictionary<EntityId, IComponentData<T>>.ValueCollection Values => _components.Values;
 
         public bool ContainsKey(EntityId id)
         {
-            return components.ContainsKey(id);
+            return _components.ContainsKey(id);
         }
 
         public IComponentData<T> Get(EntityId id)
         {
-            return components[id];
+            return _components[id];
         }
 
         public bool TryGetValue(EntityId id, out IComponentData<T> component)
         {
-            return components.TryGetValue(id, out component);
+            return _components.TryGetValue(id, out component);
         }
 
-        public bool HasAuthority(EntityId Id)
+        public bool HasAuthority(EntityId id)
         {
-            return authority.Contains(Id);
+            return _authority.Contains(id);
         }
 
         public IEnumerator<KeyValuePair<EntityId, IComponentData<T>>> GetEnumerator()
         {
-            return components.GetEnumerator();
+            return _components.GetEnumerator();
         }
 
         public bool HasUpdated()
@@ -97,68 +100,60 @@ namespace Shared
 
         public EntityId GetRandomAuthorativeId()
         {
-            var e = authority.GetEnumerator();
-            var index = random.Next(authority.Count);
+            var e = _authority.GetEnumerator();
+            var index = Rand.Next(_authority.Count);
             for (int i = 0; i < index; i++)
             {
                 e.MoveNext();
             }
+
             return e.Current;
-        }
-
-        void setAuthority(AuthorityChangeOp authorityChange)
-        {
-            if (authorityChange.Authority == Authority.Authoritative)
-            {
-                authority.Add(authorityChange.EntityId);
-            }
-            else
-            {
-                authority.Remove(authorityChange.EntityId);
-            }
-        }
-
-        void updateComponent(ComponentUpdateOp<T> update)
-        {
-            if (!HasAuthority(update.EntityId) && components.ContainsKey(update.EntityId))
-            {
-                update.Update.ApplyTo(components[update.EntityId]);
-                _hasUpdated = true;
-            }
-        }
-
-        void addComponent(AddComponentOp<T> add)
-        {
-            components[add.EntityId] = add.Data;
-            _hasUpdated = true;
-        }
-
-        void removeEntity(RemoveEntityOp removeEntityOp)
-        {
-            if (components.ContainsKey(removeEntityOp.EntityId))
-            {
-                components.Remove(removeEntityOp.EntityId);
-                _hasUpdated = true;
-            }
-        }
-
-        bool hasFlag(ComponentMapEvent? allFlags, ComponentMapEvent flag)
-        {
-            return allFlags.HasValue && allFlags.Value.HasFlag(flag);
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
         }
-    }
 
-    [Flags]
-    public enum ComponentMapEvent
-    {
-        AddComponent = 1,
-        UpdateComponent = 2,
-        RemoveEntity = 4,
-        AuthorityChange = 8
+        private void SetAuthority(AuthorityChangeOp authorityChange)
+        {
+            if (authorityChange.Authority == Authority.Authoritative)
+            {
+                _authority.Add(authorityChange.EntityId);
+            }
+            else
+            {
+                _authority.Remove(authorityChange.EntityId);
+            }
+        }
+
+        private void UpdateComponent(ComponentUpdateOp<T> update)
+        {
+            if (!HasAuthority(update.EntityId) && _components.ContainsKey(update.EntityId))
+            {
+                update.Update.ApplyTo(_components[update.EntityId]);
+                _hasUpdated = true;
+            }
+        }
+
+        private void AddComponent(AddComponentOp<T> add)
+        {
+            _components[add.EntityId] = add.Data;
+            _hasUpdated = true;
+        }
+
+        private void RemoveEntity(RemoveEntityOp removeEntityOp)
+        {
+            if (_components.ContainsKey(removeEntityOp.EntityId))
+            {
+                _components.Remove(removeEntityOp.EntityId);
+                _hasUpdated = true;
+            }
+        }
+
+        private bool HasFlag(ComponentMapEvent? allFlags, ComponentMapEvent flag)
+        {
+            return allFlags.HasValue && allFlags.Value.HasFlag(flag);
+        }
     }
 }

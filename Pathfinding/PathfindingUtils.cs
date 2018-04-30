@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Improbable;
 using QuickGraph;
@@ -7,7 +6,8 @@ using Shared.Extensions;
 
 namespace Shared.Pathfinding
 {
-    public static class PathfindingUtils<TVertex, TEdge> where TEdge : IEdge<TVertex>
+    public static class PathfindingUtils<TVertex, TEdge>
+        where TEdge : IEdge<TVertex>
     {
         /// <summary>
         /// Calculates the relative time it takes to traverse from start to end given the speed limit.
@@ -20,7 +20,7 @@ namespace Shared.Pathfinding
         {
             return start.DistanceTo(end) / speedLimit;
         }
-        
+
         /// <summary>
         /// Calculates the Strongly Connected Components of a graph. An SCC is known as sub-graph where every node
         /// in that sub-graph can traverse to any other node in that sub-graph. This method groups TVertex elements
@@ -31,20 +31,20 @@ namespace Shared.Pathfinding
         public static Dictionary<int, List<TVertex>> CalculateStronglyConnectedComponents(IVertexListGraph<TVertex, TEdge> graph)
         {
             var cc = new QuickGraph.Algorithms.ConnectedComponents.StronglyConnectedComponentsAlgorithm<TVertex, TEdge>(graph);
-            
+
             cc.Compute();
-            
+
             var groups = cc.Components.GroupBy(kv => kv.Value);
 
             var sccs = new Dictionary<int, List<TVertex>>();
-            
+
             foreach (var grouping in groups)
             {
                 if (sccs.ContainsKey(grouping.Key) == false)
                 {
                     sccs[grouping.Key] = new List<TVertex>();
                 }
-                
+
                 foreach (var nodeKv in grouping)
                 {
                     sccs[grouping.Key].Add(nodeKv.Key);
@@ -65,7 +65,7 @@ namespace Shared.Pathfinding
             {
                 sccs.Remove(key);
             }
-            
+
             return sccs;
         }
     }

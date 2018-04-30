@@ -4,26 +4,26 @@ using Shared.Extensions;
 
 namespace Shared.Interpolations
 {
+    internal enum Curve
+    {
+        Quadratic,
+        Cubic,
+    }
+
     public class Bezier : IInterpolate
     {
-        private Curve curve;
-        private double length;
-        private double tolerance;
+        private readonly Curve _curve;
+        private readonly double _tolerance;
 
-        private Vector3d p1;
-        private Vector3d p2;
-        private Vector3d cp1;
-        private Vector3d cp2;
+        private readonly Vector3d _p1;
+        private readonly Vector3d _p2;
+        private readonly Vector3d _cp1;
+        private readonly Vector3d _cp2;
 
-        private double[] steps;
-        private double[] lengths;
-        private Vector3d[] points;
-
-        enum Curve 
-        {
-            Quadratic,
-            Cubic
-        }
+        private double _length;
+        private double[] _steps;
+        private double[] _lengths;
+        private Vector3d[] _points;
 
         /// <summary>
         /// Initializes a new instance of a Quadratic <see cref="T:Shared.Interpolations.Bezier"/> Bezier interpolator.
@@ -38,14 +38,14 @@ namespace Shared.Interpolations
             Vector3d point2,
             Vector3d controlPoint,
             int smaples = 100,
-            double tolerance = 0.0001
-        ) {
-            p1 = point1;
-            p2 = point2;
-            cp1 = controlPoint;
-            curve = Curve.Quadratic;
-            this.tolerance = tolerance;
-            sample(smaples);
+            double tolerance = 0.0001)
+        {
+            _p1 = point1;
+            _p2 = point2;
+            _cp1 = controlPoint;
+            _curve = Curve.Quadratic;
+            this._tolerance = tolerance;
+            Sample(smaples);
         }
 
         /// <summary>
@@ -58,114 +58,123 @@ namespace Shared.Interpolations
         /// <param name="smaples">Number of samples along bezier curve.</param>
         /// <param name="tolerance">Tolerance.</param>
         public Bezier(
-            Vector3d point1, 
-            Vector3d point2, 
-            Vector3d controlPoint1, 
+            Vector3d point1,
+            Vector3d point2,
+            Vector3d controlPoint1,
             Vector3d controlPoint2,
             int samples = 100,
-            double tolerance = 0.0001
-        ) {
-            p1 = point1;
-            p2 = point2;
-            cp1 = controlPoint1;
-            cp2 = controlPoint2;
-            curve = Curve.Cubic;
-            this.tolerance = tolerance;
-            sample(samples);
+            double tolerance = 0.0001)
+        {
+            _p1 = point1;
+            _p2 = point2;
+            _cp1 = controlPoint1;
+            _cp2 = controlPoint2;
+            _curve = Curve.Cubic;
+            this._tolerance = tolerance;
+            Sample(samples);
         }
 
-        public Vector3d PositionAt(double step) 
+        public double Length => _length;
+
+        public Vector3d PositionAt(double step)
         {
-            var safeStep = step.Clamp(0, 1, tolerance);
-            if (curve == Curve.Quadratic)
+            var safeStep = step.Clamp(0, 1, _tolerance);
+            if (_curve == Curve.Quadratic)
             {
-                return Interpolate.Bezier(p1, p2, cp1, safeStep);
+                return Interpolate.Bezier(_p1, _p2, _cp1, safeStep);
             }
-            return Interpolate.Bezier(p1, p2, cp1, cp2, safeStep);
+
+            return Interpolate.Bezier(_p1, _p2, _cp1, _cp2, safeStep);
         }
 
         public double StepAt(Vector3d vector)
         {
-            var index = findIndexAt(vector);
-            return steps[index];
+            var index = FindIndexAt(vector);
+            return _steps[index];
         }
 
         public double StepAt(double distance)
         {
             var safeDistance = distance;
-            if (distance < 0) 
+            if (distance < 0)
             {
-                safeDistance = 0;    
+                safeDistance = 0;
             }
-            if (distance.Greater(Length, tolerance))
+
+            if (distance.Greater(Length, _tolerance))
             {
                 safeDistance = Length;
             }
-            var index = lengths.BinarySearch(safeDistance);
-            return steps[index];
-        }
 
-        public double Length => length;
+            var index = _lengths.BinarySearch(safeDistance);
+            return _steps[index];
+        }
 
         public double LengthAt(double step)
         {
-            var safeStep = step.Clamp(0, 1, tolerance);
-            var index = steps.BinarySearch(safeStep);
-            return lengths[index];
+            var safeStep = step.Clamp(0, 1, _tolerance);
+            var index = _steps.BinarySearch(safeStep);
+            return _lengths[index];
         }
 
         public double LengthAt(Vector3d vector)
         {
-            var index = findIndexAt(vector);
-            return lengths[index];
+            var index = FindIndexAt(vector);
+            return _lengths[index];
         }
 
-        private void sample(int samples)
+        private void Sample(int samples)
         {
             if (samples <= 0)
             {
                 throw new ArgumentException("Parameter divisions must be greater than 0.");
             }
-            steps = new double[samples + 1];
-            lengths = new double[samples + 1];
-            points = new Vector3d[samples + 1];
 
-            steps[0] = 0;
-            lengths[0] = 0;
-            points[0] = p1;
+            _steps = new double[samples + 1];
+            _lengths = new double[samples + 1];
+            _points = new Vector3d[samples + 1];
 
-            Vector3d prevP = p1;
+            _steps[0] = 0;
+            _lengths[0] = 0;
+            _points[0] = _p1;
 
-            length = 0;
+            Vector3d prevP = _p1;
+
+            _length = 0;
             var stepSize = 1d / samples;
             for (int i = 1; i <= samples; i++)
             {
                 var step = stepSize * i;
                 var currP = PositionAt(step);
-                length += currP.DistanceTo(prevP);
+                _length += currP.DistanceTo(prevP);
                 prevP = currP;
 
-                steps[i] = step;
-                lengths[i] = length;
-                points[i] = currP;
+                _steps[i] = step;
+                _lengths[i] = _length;
+                _points[i] = currP;
             }
         }
 
-        private int findIndexAt(Vector3d vector)
+        private int FindIndexAt(Vector3d vector)
         {
             var minIndex = 0;
-            var minDistance = p1.DistanceSquaredTo(vector);
-            if (minDistance < tolerance) { return minIndex; }
-            // have to loop through all points as this is a curve, O(n)
-            for (var i = 0; i < steps.Length; i++)
+            var minDistance = _p1.DistanceSquaredTo(vector);
+            if (minDistance < _tolerance)
             {
-                var distance = points[i].DistanceSquaredTo(vector);
-                if (distance.LessOrEqual(minDistance, tolerance))
+                return minIndex;
+            }
+
+            // have to loop through all points as this is a curve, O(n)
+            for (var i = 0; i < _steps.Length; i++)
+            {
+                var distance = _points[i].DistanceSquaredTo(vector);
+                if (distance.LessOrEqual(minDistance, _tolerance))
                 {
                     minDistance = distance;
                     minIndex = i;
                 }
             }
+
             return minIndex;
         }
     }

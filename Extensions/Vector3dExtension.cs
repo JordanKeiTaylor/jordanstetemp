@@ -5,6 +5,8 @@ namespace Shared.Extensions
 {
     public static class Vector3dExtension
     {
+        public static readonly Vector3d Zero = new Vector3d(0, 0, 0);
+
         /// <summary>
         /// Euclidean distance from this point to specified point.
         /// </summary>
@@ -103,7 +105,5 @@ namespace Shared.Extensions
         {
             return new Coordinates(v.x, v.y, v.z);
         }
-
-        public static Vector3d ZERO = new Vector3d(0, 0, 0);
     }
 }

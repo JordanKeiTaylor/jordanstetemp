@@ -14,17 +14,16 @@ namespace Shared
 
     public class ConnectionManager : IConnectionManager, IConnectionReceiver
     {
-        private List<IConnectionReceiver> receivers = new List<IConnectionReceiver>();
-
+        private readonly List<IConnectionReceiver> _receivers = new List<IConnectionReceiver>();
 
         public void AddConnectionReceiver(IConnectionReceiver receiver)
         {
-            receivers.Add(receiver);
+            _receivers.Add(receiver);
         }
 
         public void AttachConnection(IConnection c)
         {
-            foreach (var receiver in receivers)
+            foreach (var receiver in _receivers)
             {
                 receiver.AttachConnection(c);
             }
@@ -32,7 +31,7 @@ namespace Shared
 
         public void DetachConnection(IConnection c)
         {
-            foreach (var receiver in receivers)
+            foreach (var receiver in _receivers)
             {
                 receiver.DetachConnection(c);
             }

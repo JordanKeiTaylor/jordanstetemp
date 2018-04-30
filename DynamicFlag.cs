@@ -2,62 +2,45 @@
 using System.Linq;
 using System.Collections.Generic;
 using Improbable.Worker;
+using Shared.Log;
 
 namespace Shared
 {
     /// <summary>
-    /// A dynamic flag that is able to recompute itself as a function of some number of underlying worker flags. 
+    /// A dynamic flag that is able to recompute itself as a function of some number of underlying worker flags.
     /// Arbitrary arity functions are supported internally but the API currently only exposes support for 1 and 2-argument functions.
     /// </summary>
     public class DynamicFlag<T> : IConnectionReceiver
     {
-        private readonly Logger.NamedLogger logger;
-        private readonly SortedSet<string> names;
-        private Dictionary<string, string> values;
-        private T value;
-        private readonly Delegate parser;
-        private readonly T defaultValue;
-        private IConnection connection;
-        private readonly List<Action<T>> changeCallbacks = new List<Action<T>>();
+        private readonly NamedLogger _logger;
+        private readonly SortedSet<string> _names;
+        private readonly List<Action<T>> _changeCallbacks = new List<Action<T>>();
+        private readonly Delegate _parser;
+        private readonly T _defaultValue;
+        private Dictionary<string, string> _values;
+        private T _value;
+        private IConnection _connection;
 
-        private DynamicFlag(IConnection connection, IDispatcher dispatcher, IEnumerable<string> names, Delegate parser, T defaultValue)
-        {
-            this.logger = Logger.DefaultWithName("DynamicFlag " + string.Concat(names));
-            this.names = new SortedSet<string>(names);
-            this.parser = parser;
-            this.defaultValue = defaultValue;
-            this.value = defaultValue;
-            dispatcher.OnFlagUpdate(onFlagUpdate);
-            if (connection != null)
-            {
-                AttachConnection(connection);
-            }
-        }
-
-        private DynamicFlag(IDispatcher dispatcher, IEnumerable<string> names, Delegate parser, T defaultValue) :
-            this(null, dispatcher, names, parser, defaultValue)
+        public DynamicFlag(IConnection connection, IDispatcher dispatcher, string name, Func<string, T> parser, T defaultValue)
+            : this(connection, dispatcher, new string[] { name }, parser, defaultValue)
         {
         }
 
-        public DynamicFlag(IConnection connection, IDispatcher dispatcher, string name, Func<string, T> parser, T defaultValue) :
-           this(connection, dispatcher, new string[] { name }, parser, defaultValue)
+        public DynamicFlag(IConnection connection, IDispatcher dispatcher, string name1, string name2, Func<string, string, T> parser, T defaultValue)
+            : this(connection, dispatcher, new string[] { name1, name2 }, parser, defaultValue)
         {
         }
 
-        public DynamicFlag(IConnection connection, IDispatcher dispatcher, string name1, string name2, Func<string, string, T> parser, T defaultValue) :
-            this(connection, dispatcher, new string[] { name1, name2 }, parser, defaultValue)
+        public DynamicFlag(IDispatcher dispatcher, string name, Func<string, T> parser, T defaultValue)
+            : this(null, dispatcher, new string[] { name }, parser, defaultValue)
         {
         }
 
-        public DynamicFlag(IDispatcher dispatcher, string name, Func<string, T> parser, T defaultValue) :
-           this(null, dispatcher, new string[] { name }, parser, defaultValue)
+        public DynamicFlag(IDispatcher dispatcher, string name1, string name2, Func<string, string, T> parser, T defaultValue)
+            : this(null, dispatcher, new string[] { name1, name2 }, parser, defaultValue)
         {
         }
 
-        public DynamicFlag(IDispatcher dispatcher, string name1, string name2, Func<string, string, T> parser, T defaultValue) :
-            this(null, dispatcher, new string[] { name1, name2 }, parser, defaultValue)
-        {
-        }
         /// <summary>
         /// Initializes a new instance of the <see cref="T:Shared.DynamicFlag`1"/> class from a single worker flag.
         /// </summary>
@@ -66,8 +49,8 @@ namespace Shared
         /// <param name="name">Worker flag name.</param>
         /// <param name="parser">Worker flag parser.</param>
         /// <param name="defaultValue">Default value.</param>
-        public DynamicFlag(IConnection connection, Dispatcher dispatcher, string name, Func<string, T> parser, T defaultValue) :
-            this(connection, new DispatcherWrapper(dispatcher), new string[] { name }, parser, defaultValue)
+        public DynamicFlag(IConnection connection, Dispatcher dispatcher, string name, Func<string, T> parser, T defaultValue)
+            : this(connection, new DispatcherWrapper(dispatcher), new string[] { name }, parser, defaultValue)
         {
         }
 
@@ -80,9 +63,28 @@ namespace Shared
         /// <param name="name2">Worker flag 2 name.</param>
         /// <param name="parser">Function to parse flag 1 and flag 2.</param>
         /// <param name="defaultValue">Default value.</param>
-        public DynamicFlag(IConnection connection, Dispatcher dispatcher, string name1, string name2, Func<string, string, T> parser, T defaultValue) :
-            this(connection, new DispatcherWrapper(dispatcher), new string[] { name1, name2 }, parser, defaultValue)
+        public DynamicFlag(IConnection connection, Dispatcher dispatcher, string name1, string name2, Func<string, string, T> parser, T defaultValue)
+            : this(connection, new DispatcherWrapper(dispatcher), new string[] { name1, name2 }, parser, defaultValue)
         {
+        }
+
+        private DynamicFlag(IDispatcher dispatcher, IEnumerable<string> names, Delegate parser, T defaultValue)
+            : this(null, dispatcher, names, parser, defaultValue)
+        {
+        }
+
+        private DynamicFlag(IConnection connection, IDispatcher dispatcher, IEnumerable<string> names, Delegate parser, T defaultValue)
+        {
+            this._logger = Logger.DefaultWithName("DynamicFlag " + string.Concat(names));
+            this._names = new SortedSet<string>(names);
+            this._parser = parser;
+            this._defaultValue = defaultValue;
+            this._value = defaultValue;
+            dispatcher.OnFlagUpdate(OnFlagUpdate);
+            if (connection != null)
+            {
+                AttachConnection(connection);
+            }
         }
 
         /// <summary>
@@ -90,21 +92,21 @@ namespace Shared
         /// </summary>
         public T Value
         {
-            get { return value; }
+            get { return _value; }
         }
 
         /// <summary>
-        /// Flag default value.    
+        /// Flag default value.
         /// </summary>
         /// <value>The default.</value>
         public T Default
         {
-            get { return defaultValue; }
+            get { return _defaultValue; }
         }
 
         public void OnChange(Action<T> callback)
         {
-            changeCallbacks.Add(callback);
+            _changeCallbacks.Add(callback);
         }
 
         public override string ToString()
@@ -112,7 +114,31 @@ namespace Shared
             return string.Format("[DynamicFlag: Value={0}, Default={1}]", Value, Default);
         }
 
-        private static Dictionary<string, string> getValues(IConnection connection, IEnumerable<string> names)
+        public void AttachConnection(IConnection c)
+        {
+            _connection = c;
+            _values = GetValues(_connection, _names);
+            SetValue(Recompute());
+        }
+
+        public void DetachConnection(IConnection c)
+        {
+            _connection = null;
+        }
+
+        public void SetValue(T newValue)
+        {
+            if (!_value.Equals(newValue))
+            {
+                _value = newValue;
+                foreach (Action<T> callback in _changeCallbacks)
+                {
+                    callback(newValue);
+                }
+            }
+        }
+
+        private static Dictionary<string, string> GetValues(IConnection connection, IEnumerable<string> names)
         {
             if (connection != null)
             {
@@ -126,66 +152,42 @@ namespace Shared
             }
         }
 
-        private T recompute()
+        private T Recompute()
         {
-            if (names.All(name => values.ContainsKey(name)))
+            if (_names.All(name => _values.ContainsKey(name)))
             {
-                var valuesArray = names.Select(name => this.values[name]).ToArray();
+                var valuesArray = _names.Select(name => this._values[name]).ToArray();
 
                 try
                 {
-                    return (T)parser.DynamicInvoke(valuesArray);
+                    return (T)_parser.DynamicInvoke(valuesArray);
                 }
                 catch (Exception e)
                 {
-                    logger.Error("Exception while parsing flag", e);
-                    return defaultValue;
+                    _logger.Error("Exception while parsing flag", e);
+                    return _defaultValue;
                 }
             }
 
-            return defaultValue;
+            return _defaultValue;
         }
 
-        private void onFlagUpdate(FlagUpdateOp op)
+        private void OnFlagUpdate(FlagUpdateOp op)
         {
-            if (names.Contains(op.Name))
+            if (_names.Contains(op.Name))
             {
                 if (op.Value.HasValue)
                 {
-                    values[op.Name] = op.Value.Value;
-                    logger.Info($"Flag updated: {op.Name} = {op.Value.Value}");
+                    _values[op.Name] = op.Value.Value;
+                    _logger.Info($"Flag updated: {op.Name} = {op.Value.Value}");
                 }
-                else if (values.ContainsKey(op.Name))
+                else if (_values.ContainsKey(op.Name))
                 {
-                    values.Remove(op.Name);
-                    logger.Info($"Flag unset: {op.Name}");
+                    _values.Remove(op.Name);
+                    _logger.Info($"Flag unset: {op.Name}");
                 }
 
-                setValue(recompute());
-            }
-        }
-
-        public void AttachConnection(IConnection c)
-        {
-            connection = c;
-            values = getValues(connection, names);
-            setValue(recompute());
-        }
-
-        public void DetachConnection(IConnection c)
-        {
-            connection = null;
-        }
-
-        public void setValue(T newValue)
-        {
-            if (!value.Equals(newValue))
-            {
-                value = newValue;
-                foreach (Action<T> callback in changeCallbacks)
-                {
-                    callback(newValue);
-                }
+                SetValue(Recompute());
             }
         }
     }

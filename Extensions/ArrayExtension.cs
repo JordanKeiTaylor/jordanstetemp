@@ -6,10 +6,10 @@ namespace Shared.Extensions
     {
         /// <summary>
         /// Performs a binary search on specified array which is assumed to be sorted.
-        /// 
-        /// Note: If the specified value is not contained in array set, this search implementation 
+        ///
+        /// Note: If the specified value is not contained in array set, this search implementation
         /// will find a value in the array closest to it. For example, given array [1.0, 2.0, 3.0]
-        /// and search value 1.9, an index value of 1 will be returned because 1.9 is closer to 2.0 
+        /// and search value 1.9, an index value of 1 will be returned because 1.9 is closer to 2.0
         /// than 1.0. For values outside of array set, a -1 is returned.
         /// </summary>
         /// <returns>The index of the matched value in array on success, -1 otherwise.</returns>
@@ -17,12 +17,12 @@ namespace Shared.Extensions
         /// <param name="value">Value to find.</param>
         /// <param name="tolerance">Tolerance in double comparisons.</param>
         public static int BinarySearch(
-            this double[] array, 
-            double value, 
-            double tolerance = 0.0001
-        ) {
+            this double[] array,
+            double value,
+            double tolerance = 0.0001)
+        {
             if (array.Length == 0 ||
-                value.Less(array[0], tolerance) || 
+                value.Less(array[0], tolerance) ||
                 value.Greater(array[array.Length - 1], tolerance))
             {
                 return -1;
@@ -39,6 +39,7 @@ namespace Shared.Extensions
                 {
                     return mid;
                 }
+
                 if (value.Greater(element, tolerance))
                 {
                     lower = mid + 1;
@@ -50,11 +51,13 @@ namespace Shared.Extensions
             }
 
             var lowDiff = Math.Abs(value - array[lower]);
-            var upDiff = Math.Abs(value - array[upper]);
-            if (upDiff.LessOrEqual(lowDiff, tolerance))
+            var higDiff = Math.Abs(value - array[upper]);
+
+            if (higDiff.LessOrEqual(lowDiff, tolerance))
             {
                 return upper;
             }
+
             return lower;
         }
     }

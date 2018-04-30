@@ -1,4 +1,5 @@
 ﻿using System;
+
 namespace Shared.Extensions
 {
     public static class DoubleExtension
@@ -73,8 +74,16 @@ namespace Shared.Extensions
         /// <param name="tolerance">Tolerance.</param>
         public static double Clamp(this double d, double min, double max, double tolerance)
         {
-            if (d.Less(min, tolerance)) { return min; }
-            if (d.Greater(max, tolerance)) { return max; }
+            if (d.Less(min, tolerance))
+            {
+                return min;
+            }
+
+            if (d.Greater(max, tolerance))
+            {
+                return max;
+            }
+
             return d;
         }
     }

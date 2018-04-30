@@ -1,32 +1,16 @@
-﻿using City.World;
+﻿using System;
+using City.World;
 using Improbable;
-using System;
-using Shared;
-using Improbable.Collections;
-using Improbable.Worker;
+using Shared.Log;
 
 namespace Shared.Extensions
 {
-    public static class AccuratePositionExtensions
+    public static class AccuratePositionExtension
     {
-
-        public struct AccuratePositionsConstant
-        {
-            public readonly DynamicFlag<double> CoarseGridSize;
-            public readonly DynamicFlag<double> FineGridSize;
-
-            public AccuratePositionsConstant(DynamicFlag<double> coarse, DynamicFlag<double> fine)
-            {
-                CoarseGridSize = coarse;
-                FineGridSize = fine;
-            }
-
-        }
-
         private const double DefaultCoarseGridSize = 100.0;
         private const double DefaultFineGridSize = 0.01;
 
-        public static AccuratePositionsConstant ReadFromFlags(IConnection connection, IDispatcher dispatcher)
+        public static AccuratePositionConstants ReadFromFlags(IConnection connection, IDispatcher dispatcher)
         {
             var coarse = new DynamicFlag<double>(connection, dispatcher, "coarse_grid_size_m", Convert.ToDouble, DefaultCoarseGridSize);
             var fine = new DynamicFlag<double>(connection, dispatcher, "fine_grid_size_m", Convert.ToDouble, DefaultFineGridSize);
@@ -36,10 +20,11 @@ namespace Shared.Extensions
             {
                 namedLogger.Error("Worker flags specifying incompatible fine and coarse grid sizes. Expect the unexpected.");
             }
-            return new AccuratePositionsConstant(coarse, fine);
+
+            return new AccuratePositionConstants(coarse, fine);
         }
 
-        public static AccuratePositionsConstant ReadFromFlags(IConnectionManager connectionManager, IDispatcher dispatcher)
+        public static AccuratePositionConstants ReadFromFlags(IConnectionManager connectionManager, IDispatcher dispatcher)
         {
             var coarse = new DynamicFlag<double>(dispatcher, "coarse_grid_size_m", Convert.ToDouble, DefaultCoarseGridSize);
             var fine = new DynamicFlag<double>(dispatcher, "fine_grid_size_m", Convert.ToDouble, DefaultFineGridSize);
@@ -52,7 +37,8 @@ namespace Shared.Extensions
             {
                 namedLogger.Error("Worker flags specifying incompatible fine and coarse grid sizes. Expect the unexpected.");
             }
-            return new AccuratePositionsConstant(coarse, fine);
+
+            return new AccuratePositionConstants(coarse, fine);
         }
 
         /// <summary>
@@ -60,7 +46,7 @@ namespace Shared.Extensions
         /// </summary>
         /// <returns>Coordinates that this AccuratePosition represents.</returns>
         /// <param name="p">P.</param>
-        public static Coordinates ToCoordinate(this AccuratePosition.Data p, AccuratePositionsConstant constants)
+        public static Coordinates ToCoordinate(this AccuratePosition.Data p, AccuratePositionConstants constants)
         {
             var value = p.Get().Value;
 
@@ -76,7 +62,7 @@ namespace Shared.Extensions
         /// <param name="original">The original AccuratePosition.Data</param>
         /// <param name="update">The update, this will be modified to update the position, minimising the change</param>
         /// <param name="newCoordinates">The coordinate to write/store</param>
-        public static void UpdatePosition(this AccuratePosition.Data original, AccuratePosition.Update update, Coordinates newCoordinates, AccuratePositionsConstant constants)
+        public static void UpdatePosition(this AccuratePosition.Data original, AccuratePosition.Update update, Coordinates newCoordinates, AccuratePositionConstants constants)
         {
             var originalData = original.Get().Value;
 
@@ -90,6 +76,7 @@ namespace Shared.Extensions
             {
                 update.SetCenterX(positionX);
             }
+
             if (positionZ != originalData.centerZ)
             {
                 update.SetCenterZ(positionZ);

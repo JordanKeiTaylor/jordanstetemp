@@ -12,7 +12,8 @@ namespace Shared.Pathfinding
     /// </summary>
     /// <typeparam name="TVertex">Generic Node Type</typeparam>
     /// <typeparam name="TEdge">Generic Edge Type that implements QuikcGraph IEdge<TVertex></typeparam>
-    public class Pathfinder<TVertex, TEdge> where TEdge : IEdge<TVertex>
+    public class Pathfinder<TVertex, TEdge>
+        where TEdge : IEdge<TVertex>
     {
         private readonly ShortestPathAlgorithmBase<TVertex, TEdge, IVertexListGraph<TVertex, TEdge>> _algorithm;
 
