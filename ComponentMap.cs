@@ -14,6 +14,8 @@ namespace Shared
         readonly HashSet<EntityId> authority;
         readonly Dictionary<EntityId, IComponentData<T>> components;
 
+        private bool _hasUpdated = true;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="T:Shared.ComponentMap`1"/> class.
         /// </summary>
@@ -83,6 +85,16 @@ namespace Shared
             return components.GetEnumerator();
         }
 
+        public bool HasUpdated()
+        {
+            return _hasUpdated;
+        }
+
+        public void AckUpdated()
+        {
+            _hasUpdated = false;
+        }
+
         public EntityId GetRandomAuthorativeId()
         {
             var e = authority.GetEnumerator();
@@ -111,12 +123,14 @@ namespace Shared
             if (!HasAuthority(update.EntityId) && components.ContainsKey(update.EntityId))
             {
                 update.Update.ApplyTo(components[update.EntityId]);
+                _hasUpdated = true;
             }
         }
 
         void addComponent(AddComponentOp<T> add)
         {
             components[add.EntityId] = add.Data;
+            _hasUpdated = true;
         }
 
         void removeEntity(RemoveEntityOp removeEntityOp)
@@ -124,6 +138,7 @@ namespace Shared
             if (components.ContainsKey(removeEntityOp.EntityId))
             {
                 components.Remove(removeEntityOp.EntityId);
+                _hasUpdated = true;
             }
         }
 

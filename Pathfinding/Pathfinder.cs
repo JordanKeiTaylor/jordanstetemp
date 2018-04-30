@@ -39,7 +39,7 @@ namespace Shared.Pathfinding
             {
                 return edges;
             }
-            throw new Exception("No path found.");
+            throw new NoPathFoundException("No path found.");
         }
     }
 }
