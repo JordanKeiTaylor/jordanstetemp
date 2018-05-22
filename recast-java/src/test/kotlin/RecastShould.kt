@@ -17,6 +17,18 @@ class RecastShould {
     }
 
     @Test
+    fun create_polymesh() {
+        val recast = loadLibrary()
+        val ctx = recast.rcContext_create()
+        val config = createConfig()
+
+        val mesh = recast.load_mesh(ctx!!, terrainTilePath())
+        val chf = recast.compact_heightfield_create(ctx!!, config, mesh!!)!!
+        val polymesh = recast.polymesh_create(ctx!!, config, chf!!)!!
+        assertThat(polymesh.ch, equalTo(Constants.cellHeight.toFloat()));
+    }
+
+    @Test
     fun create_a_navmesh() {
         val recast = loadLibrary()
         val ctx = recast.rcContext_create()
