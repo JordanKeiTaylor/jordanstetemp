@@ -9,6 +9,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
     implementation "net.java.dev.jna:jna:4.5.1"
     implementation project(":recast")
+    testImplementation "junit:junit:4.12"
 }
 
 repositories {
