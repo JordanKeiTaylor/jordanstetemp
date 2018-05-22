@@ -1,0 +1,63 @@
+plugins {
+  id 'org.ajoberstar.grgit' version '1.7.2' apply false
+  id "cpp"
+}
+
+def clonePath = file("$buildDir/recastnavigation")
+
+task cloneRecast() {
+  outputs.file(clonePath)
+  if (!clonePath.exists()) {
+    org.ajoberstar.grgit.Grgit.clone(
+      dir: clonePath,
+      uri: 'https://github.com/recastnavigation/recastnavigation.git')
+  }
+}
+
+task premakeRecast(type: Exec) {
+  outputs.file("$clonePath/Makefile")
+  workingDir clonePath
+  commandLine "cmake", ".", "-DRECASTNAVIGATION_DEMO=OFF", "-DRECASTNAVIGATION_STATIC=ON"
+  dependsOn "cloneRecast"
+}
+
+task buildRecast(type: Exec) {
+    workingDir clonePath
+    commandLine "make"
+    dependsOn "premakeRecast"
+}
+
+model {
+    repositories {
+        libs(PrebuiltLibraries) {
+            recast {
+                headers.srcDir "$clonePath/Recast/Include"
+                binaries.withType(StaticLibraryBinary) {
+                    def libName = targetPlatform.operatingSystem.windows ? 'libRecast.lib' : 'libRecast.a'
+                    staticLibraryFile = file("$clonePath/Recast/${libName}")
+                }
+            }
+            detour {
+                headers.srcDir "$clonePath/Detour/Include"
+                binaries.withType(StaticLibraryBinary) {
+                    def libName = targetPlatform.operatingSystem.windows ? 'libDetour.lib' : 'libDetour.a'
+                    staticLibraryFile = file("$clonePath/Detour/${libName}")
+                }
+            }
+        }
+    }
+    components {
+        recastwrapper(NativeLibrarySpec) {
+            sources {
+                cpp.lib library: "recast", linkage: 'static'
+                cpp.lib library: "detour", linkage: 'static'
+            }
+        }
+    }
+}
+
+model {
+    tasks.recastwrapperSharedLibrary {
+        dependsOn "buildRecast"
+    }
+}
