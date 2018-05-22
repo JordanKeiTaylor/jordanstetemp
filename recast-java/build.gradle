@@ -1,0 +1,27 @@
+plugins {
+    id 'java-library'
+    id "org.jetbrains.kotlin.jvm" version "1.2.21"
+}
+
+evaluationDependsOn(":recast")
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib"
+    implementation "net.java.dev.jna:jna:4.5.1"
+    implementation project(":recast")
+}
+
+repositories {
+    mavenCentral()
+}
+
+task copyNativeLibs(type: Copy) {
+    from project(":recast").file("${project(":recast").buildDir}/libs/recastwrapper/shared/librecastwrapper.dylib")
+    into file("native_libs/darwin")
+}
+
+copyNativeLibs.dependsOn(project(":recast").tasks.assemble)
+compileJava.dependsOn(copyNativeLibs)
+compileKotlin.dependsOn(copyNativeLibs)
+
+sourceSets { main { resources { srcDir 'native_libs' } } }

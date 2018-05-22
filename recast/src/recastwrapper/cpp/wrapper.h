@@ -31,6 +31,7 @@ enum SamplePolyAreas
 	SAMPLE_POLYAREA_GRASS,
 	SAMPLE_POLYAREA_JUMP,
 };
+
 enum SamplePolyFlags
 {
 	SAMPLE_POLYFLAGS_WALK		= 0x01,		// Ability to walk (ground, grass, road)
