@@ -27,7 +27,7 @@ public:
 	rcMeshLoaderObj();
 	~rcMeshLoaderObj();
 	
-	bool load(const std::string& fileName);
+	bool load(const std::string& fileName, bool invertYZ);
 
 	const float* getVerts() const { return m_verts; }
 	const float* getNormals() const { return m_normals; }

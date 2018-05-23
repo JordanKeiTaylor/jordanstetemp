@@ -1,16 +1,18 @@
-import com.sun.jna.Native
 import io.improbable.ste.recast.RcConfig
+import io.improbable.ste.recast.RcContext
 import io.improbable.ste.recast.RecastLibrary
+import io.improbable.ste.recast.drawPolyMesh
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.CoreMatchers.notNullValue
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Test
+import java.awt.image.BufferedImage
 import java.io.File
+import javax.imageio.ImageIO
 
 class RecastShould {
     @Test
     fun create_a_context() {
-        val recast = loadLibrary()
         val ctx = recast.rcContext_create()
         assertThat(ctx, notNullValue())
         recast.rcContext_delete(ctx!!)
@@ -18,11 +20,11 @@ class RecastShould {
 
     @Test
     fun create_polymesh() {
-        val recast = loadLibrary()
         val ctx = recast.rcContext_create()
         val config = createConfig()
 
-        val mesh = recast.load_mesh(ctx!!, terrainTilePath())
+        val mesh = getMesh(ctx!!)
+        recast.rcConfig_calc_grid_size(config, mesh!!)
         val chf = recast.compact_heightfield_create(ctx!!, config, mesh!!)!!
         val polymesh = recast.polymesh_create(ctx!!, config, chf!!)!!
         assertThat(polymesh.ch, equalTo(Constants.cellHeight.toFloat()));
@@ -30,31 +32,53 @@ class RecastShould {
 
     @Test
     fun create_a_navmesh() {
-        val recast = loadLibrary()
         val ctx = recast.rcContext_create()
         val config = createConfig()
+        val mesh = getMesh(ctx!!)
 
-        val mesh = recast.load_mesh(ctx!!, terrainTilePath())
         assertThat(mesh, notNullValue())
+        recast.rcConfig_calc_grid_size(config, mesh!!)
 
         val chf = recast.compact_heightfield_create(ctx!!, config, mesh!!)!!
         val polymesh = recast.polymesh_create(ctx!!, config, chf!!)!!
         val polyMeshDetail = recast.polymesh_detail_create(ctx!!, config, polymesh, chf)!!
         val navMeshDataResult = recast.navmesh_data_create(ctx!!, config, polyMeshDetail!!, polymesh, mesh, 0, 0, Constants.agentHeight.toFloat(), Constants.agentRadius.toFloat(), Constants.agentMaxClimb.toFloat())
-        assertThat(navMeshDataResult!!.size, equalTo(2248))
+        assertThat(navMeshDataResult!!.size, equalTo(105712))
 
         recast.rcContext_delete(ctx!!)
     }
 
-    private fun loadLibrary() = Native.loadLibrary("recastwrapper", RecastLibrary::class.java) as RecastLibrary
+    @Test
+    fun draw_a_polymesh() {
+        val ctx = recast.rcContext_create()
+        val config = createConfig()
+        val mesh = getMesh(ctx!!)
+        recast.rcConfig_calc_grid_size(config, mesh!!)
+
+        val chf = recast.compact_heightfield_create(ctx!!, config, mesh!!)!!
+        val polymesh = recast.polymesh_create(ctx!!, config, chf!!)!!
+
+        val width = 1280
+        val height = 960
+        val bImg = BufferedImage(width, height, BufferedImage.TYPE_INT_RGB)
+        val cg = bImg.createGraphics()
+
+        drawPolyMesh(polymesh, cg, width, height)
+        val outputfile = File("image.png")
+        ImageIO.write(bImg, "png", outputfile)
+    }
+
+    private fun getMesh(ctx: RcContext) = recast.load_mesh(ctx, terrainTilePath(), true)
+
+    private val recast = RecastLibrary.load()
 
     private fun terrainTilePath() = File(this.javaClass.getResource("Tile_+007_+006_L21.obj").toURI()).absolutePath
 
     private fun createConfig() = RcConfig.ByReference().apply {
-        width = Constants.tileSize + 2 * Constants.borderSize
-        height = Constants.tileSize + 2 * Constants.borderSize
-        tileSize = Constants.tileSize
-        borderSize = Constants.borderSize
+//        width = Constants.tileSize + 2 * Constants.borderSize
+//        height = Constants.tileSize + 2 * Constants.borderSize
+//        tileSize = Constants.tileSize
+//        borderSize = Constants.borderSize
         cs = Constants.cellSize.toFloat()
         ch = Constants.cellHeight.toFloat()
         walkableSlopeAngle = Constants.agentMaxSlope.toFloat()
@@ -79,7 +103,7 @@ class RecastShould {
         const val cellHeight = 0.2
         const val agentHeight = 2.0
         const val agentRadius = 0.6
-        const val agentMaxClimb = 20
+        const val agentMaxClimb = 0.9
         const val agentMaxSlope = 45.0
         const val regionMinSize = 8
         const val regionMergeSize = 20

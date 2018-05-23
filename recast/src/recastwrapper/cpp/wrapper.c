@@ -11,23 +11,29 @@ void rcContext_delete(rcContext* ctx) {
     delete ctx;
 }
 
-InputGeom* load_mesh(rcContext* context, const char* path) {
+InputGeom* load_mesh(rcContext* context, const char* path, bool invertYZ) {
     InputGeom *geom = new InputGeom();
 
-    if (!geom->load(context, std::string(path))) {
+    if (!geom->load(context, std::string(path), invertYZ)) {
         return 0;
     }
 
     return geom;
 }
 
-rcCompactHeightfield* compact_heightfield_create(rcContext* context, rcConfig* config, InputGeom* geom) {
+void rcConfig_calc_grid_size(rcConfig* config, InputGeom* geom) {
     for (int i = 0; i < 3; i++) {
         config->bmin[i] = geom->getMeshBoundsMin()[i];
         config->bmax[i] = geom->getMeshBoundsMax()[i];
         printf("bmin[%d] = %.2f ", i, config->bmin[i]);
         printf("bmax[%d] = %.2f\n", i, config->bmax[i]);
     }
+
+    rcCalcGridSize(config->bmin, config->bmax, config->cs, &config->width, &config->height);
+}
+
+rcCompactHeightfield* compact_heightfield_create(rcContext* context, rcConfig* config, InputGeom* geom) {
+
     rcHeightfield* heightfield = rcAllocHeightfield();
 
 	if (!heightfield)

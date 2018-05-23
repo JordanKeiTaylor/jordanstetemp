@@ -26,8 +26,6 @@
 #include "InputGeom.h"
 #include "ChunkyTriMesh.h"
 #include "MeshLoaderObj.h"
-// #include "DetourNavMesh.h"
-// #include "Sample.h"
 
 static bool intersectSegmentTriangle(const float* sp, const float* sq,
 									 const float* a, const float* b, const float* c,
@@ -118,7 +116,7 @@ InputGeom::~InputGeom()
 	delete m_mesh;
 }
 		
-bool InputGeom::loadMesh(rcContext* ctx, const std::string& filepath)
+bool InputGeom::loadMesh(rcContext* ctx, const std::string& filepath, bool invertYZ)
 {
 	if (m_mesh)
 	{
@@ -136,7 +134,7 @@ bool InputGeom::loadMesh(rcContext* ctx, const std::string& filepath)
 		ctx->log(RC_LOG_ERROR, "loadMesh: Out of memory 'm_mesh'.");
 		return false;
 	}
-	if (!m_mesh->load(filepath))
+	if (!m_mesh->load(filepath, invertYZ))
 	{
 		ctx->log(RC_LOG_ERROR, "buildTiledNavigation: Could not load '%s'", filepath.c_str());
 		return false;
@@ -159,7 +157,7 @@ bool InputGeom::loadMesh(rcContext* ctx, const std::string& filepath)
 	return true;
 }
 
-bool InputGeom::load(rcContext* ctx, const std::string& filepath)
+bool InputGeom::load(rcContext* ctx, const std::string& filepath, bool invertYZ)
 {
 	size_t extensionPos = filepath.find_last_of('.');
 	if (extensionPos == std::string::npos)
@@ -169,7 +167,7 @@ bool InputGeom::load(rcContext* ctx, const std::string& filepath)
 	std::transform(extension.begin(), extension.end(), extension.begin(), tolower);
 
 	if (extension == ".obj")
-		return loadMesh(ctx, filepath);
+		return loadMesh(ctx, filepath, invertYZ);
 
 	return false;
 }

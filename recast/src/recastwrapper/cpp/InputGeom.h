@@ -96,12 +96,12 @@ class InputGeom
 	int m_volumeCount;
 	///@}
 	
-	bool loadMesh(class rcContext* ctx, const std::string& filepath);
+	bool loadMesh(class rcContext* ctx, const std::string& filepath, bool invertYZ);
 public:
 	InputGeom();
 	~InputGeom();
 	
-	bool load(class rcContext* ctx, const std::string& filepath);
+	bool load(class rcContext* ctx, const std::string& filepath, bool invertYZ);
 	
 	/// Method to return static mesh data.
 	const rcMeshLoaderObj* getMesh() const { return m_mesh; }

@@ -49,8 +49,9 @@ struct NavMeshDataResult {
 
 extern "C" rcContext* rcContext_create();
 extern "C" void rcContext_delete(rcContext* ctx);
-extern "C" InputGeom* load_mesh(rcContext* context, const char* path);
+extern "C" InputGeom* load_mesh(rcContext* context, const char* path, bool invertYZ);
 extern "C" rcCompactHeightfield* compact_heightfield_create(rcContext* context, rcConfig* config, InputGeom* geom);
 extern "C" rcPolyMesh* polymesh_create(rcContext* m_ctx, rcConfig* m_cfg, rcCompactHeightfield* m_chf);
 extern "C" rcPolyMeshDetail* polymesh_detail_create(rcContext* m_ctx, rcConfig* m_cfg, rcPolyMesh* m_pmesh, rcCompactHeightfield* m_chf);
 extern "C" NavMeshDataResult* navmesh_data_create(rcContext* context, rcConfig* m_cfg, rcPolyMeshDetail* m_dmesh, rcPolyMesh* m_pmesh, InputGeom* m_geom, int tx, int ty, float agentHeight, float agentRadius, float agentMaxClimb);
+extern "C" void rcConfig_calc_grid_size(rcConfig* config, InputGeom* geom);
