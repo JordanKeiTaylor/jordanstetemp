@@ -6,3 +6,5 @@ typealias RcContext = Pointer
 typealias InputGeom = Pointer
 typealias RcCompactHeightfield = Pointer
 typealias RcPolyMeshDetail = Pointer
+typealias DtNavMesh = Pointer
+typealias DtNavMeshQuery = Pointer

@@ -2,6 +2,7 @@
 #include <Recast.h>
 #include <DetourNavMesh.h>
 #include <DetourNavMeshBuilder.h>
+#include <DetourNavMeshQuery.h>
 #include "MeshLoaderObj.h"
 #include "InputGeom.h"
 
@@ -55,3 +56,5 @@ extern "C" rcPolyMesh* polymesh_create(rcContext* m_ctx, rcConfig* m_cfg, rcComp
 extern "C" rcPolyMeshDetail* polymesh_detail_create(rcContext* m_ctx, rcConfig* m_cfg, rcPolyMesh* m_pmesh, rcCompactHeightfield* m_chf);
 extern "C" NavMeshDataResult* navmesh_data_create(rcContext* context, rcConfig* m_cfg, rcPolyMeshDetail* m_dmesh, rcPolyMesh* m_pmesh, InputGeom* m_geom, int tx, int ty, float agentHeight, float agentRadius, float agentMaxClimb);
 extern "C" void rcConfig_calc_grid_size(rcConfig* config, InputGeom* geom);
+extern "C" dtNavMesh* navmesh_create(rcContext* context, NavMeshDataResult* navmesh_data);
+extern "C" dtNavMeshQuery* navmesh_query_create(rcContext* context, dtNavMesh* navmesh);

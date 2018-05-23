@@ -45,6 +45,12 @@ class RecastShould {
         val navMeshDataResult = recast.navmesh_data_create(ctx!!, config, polyMeshDetail!!, polymesh, mesh, 0, 0, Constants.agentHeight.toFloat(), Constants.agentRadius.toFloat(), Constants.agentMaxClimb.toFloat())
         assertThat(navMeshDataResult!!.size, equalTo(105712))
 
+        val navmesh = recast.navmesh_create(ctx!!, navMeshDataResult)
+        assertThat(navmesh, notNullValue())
+
+        val navMeshQuery = recast.navmesh_query_create(navmesh)
+        assertThat(navMeshQuery, notNullValue())
+
         recast.rcContext_delete(ctx!!)
     }
 

@@ -352,3 +352,30 @@ NavMeshDataResult* navmesh_data_create(rcContext* context, rcConfig* m_cfg, rcPo
 
     return result;
 }
+
+dtNavMesh* navmesh_create(rcContext* context, NavMeshDataResult* navmesh_data) {
+    dtNavMesh* navmesh = dtAllocNavMesh();
+
+	if (!navmesh)
+	{
+		context->log(RC_LOG_ERROR, "Could not create Detour navmesh");
+		return 0;
+	}
+
+	dtStatus status;
+	status = navmesh->init(navmesh_data->data, navmesh_data->size, DT_TILE_FREE_DATA);
+	if (dtStatusFailed(status))
+	{
+		dtFreeNavMesh(navmesh);
+		context->log(RC_LOG_ERROR, "Could not init Detour navmesh");
+		return 0;
+	}
+
+	return navmesh;
+}
+
+dtNavMeshQuery* navmesh_query_create(rcContext* context, dtNavMesh* navmesh) {
+	dtNavMeshQuery* navQuery = dtAllocNavMeshQuery();
+	navQuery->init(navmesh, 2048);
+	return navQuery;
+}
