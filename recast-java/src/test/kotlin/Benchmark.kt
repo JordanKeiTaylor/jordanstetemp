@@ -8,7 +8,7 @@ import kotlin.system.measureTimeMillis
 
 class Benchmark {
     @Test
-    fun dos() {
+    fun ddos_mesh() {
         val recast = io.improbable.ste.recast.RecastLibrary.load()
         val ctx = recast.rcContext_create()
         val config = createDefaultConfig()
