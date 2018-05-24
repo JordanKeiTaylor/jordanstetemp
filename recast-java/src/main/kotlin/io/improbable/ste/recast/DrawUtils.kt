@@ -53,6 +53,8 @@ fun drawPolyMesh(polymesh: RcPolyMesh, cg: Graphics2D, width: Int, height: Int) 
 
             cg.color = color
             cg.fillPolygon(xp.toIntArray(), yp.toIntArray(), xp.size)
+            cg.color = Color(255, 255, 255, 64)
+            cg.drawPolygon(xp.toIntArray(), yp.toIntArray(), xp.size)
         }
     }
 

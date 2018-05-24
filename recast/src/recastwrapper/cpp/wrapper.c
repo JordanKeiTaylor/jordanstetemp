@@ -25,8 +25,6 @@ void rcConfig_calc_grid_size(rcConfig* config, InputGeom* geom) {
     for (int i = 0; i < 3; i++) {
         config->bmin[i] = geom->getMeshBoundsMin()[i];
         config->bmax[i] = geom->getMeshBoundsMax()[i];
-        printf("bmin[%d] = %.2f ", i, config->bmin[i]);
-        printf("bmax[%d] = %.2f\n", i, config->bmax[i]);
     }
 
     rcCalcGridSize(config->bmin, config->bmax, config->cs, &config->width, &config->height);
