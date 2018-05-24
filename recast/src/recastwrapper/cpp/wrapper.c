@@ -380,17 +380,17 @@ dtNavMeshQuery* navmesh_query_create(dtNavMesh* navmesh) {
 	return navQuery;
 }
 
-FindNearestPolyResult navmesh_query_find_nearest_poly(dtNavMeshQuery* navQuery, float* point, float* half_extents) {
+PolyPointResult navmesh_query_find_nearest_poly(dtNavMeshQuery* navQuery, float* point, float* half_extents) {
 	dtPolyRef polyRef;
 	float nearestPoint[3];
 	dtQueryFilter filter;
 	dtStatus status = navQuery->findNearestPoly(point, half_extents, &filter, &polyRef, nearestPoint);
 
-	FindNearestPolyResult result;
+	PolyPointResult result;
 	result.status = status;
-	result.nearestPoint[0] = nearestPoint[0];
-	result.nearestPoint[1] = nearestPoint[1];
-	result.nearestPoint[2] = nearestPoint[2];
+	result.point[0] = nearestPoint[0];
+	result.point[1] = nearestPoint[1];
+	result.point[2] = nearestPoint[2];
 	result.polyRef = polyRef;
 
 	return result;
@@ -407,5 +407,26 @@ FindPathResult navmesh_query_find_path(dtNavMeshQuery* navQuery, dtPolyRef start
     result.status = status;
     result.path = path;
     result.pathCount = pathCount;
+    return result;
+}
+
+static float frand()
+{
+	return (float)rand()/(float)RAND_MAX;
+}
+
+PolyPointResult navmesh_query_find_random_point(dtNavMeshQuery* navQuery) {
+    dtQueryFilter filter;
+    dtPolyRef randomRef;
+    float randomPoint[3];
+    dtStatus status = navQuery->findRandomPoint(&filter, frand, &randomRef, randomPoint);
+
+    PolyPointResult result;
+    result.status = status;
+    result.point[0] = randomPoint[0];
+    result.point[1] = randomPoint[1];
+    result.point[2] = randomPoint[2];
+    result.polyRef = randomRef;
+
     return result;
 }

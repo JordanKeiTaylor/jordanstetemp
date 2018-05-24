@@ -74,6 +74,9 @@ class RecastShould {
         assertThat(pathResult.pathCount, equalTo(1))
         assertThat(pathResult.path.getInt(0), equalTo(result.polyRef))
         recast.rcContext_delete(ctx!!)
+
+        val randomPoint = recast.navmesh_query_find_random_point(navMeshQuery)
+        assertThat(dtFailed(randomPoint.status), equalTo(false))
     }
 
     @Test
