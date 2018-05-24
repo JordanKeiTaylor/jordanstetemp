@@ -111,8 +111,4 @@ class RecastShould {
     private val recast = RecastLibrary.load()
 
     private fun terrainTilePath() = File(this.javaClass.getResource("Tile_+007_+006_L21.obj").toURI()).absolutePath
-
-
-
-
 }
