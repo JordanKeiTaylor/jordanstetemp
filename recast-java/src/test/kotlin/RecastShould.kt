@@ -65,7 +65,7 @@ class RecastShould {
         halfExtents.setFloat(8, 100.0f);
 
         val result = recast.navmesh_query_find_nearest_poly(navMeshQuery, point, halfExtents)
-        assertThat(result, notNullValue())
+        assertThat(result.polyRef, equalTo(1579))
 
         recast.rcContext_delete(ctx!!)
     }
