@@ -395,3 +395,17 @@ FindNearestPolyResult navmesh_query_find_nearest_poly(dtNavMeshQuery* navQuery, 
 
 	return result;
 }
+
+FindPathResult navmesh_query_find_path(dtNavMeshQuery* navQuery, dtPolyRef startRef, dtPolyRef endRef, float* startPos, float* endPos, int maxPath) {
+    dtPolyRef *path = new dtPolyRef[maxPath];
+	dtQueryFilter filter;
+	int pathCount;
+
+    dtStatus status = navQuery->findPath(startRef, endRef, startPos, endPos, &filter, path, &pathCount, maxPath);
+
+    FindPathResult result;
+    result.status = status;
+    result.path = path;
+    result.pathCount = pathCount;
+    return result;
+}

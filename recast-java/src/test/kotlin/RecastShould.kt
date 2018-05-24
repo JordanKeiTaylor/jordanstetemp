@@ -1,9 +1,5 @@
 import com.sun.jna.Memory
-import com.sun.jna.Native
-import io.improbable.ste.recast.RcConfig
-import io.improbable.ste.recast.RcContext
-import io.improbable.ste.recast.RecastLibrary
-import io.improbable.ste.recast.drawPolyMesh
+import io.improbable.ste.recast.*
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.CoreMatchers.notNullValue
 import org.hamcrest.MatcherAssert.assertThat
@@ -40,21 +36,27 @@ class RecastShould {
 
         assertThat(mesh, notNullValue())
         recast.rcConfig_calc_grid_size(config, mesh!!)
-
-        val chf = recast.compact_heightfield_create(ctx!!, config, mesh!!)!!
-        val polymesh = recast.polymesh_create(ctx!!, config, chf!!)!!
-        val polyMeshDetail = recast.polymesh_detail_create(ctx!!, config, polymesh, chf)!!
-        val navMeshDataResult = recast.navmesh_data_create(ctx!!, config, polyMeshDetail!!, polymesh, mesh, 0, 0, Constants.agentHeight.toFloat(), Constants.agentRadius.toFloat(), Constants.agentMaxClimb.toFloat())
+        val navMeshDataResult = createNavMeshData(ctx, config, mesh)
         assertThat(navMeshDataResult!!.size, equalTo(105712))
 
-        val navmesh = recast.navmesh_create(ctx!!, navMeshDataResult)
+        val navmesh = recast.navmesh_create(ctx, navMeshDataResult)
         assertThat(navmesh, notNullValue())
 
         val navMeshQuery = recast.navmesh_query_create(navmesh)
         assertThat(navMeshQuery, notNullValue())
+        recast.rcContext_delete(ctx!!)
+    }
 
+    @Test
+    fun do_some_navmesh_queries() {
+        val ctx = recast.rcContext_create()
+        val config = createConfig()
+        val mesh = getMesh(ctx!!)
+        recast.rcConfig_calc_grid_size(config, mesh!!)
+        val navMeshDataResult = createNavMeshData(ctx, config, mesh)
+        val navmesh = recast.navmesh_create(ctx, navMeshDataResult!!)
+        val navMeshQuery = recast.navmesh_query_create(navmesh)
         val point = Memory(3 * 4)
-//        -576.9332, -69.49533, 54.266785
         point.setFloat(0, -575f)
         point.setFloat(4, -70f)
         point.setFloat(8, 54f)
@@ -67,6 +69,10 @@ class RecastShould {
         val result = recast.navmesh_query_find_nearest_poly(navMeshQuery, point, halfExtents)
         assertThat(result.polyRef, equalTo(1579))
 
+        val pathResult = recast.navmesh_query_find_path(navMeshQuery, result.polyRef, result.polyRef, point, point, 10);
+        assertThat(dtFailed(pathResult.status), equalTo(false))
+        assertThat(pathResult.pathCount, equalTo(1))
+        assertThat(pathResult.path.getInt(0), equalTo(result.polyRef))
         recast.rcContext_delete(ctx!!)
     }
 
@@ -88,6 +94,13 @@ class RecastShould {
         drawPolyMesh(polymesh, cg, width, height)
         val outputfile = File("image.png")
         ImageIO.write(bImg, "png", outputfile)
+    }
+
+    private fun createNavMeshData(ctx: RcContext, config: RcConfig.ByReference, mesh: InputGeom): NavMeshDataResult.ByReference? {
+        val chf = recast.compact_heightfield_create(ctx, config, mesh)!!
+        val polymesh = recast.polymesh_create(ctx, config, chf)!!
+        val polyMeshDetail = recast.polymesh_detail_create(ctx, config, polymesh, chf)!!
+        return recast.navmesh_data_create(ctx, config, polyMeshDetail, polymesh, mesh, 0, 0, Constants.agentHeight.toFloat(), Constants.agentRadius.toFloat(), Constants.agentMaxClimb.toFloat())
     }
 
     private fun getMesh(ctx: RcContext) = recast.load_mesh(ctx, terrainTilePath(), true)

@@ -7,6 +7,7 @@ import java.util.List;
 
 public class FindNearestPolyResult extends Structure {
     public static class ByValue extends FindNearestPolyResult implements Structure.ByValue {}
+    // NOTE: These two should match Types.kt
     public int status;
     public int polyRef;
     public float[] nearestPoint = new float[3];

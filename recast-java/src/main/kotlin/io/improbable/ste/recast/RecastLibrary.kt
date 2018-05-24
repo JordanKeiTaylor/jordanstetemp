@@ -16,6 +16,7 @@ interface RecastLibrary : Library {
     fun navmesh_create(rcContext: RcContext, data: NavMeshDataResult.ByReference): DtNavMesh
     fun navmesh_query_create(navMesh: DtNavMesh): DtNavMeshQuery
     fun navmesh_query_find_nearest_poly(navMeshQuery: DtNavMeshQuery, point: Pointer, halfExtents: Pointer): FindNearestPolyResult.ByValue
+    fun navmesh_query_find_path(navMeshQuery: DtNavMeshQuery, startRef: DtPolyRef, endRef: DtPolyRef, startPos: Pointer, endPos: Pointer, maxPath: Int): FindPathResult.ByValue
 
     companion object RecastLibrary {
         fun load() = Native.loadLibrary("recastwrapper", io.improbable.ste.recast.RecastLibrary::class.java) as io.improbable.ste.recast.RecastLibrary
