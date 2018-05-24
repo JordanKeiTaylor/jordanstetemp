@@ -1,3 +1,5 @@
+import com.sun.jna.Memory
+import com.sun.jna.Native
 import io.improbable.ste.recast.RcConfig
 import io.improbable.ste.recast.RcContext
 import io.improbable.ste.recast.RecastLibrary
@@ -50,6 +52,20 @@ class RecastShould {
 
         val navMeshQuery = recast.navmesh_query_create(navmesh)
         assertThat(navMeshQuery, notNullValue())
+
+        val point = Memory(3 * 4)
+//        -576.9332, -69.49533, 54.266785
+        point.setFloat(0, -575f)
+        point.setFloat(4, -70f)
+        point.setFloat(8, 54f)
+
+        val halfExtents = Memory(3 * 4)
+        halfExtents.setFloat(0, 100.0f)
+        halfExtents.setFloat(4, 100.0f);
+        halfExtents.setFloat(8, 100.0f);
+
+        val result = recast.navmesh_query_find_nearest_poly(navMeshQuery, point, halfExtents)
+        assertThat(result, notNullValue())
 
         recast.rcContext_delete(ctx!!)
     }

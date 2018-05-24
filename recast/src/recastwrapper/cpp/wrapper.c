@@ -374,8 +374,27 @@ dtNavMesh* navmesh_create(rcContext* context, NavMeshDataResult* navmesh_data) {
 	return navmesh;
 }
 
-dtNavMeshQuery* navmesh_query_create(rcContext* context, dtNavMesh* navmesh) {
+dtNavMeshQuery* navmesh_query_create(dtNavMesh* navmesh) {
 	dtNavMeshQuery* navQuery = dtAllocNavMeshQuery();
 	navQuery->init(navmesh, 2048);
 	return navQuery;
+}
+
+FindNearestPolyResult* navmesh_query_find_nearest_poly(dtNavMeshQuery* navQuery, float* point, float* half_extents) {
+	dtPolyRef* polyRef;
+	float* nearestPoint;
+	dtQueryFilter filter;
+	dtStatus status = navQuery->findNearestPoly(point, half_extents, &filter, polyRef, nearestPoint);
+
+	if (dtStatusFailed(status))
+	{
+		return 0;
+	}
+
+	FindNearestPolyResult* result = new FindNearestPolyResult();
+	result->nearestPoint[0] = nearestPoint[0];
+	result->nearestPoint[1] = nearestPoint[1];
+	result->nearestPoint[2] = nearestPoint[2];
+	result->polyRef = polyRef;
+	return result;
 }

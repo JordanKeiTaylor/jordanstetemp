@@ -2,6 +2,7 @@ package io.improbable.ste.recast
 
 import com.sun.jna.Library
 import com.sun.jna.Native
+import com.sun.jna.Pointer
 
 interface RecastLibrary : Library {
     fun rcContext_create(): RcContext?
@@ -14,6 +15,7 @@ interface RecastLibrary : Library {
     fun rcConfig_calc_grid_size(config: RcConfig.ByReference, inputGeom: InputGeom)
     fun navmesh_create(rcContext: RcContext, data: NavMeshDataResult.ByReference): DtNavMesh
     fun navmesh_query_create(navMesh: DtNavMesh): DtNavMeshQuery
+    fun navmesh_query_find_nearest_poly(navMeshQuery: DtNavMeshQuery, point: Pointer, halfExtents: Pointer): Pointer
 
     companion object RecastLibrary {
         fun load() = Native.loadLibrary("recastwrapper", io.improbable.ste.recast.RecastLibrary::class.java) as io.improbable.ste.recast.RecastLibrary

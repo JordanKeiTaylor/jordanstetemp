@@ -48,6 +48,11 @@ struct NavMeshDataResult {
     int size;
 };
 
+struct FindNearestPolyResult {
+	dtPolyRef* polyRef;
+	float nearestPoint[3];
+};
+
 extern "C" rcContext* rcContext_create();
 extern "C" void rcContext_delete(rcContext* ctx);
 extern "C" InputGeom* load_mesh(rcContext* context, const char* path, bool invertYZ);
@@ -57,4 +62,5 @@ extern "C" rcPolyMeshDetail* polymesh_detail_create(rcContext* m_ctx, rcConfig* 
 extern "C" NavMeshDataResult* navmesh_data_create(rcContext* context, rcConfig* m_cfg, rcPolyMeshDetail* m_dmesh, rcPolyMesh* m_pmesh, InputGeom* m_geom, int tx, int ty, float agentHeight, float agentRadius, float agentMaxClimb);
 extern "C" void rcConfig_calc_grid_size(rcConfig* config, InputGeom* geom);
 extern "C" dtNavMesh* navmesh_create(rcContext* context, NavMeshDataResult* navmesh_data);
-extern "C" dtNavMeshQuery* navmesh_query_create(rcContext* context, dtNavMesh* navmesh);
+extern "C" dtNavMeshQuery* navmesh_query_create(dtNavMesh* navmesh);
+extern "C" FindNearestPolyResult* navmesh_query_find_nearest_poly(dtNavMeshQuery* navQuery, float* point, float* half_extents);
