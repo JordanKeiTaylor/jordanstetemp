@@ -2,11 +2,13 @@ import com.sun.jna.Memory
 import io.improbable.ste.recast.*
 import org.hamcrest.CoreMatchers.notNullValue
 import org.hamcrest.MatcherAssert.assertThat
+import org.junit.Ignore
 import org.junit.Test
 import java.io.File
 import kotlin.system.measureTimeMillis
 
 class Benchmark {
+    @Ignore
     @Test
     fun ddos_mesh() {
         val recast = io.improbable.ste.recast.RecastLibrary.load()

@@ -3,12 +3,16 @@ plugins {
     id "org.jetbrains.kotlin.jvm" version "1.2.21"
 }
 
-evaluationDependsOn(":recast")
+def nativeLibDir = "$buildDir/native_libs"
+
+configurations {
+    nativeLib
+}
 
 dependencies {
+    nativeLib project(path: ':recast', configuration: 'releaseLinkElements')
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
     implementation "net.java.dev.jna:jna:4.5.1"
-    implementation project(":recast")
     testImplementation "junit:junit:4.12"
 }
 
@@ -16,13 +20,14 @@ repositories {
     mavenCentral()
 }
 
-task copyNativeLibs(type: Copy) {
-    from project(":recast").file("${project(":recast").buildDir}/libs/recastwrapper/shared/librecastwrapper.dylib")
-    into file("native_libs/darwin")
+task darwinNativeLibs(type: Sync) {
+    dependsOn configurations.nativeLib
+    from configurations.nativeLib.filter { it.path.endsWith(".dylib") || it.path.endsWith(".so") }
+    into "${nativeLibDir}/darwin"
 }
 
-copyNativeLibs.dependsOn(project(":recast").tasks.assemble)
-compileJava.dependsOn(copyNativeLibs)
-compileKotlin.dependsOn(copyNativeLibs)
+tasks.matching { it.name != 'darwinNativeLibs' && it.name != 'clean' }.all { task ->
+    task.dependsOn(darwinNativeLibs)
+}
 
-sourceSets { main { resources { srcDir 'native_libs' } } }
+sourceSets { main { resources { srcDir nativeLibDir } } }
