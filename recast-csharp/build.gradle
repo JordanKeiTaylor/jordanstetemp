@@ -13,8 +13,9 @@ msbuild {
     projectFile = file('recast-csharp.csproj')
     configuration = 'Debug'
     projectName = 'RecastCSharp'
-    // inputs.file(project.buildFile)
+    inputs.file(project.buildFile)
     targets = ['Clean', 'Rebuild']
+    intermediateDir = 'build/msbuild/obj'
 }
 
 assemble.dependsOn(msbuild)
@@ -33,9 +34,7 @@ task darwinNativeLibs(type: Sync) {
     into "${nativeLibDir}/darwin"
 }
 
-tasks.matching { it.name != 'darwinNativeLibs' && it.name != 'clean' }.all { task ->
-    task.dependsOn(darwinNativeLibs)
-}
+msbuild.dependsOn(darwinNativeLibs)
 
 task run(type: Exec) {
     commandLine "mono", "$buildDir/bin/Debug/recast-csharp.exe"
