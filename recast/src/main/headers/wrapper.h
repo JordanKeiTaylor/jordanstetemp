@@ -14,6 +14,8 @@ class IoRcContext : public rcContext {
     }
 };
 
+const int MAX_PATH_LEN = 1024;
+
 enum SamplePartitionType
 {
 	SAMPLE_PARTITION_WATERSHED,
@@ -56,7 +58,7 @@ struct PolyPointResult {
 
 struct FindPathResult {
     dtStatus status;
-    dtPolyRef* path;
+    dtPolyRef path[MAX_PATH_LEN];
     int pathCount;
 };
 
@@ -71,5 +73,8 @@ extern "C" void rcConfig_calc_grid_size(rcConfig* config, InputGeom* geom);
 extern "C" dtNavMesh* navmesh_create(rcContext* context, NavMeshDataResult* navmesh_data);
 extern "C" dtNavMeshQuery* navmesh_query_create(dtNavMesh* navmesh);
 extern "C" PolyPointResult navmesh_query_find_nearest_poly(dtNavMeshQuery* navQuery, float* point, float* half_extents);
-extern "C" FindPathResult navmesh_query_find_path(dtNavMeshQuery* navQuery, dtPolyRef startRef, dtPolyRef endRef, float* startPos, float* endPos, int maxPath);
+extern "C" FindPathResult navmesh_query_find_path(dtNavMeshQuery* navQuery, dtPolyRef startRef, dtPolyRef endRef, float* startPos, float* endPos, const dtQueryFilter* filter);
 extern "C" PolyPointResult navmesh_query_find_random_point(dtNavMeshQuery* navQuery);
+extern "C" dtQueryFilter* dtQueryFilter_create();
+extern "C" void dtQueryFilter_delete(dtQueryFilter* filter);
+

@@ -8,7 +8,6 @@ import java.io.File
 import kotlin.system.measureTimeMillis
 
 class Benchmark {
-    @Ignore
     @Test
     fun ddos_mesh() {
         val recast = io.improbable.ste.recast.RecastLibrary.load()
@@ -20,7 +19,8 @@ class Benchmark {
         val navMeshDataResult = createNavMeshData(ctx!!, config, mesh!!)
         val navmesh = recast.navmesh_create(ctx!!, navMeshDataResult!!)
         val navMeshQuery = recast.navmesh_query_create(navmesh)
-
+        val filter = recast.dtQueryFilter_create()
+        
         val times = (0..10000).map {
             measureTimeMillis {
                 val randomPointA = recast.navmesh_query_find_random_point(navMeshQuery)
@@ -36,13 +36,13 @@ class Benchmark {
                 pointB.setFloat(4, randomPointB.point[1])
                 pointB.setFloat(8, randomPointB.point[2])
 
-                val pathResult = recast.navmesh_query_find_path(navMeshQuery, randomPointA.polyRef, randomPointA.polyRef, pointA, pointB, 10)
+                val pathResult = recast.navmesh_query_find_path(navMeshQuery, randomPointA.polyRef, randomPointA.polyRef, pointA, pointB, filter)
                 assertThat(pathResult, notNullValue())
             }
         }
-
         println("Average time: ${times.average()}")
 
+        recast.dtQueryFilter_delete(filter)
         recast.rcContext_delete(ctx)
     }
 

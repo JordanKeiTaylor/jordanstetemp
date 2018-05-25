@@ -394,18 +394,10 @@ PolyPointResult navmesh_query_find_nearest_poly(dtNavMeshQuery* navQuery, float*
 	return result;
 }
 
-FindPathResult navmesh_query_find_path(dtNavMeshQuery* navQuery, dtPolyRef startRef, dtPolyRef endRef, float* startPos, float* endPos, int maxPath) {
-    dtPolyRef *path = new dtPolyRef[maxPath];
-	dtQueryFilter filter;
-	int pathCount;
-
-    dtStatus status = navQuery->findPath(startRef, endRef, startPos, endPos, &filter, path, &pathCount, maxPath);
-
-    FindPathResult result;
-    result.status = status;
-    result.path = path;
-    result.pathCount = pathCount;
-    return result;
+FindPathResult navmesh_query_find_path(dtNavMeshQuery* navQuery, dtPolyRef startRef, dtPolyRef endRef, float* startPos, float* endPos, const dtQueryFilter* filter) {
+   	FindPathResult result;
+	result.status = navQuery->findPath(startRef, endRef, startPos, endPos, filter, result.path, &result.pathCount, MAX_PATH_LEN);
+	return result;
 }
 
 static float frand()
@@ -427,4 +419,12 @@ PolyPointResult navmesh_query_find_random_point(dtNavMeshQuery* navQuery) {
     result.polyRef = randomRef;
 
     return result;
+}
+
+dtQueryFilter* dtQueryFilter_create() {
+	return new dtQueryFilter();
+}
+
+void dtQueryFilter_delete(dtQueryFilter* filter) {
+	delete filter;
 }
