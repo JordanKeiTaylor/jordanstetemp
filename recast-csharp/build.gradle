@@ -1,0 +1,43 @@
+import org.gradle.internal.os.OperatingSystem
+plugins {
+    id 'com.ullink.msbuild' version '2.15'
+}
+
+def nativeLibDir = "$buildDir/native_libs"
+
+configurations {
+    nativeLib
+}
+
+msbuild {
+    projectFile = file('recast-csharp.csproj')
+    configuration = 'Debug'
+    projectName = 'RecastCSharp'
+    // inputs.file(project.buildFile)
+    targets = ['Clean', 'Rebuild']
+}
+
+assemble.dependsOn(msbuild)
+
+dependencies {
+    nativeLib project(path: ':recast', configuration: 'releaseLinkElements')
+}
+
+repositories {
+    mavenCentral()
+}
+
+task darwinNativeLibs(type: Sync) {
+    dependsOn configurations.nativeLib
+    from configurations.nativeLib.filter { it.path.endsWith(".dylib") || it.path.endsWith(".so") }
+    into "${nativeLibDir}/darwin"
+}
+
+tasks.matching { it.name != 'darwinNativeLibs' && it.name != 'clean' }.all { task ->
+    task.dependsOn(darwinNativeLibs)
+}
+
+task run(type: Exec) {
+    commandLine "mono", "$buildDir/bin/Debug/recast-csharp.exe"
+    dependsOn assemble
+}
