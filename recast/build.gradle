@@ -10,6 +10,8 @@ def clonePath = file("$buildDir/recastnavigation")
 def recastRef = "ba12abead9956e69afa1248e535b07249df45e48"
 def libRecastLib = file(OperatingSystem.current().getStaticLibraryName("$clonePath/Recast/Recast"))
 def libDetourLib = file(OperatingSystem.current().getStaticLibraryName("$clonePath/Detour/Detour"))
+def libRecastIncludePath = file("$clonePath/Recast/Include")
+def libDetourIncludePath = file("$clonePath/Detour/Include")
 
 task(cloneRecast) {
     doLast {
@@ -49,5 +51,7 @@ components.main.binaries.whenElementFinalized { binary ->
     project.dependencies {
         add(binary.linkLibraries.name, files(libRecastLib))
         add(binary.linkLibraries.name, files(libDetourLib))
+        add(binary.includePathConfiguration.name, files(libRecastIncludePath))
+        add(binary.includePathConfiguration.name, files(libDetourIncludePath))
     }
 }
