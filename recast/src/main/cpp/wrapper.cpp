@@ -1,7 +1,5 @@
 #include "wrapper.h"
-#include "MeshLoaderObj.h"
 #include "ChunkyTriMesh.h"
-#include "InputGeom.h"
 
 rcContext* rcContext_create() {
     return new IoRcContext();
@@ -427,4 +425,8 @@ dtQueryFilter* dtQueryFilter_create() {
 
 void dtQueryFilter_delete(dtQueryFilter* filter) {
 	delete filter;
+}
+
+SmoothPathResult navmesh_query_get_smooth_path(float* startPos, dtPolyRef startRef, float* endPos, FindPathResult* path, const dtQueryFilter* filter, dtNavMesh* navMesh, dtNavMeshQuery* navQuery) {
+	return getSmoothPath(startPos, startRef, endPos, path, filter, navMesh, navQuery);
 }

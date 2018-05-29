@@ -1,10 +1,14 @@
 #include <stdio.h>
+
 #include <Recast.h>
 #include <DetourNavMesh.h>
 #include <DetourNavMeshBuilder.h>
 #include <DetourNavMeshQuery.h>
+
+#include "Common.h"
 #include "MeshLoaderObj.h"
 #include "InputGeom.h"
+#include "NavMeshTesterTool_subset.h"
 
 class IoRcContext : public rcContext {
     public:
@@ -13,8 +17,6 @@ class IoRcContext : public rcContext {
         printf("LOG: %s\n", msg);
     }
 };
-
-const int MAX_PATH_LEN = 1024;
 
 enum SamplePartitionType
 {
@@ -56,12 +58,6 @@ struct PolyPointResult {
 	float point[3];
 };
 
-struct FindPathResult {
-    dtStatus status;
-    dtPolyRef path[MAX_PATH_LEN];
-    int pathCount;
-};
-
 extern "C" rcContext* rcContext_create();
 extern "C" void rcContext_delete(rcContext* ctx);
 extern "C" InputGeom* load_mesh(rcContext* context, const char* path, bool invertYZ);
@@ -77,4 +73,4 @@ extern "C" FindPathResult navmesh_query_find_path(dtNavMeshQuery* navQuery, dtPo
 extern "C" PolyPointResult navmesh_query_find_random_point(dtNavMeshQuery* navQuery);
 extern "C" dtQueryFilter* dtQueryFilter_create();
 extern "C" void dtQueryFilter_delete(dtQueryFilter* filter);
-
+extern "C" SmoothPathResult navmesh_query_get_smooth_path(float* startPos, dtPolyRef startRef, float* endPos, FindPathResult* path, const dtQueryFilter* filter, dtNavMesh* navMesh, dtNavMeshQuery* navQuery);

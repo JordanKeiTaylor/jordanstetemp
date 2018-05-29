@@ -1,11 +1,13 @@
 import com.sun.jna.Memory
-import io.improbable.ste.recast.*
+import com.sun.jna.Pointer
+import java.io.File
+import kotlin.system.measureTimeMillis
 import org.hamcrest.CoreMatchers.notNullValue
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Ignore
 import org.junit.Test
-import java.io.File
-import kotlin.system.measureTimeMillis
+
+import io.improbable.ste.recast.*
 
 class Benchmark {
     @Test
@@ -17,27 +19,22 @@ class Benchmark {
         recast.rcConfig_calc_grid_size(config, mesh!!)
 
         val navMeshDataResult = createNavMeshData(ctx!!, config, mesh!!)
-        val navmesh = recast.navmesh_create(ctx!!, navMeshDataResult!!)
-        val navMeshQuery = recast.navmesh_query_create(navmesh)
+        val navMesh = recast.navmesh_create(ctx!!, navMeshDataResult!!)
+        val navMeshQuery = recast.navmesh_query_create(navMesh)
         val filter = recast.dtQueryFilter_create()
         
-        val times = (0..10000).map {
+        val times = (0..10).map {
             measureTimeMillis {
                 val randomPointA = recast.navmesh_query_find_random_point(navMeshQuery)
                 val randomPointB = recast.navmesh_query_find_random_point(navMeshQuery)
+                val pointA = Common.toFloat3(randomPointA)
+                val pointB = Common.toFloat3(randomPointB)
 
-                val pointA = Memory((3 * 4).toLong())
-                pointA.setFloat(0, randomPointA.point[0])
-                pointA.setFloat(4, randomPointA.point[1])
-                pointA.setFloat(8, randomPointA.point[2])
-
-                val pointB = Memory((3 * 4).toLong())
-                pointB.setFloat(0, randomPointB.point[0])
-                pointB.setFloat(4, randomPointB.point[1])
-                pointB.setFloat(8, randomPointB.point[2])
-
-                val pathResult = recast.navmesh_query_find_path(navMeshQuery, randomPointA.polyRef, randomPointA.polyRef, pointA, pointB, filter)
+                val pathResult = recast.navmesh_query_find_path(navMeshQuery, randomPointA.polyRef, randomPointB.polyRef, pointA, pointB, filter)
                 assertThat(pathResult, notNullValue())
+
+                val smoothPathResult = recast.navmesh_query_get_smooth_path(pointA, randomPointA.polyRef, pointB, pathResult, filter, navMesh, navMeshQuery)
+                assertThat(smoothPathResult, notNullValue())
             }
         }
         println("Average time: ${times.average()}")
