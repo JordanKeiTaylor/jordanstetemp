@@ -69,10 +69,12 @@ class RecastShould {
         val result = recast.navmesh_query_find_nearest_poly(navMeshQuery, point, halfExtents)
         assertThat(result.polyRef, equalTo(1579))
 
-        val pathResult = recast.navmesh_query_find_path(navMeshQuery, result.polyRef, result.polyRef, point, point, 10);
+        val filter = recast.dtQueryFilter_create()
+        val pathResult = recast.navmesh_query_find_path(navMeshQuery, result.polyRef, result.polyRef, point, point, filter);
+        recast.dtQueryFilter_delete(filter)
         assertThat(dtFailed(pathResult.status), equalTo(false))
         assertThat(pathResult.pathCount, equalTo(1))
-        assertThat(pathResult.path.getInt(0), equalTo(result.polyRef))
+        assertThat(pathResult.path[0], equalTo(result.polyRef))
         recast.rcContext_delete(ctx!!)
 
         val randomPoint = recast.navmesh_query_find_random_point(navMeshQuery)

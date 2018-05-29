@@ -9,7 +9,7 @@ import java.util.List;
 public class FindPathResult extends Structure {
     public static class ByValue extends FindPathResult implements Structure.ByValue {}
     public int status;
-    public Pointer path;
+    public int path[] = new int[Const.MAX_PATH_LEN];
     public int pathCount;
 
     @Override
