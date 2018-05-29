@@ -15,7 +15,6 @@ nuget {
     version = '4.4.1'
 }
 
-
 msbuild {
     solutionFile = file('recast-csharp.sln')
     configuration = 'Release'
@@ -29,10 +28,10 @@ nunit {
 }
 
 msbuild.dependsOn(nugetRestore)
-
 nunit.dependsOn(msbuild)
+
 assemble.dependsOn(msbuild)
-build.dependsOn(nunit)
+check.dependsOn(nunit)
 
 dependencies {
     nativeLib project(path: ':recast', configuration: 'releaseLinkElements')
@@ -48,9 +47,6 @@ task darwinNativeLibs(type: Sync) {
     into "${nativeLibDir}/darwin"
 }
 
-msbuild.dependsOn(darwinNativeLibs)
-
-task run(type: Exec) {
-    commandLine "mono", "$buildDir/bin/Recast/Release/Recast.exe"
-    dependsOn assemble
+tasks.matching { it.name != 'darwinNativeLibs' && it.name != 'clean' && it.name != 'cleanMsbuild' }.all { task ->
+    task.dependsOn(darwinNativeLibs)
 }

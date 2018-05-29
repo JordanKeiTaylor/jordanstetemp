@@ -38,14 +38,12 @@ task premakeRecast(type: Exec) {
 task buildRecast(type: Exec) {
     workingDir clonePath
     commandLine "make"
-    dependsOn "premakeRecast"
+    dependsOn premakeRecast
 }
 
 library {
     baseName.set("recastwrapper")
 }
-
-assemble.dependsOn(buildRecast)
 
 components.main.binaries.whenElementFinalized { binary ->
     project.dependencies {
@@ -55,3 +53,6 @@ components.main.binaries.whenElementFinalized { binary ->
         add(binary.includePathConfiguration.name, files(libDetourIncludePath))
     }
 }
+
+tasks.matching { it.name != "clean" && it.name != "buildRecast" && it.name != "premakeRecast" && it.name != "cloneRecast"}
+    .all { task -> task.dependsOn(buildRecast) }
