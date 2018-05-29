@@ -1,12 +1,13 @@
 import com.sun.jna.Memory
-import io.improbable.ste.recast.*
+import java.awt.image.BufferedImage
+import java.io.File
+import javax.imageio.ImageIO
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.CoreMatchers.notNullValue
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Test
-import java.awt.image.BufferedImage
-import java.io.File
-import javax.imageio.ImageIO
+
+import io.improbable.ste.recast.*
 
 class RecastShould {
     @Test
@@ -39,10 +40,10 @@ class RecastShould {
         val navMeshDataResult = createNavMeshData(ctx, config, mesh)
         assertThat(navMeshDataResult!!.size, equalTo(105712))
 
-        val navmesh = recast.navmesh_create(ctx, navMeshDataResult)
-        assertThat(navmesh, notNullValue())
+        val navMesh = recast.navmesh_create(ctx, navMeshDataResult)
+        assertThat(navMesh, notNullValue())
 
-        val navMeshQuery = recast.navmesh_query_create(navmesh)
+        val navMeshQuery = recast.navmesh_query_create(navMesh)
         assertThat(navMeshQuery, notNullValue())
         recast.rcContext_delete(ctx!!)
     }
@@ -54,11 +55,11 @@ class RecastShould {
         val mesh = getMesh(ctx!!)
         recast.rcConfig_calc_grid_size(config, mesh!!)
         val navMeshDataResult = createNavMeshData(ctx, config, mesh)
-        val navmesh = recast.navmesh_create(ctx, navMeshDataResult!!)
-        val navMeshQuery = recast.navmesh_query_create(navmesh)
+        val navMesh = recast.navmesh_create(ctx, navMeshDataResult!!)
+        val navMeshQuery = recast.navmesh_query_create(navMesh)
         val point = Memory(3 * 4)
         point.setFloat(0, -575f)
-        point.setFloat(4, -70f)
+        point.setFloat(4, -69.1874f)
         point.setFloat(8, 54f)
 
         val halfExtents = Memory(3 * 4)
@@ -70,11 +71,20 @@ class RecastShould {
         assertThat(result.polyRef, equalTo(1579))
 
         val filter = recast.dtQueryFilter_create()
+
         val pathResult = recast.navmesh_query_find_path(navMeshQuery, result.polyRef, result.polyRef, point, point, filter);
-        recast.dtQueryFilter_delete(filter)
         assertThat(dtFailed(pathResult.status), equalTo(false))
         assertThat(pathResult.pathCount, equalTo(1))
         assertThat(pathResult.path[0], equalTo(result.polyRef))
+
+        val smoothPathResult = recast.navmesh_query_get_smooth_path(point, result.polyRef, point, pathResult, filter, navMesh, navMeshQuery)
+        assertThat(smoothPathResult, notNullValue())
+        assertThat(smoothPathResult.path[0], equalTo(point.getFloat(0)))
+        assertThat(smoothPathResult.path[1], equalTo(point.getFloat(4)))
+        assertThat(smoothPathResult.path[2], equalTo(point.getFloat(8)))
+        assertThat(smoothPathResult.pathCount, equalTo(1))
+
+        recast.dtQueryFilter_delete(filter)
         recast.rcContext_delete(ctx!!)
 
         val randomPoint = recast.navmesh_query_find_random_point(navMeshQuery)
