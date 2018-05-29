@@ -1,6 +1,8 @@
 import org.gradle.internal.os.OperatingSystem
 plugins {
     id 'com.ullink.msbuild' version '2.15'
+    id 'com.ullink.nunit' version '1.12'
+    id 'com.ullink.nuget' version '2.12'
 }
 
 def nativeLibDir = "$buildDir/native_libs"
@@ -9,16 +11,28 @@ configurations {
     nativeLib
 }
 
+nuget {
+    version = '4.4.1'
+}
+
+
 msbuild {
-    projectFile = file('recast-csharp.csproj')
-    configuration = 'Debug'
-    projectName = 'RecastCSharp'
+    solutionFile = file('recast-csharp.sln')
+    configuration = 'Release'
+    projectName = 'Recast'
     inputs.file(project.buildFile)
-    targets = ['Clean', 'Rebuild']
     intermediateDir = 'build/msbuild/obj'
 }
 
+nunit {
+    testAssemblies = [file("$buildDir/msbuild/bin/Release/Recast.Tests.dll")]
+}
+
+msbuild.dependsOn(nugetRestore)
+
+nunit.dependsOn(msbuild)
 assemble.dependsOn(msbuild)
+build.dependsOn(nunit)
 
 dependencies {
     nativeLib project(path: ':recast', configuration: 'releaseLinkElements')
@@ -37,6 +51,6 @@ task darwinNativeLibs(type: Sync) {
 msbuild.dependsOn(darwinNativeLibs)
 
 task run(type: Exec) {
-    commandLine "mono", "$buildDir/bin/Debug/recast-csharp.exe"
+    commandLine "mono", "$buildDir/bin/Recast/Release/Recast.exe"
     dependsOn assemble
 }

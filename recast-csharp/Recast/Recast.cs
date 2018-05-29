@@ -3,13 +3,15 @@ namespace Recast
     using System.Runtime.InteropServices;
 
     [StructLayout(LayoutKind.Sequential)]
-    public class RcContext
+    public struct RcContext
     {
     }
 
     public static class RecastLibrary
     {
-        [DllImport("librecastwrapper")]
+        const string Library = "librecastwrapper";
+
+        [DllImport(Library)]
         [return: MarshalAs(UnmanagedType.LPStruct)]
         public static extern RcContext rcContext_create();
     }
