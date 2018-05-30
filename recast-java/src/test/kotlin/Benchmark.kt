@@ -18,9 +18,11 @@ class Benchmark {
         val navMeshDataResult = createNavMeshData(ctx!!, config, mesh!!)
         val navMesh = recast.navmesh_create(ctx!!, navMeshDataResult!!)
         val navMeshQuery = recast.navmesh_query_create(navMesh)
+        assertThat(navMeshQuery, notNullValue())
+
         val filter = recast.dtQueryFilter_create()
         
-        val times = (0..10).map {
+        val times = (0..10000).map {
             measureTimeMillis {
                 val randomPointA = recast.navmesh_query_find_random_point(navMeshQuery)
                 val randomPointB = recast.navmesh_query_find_random_point(navMeshQuery)

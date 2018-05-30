@@ -398,7 +398,18 @@ dtNavMesh* navmesh_create(rcContext* context, NavMeshDataResult* navmesh_data) {
 
 dtNavMeshQuery* navmesh_query_create(dtNavMesh* navmesh) {
 	dtNavMeshQuery* navQuery = dtAllocNavMeshQuery();
-	navQuery->init(navmesh, 2048);
+
+	if (!navQuery) {
+		return 0;
+	}
+
+	dtStatus status = navQuery->init(navmesh, 2048);
+
+	if (dtStatusFailed(status)) {
+		dtFreeNavMeshQuery(navQuery);
+		navQuery = 0;
+	}
+
 	return navQuery;
 }
 
@@ -431,16 +442,14 @@ static float frand()
 
 PolyPointResult navmesh_query_find_random_point(dtNavMeshQuery* navQuery) {
     dtQueryFilter filter;
-    dtPolyRef randomRef;
-    float randomPoint[3];
-    dtStatus status = navQuery->findRandomPoint(&filter, frand, &randomRef, randomPoint);
-
     PolyPointResult result;
-    result.status = status;
-    result.point[0] = randomPoint[0];
-    result.point[1] = randomPoint[1];
-    result.point[2] = randomPoint[2];
-    result.polyRef = randomRef;
+
+	if (!navQuery) {
+		result.status = DT_FAILURE;
+	}
+	else {
+		result.status = navQuery->findRandomPoint(&filter, frand, &result.polyRef, result.point);
+	}
 
     return result;
 }
