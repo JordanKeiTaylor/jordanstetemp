@@ -1,0 +1,52 @@
+import org.gradle.internal.os.OperatingSystem
+plugins {
+    id 'com.ullink.msbuild' version '2.15'
+    id 'com.ullink.nunit' version '1.12'
+    id 'com.ullink.nuget' version '2.12'
+}
+
+def nativeLibDir = "$buildDir/native_libs"
+
+configurations {
+    nativeLib
+}
+
+nuget {
+    version = '4.4.1'
+}
+
+msbuild {
+    solutionFile = file('recast-csharp.sln')
+    configuration = 'Release'
+    projectName = 'Recast'
+    inputs.file(project.buildFile)
+    intermediateDir = 'build/msbuild/obj'
+}
+
+nunit {
+    testAssemblies = [file("$buildDir/msbuild/bin/Release/Recast.Tests.dll")]
+}
+
+msbuild.dependsOn(nugetRestore)
+nunit.dependsOn(msbuild)
+
+assemble.dependsOn(msbuild)
+check.dependsOn(nunit)
+
+dependencies {
+    nativeLib project(path: ':recast', configuration: 'releaseLinkElements')
+}
+
+repositories {
+    mavenCentral()
+}
+
+task darwinNativeLibs(type: Sync) {
+    dependsOn configurations.nativeLib
+    from configurations.nativeLib.filter { it.path.endsWith(".dylib") || it.path.endsWith(".so") }
+    into "${nativeLibDir}/darwin"
+}
+
+tasks.matching { it.name != 'darwinNativeLibs' && it.name != 'clean' && it.name != 'cleanMsbuild' }.all { task ->
+    task.dependsOn(darwinNativeLibs)
+}
