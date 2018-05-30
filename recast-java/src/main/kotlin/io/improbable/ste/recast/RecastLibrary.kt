@@ -7,7 +7,7 @@ import com.sun.jna.Pointer
 interface RecastLibrary : Library {
     fun rcContext_create(): RcContext?
     fun rcContext_delete(context: RcContext)
-    fun load_mesh(rcContext: RcContext, path: String, invertYZ: Boolean): InputGeom?
+    fun InputGeom_load(rcContext: RcContext, path: String, invertYZ: Boolean): InputGeom?
     fun compact_heightfield_create(rcContext: RcContext, rcConfig: RcConfig.ByReference, inputGeom: InputGeom): RcCompactHeightfield?
     fun polymesh_create(rcContext: RcContext, rcConfig: RcConfig.ByReference, rcCompactHeightfield: RcCompactHeightfield): RcPolyMesh.ByReference?
     fun polymesh_detail_create(rcContext: RcContext, rcConfig: RcConfig.ByReference, rcPolyMesh: RcPolyMesh, rcCompactHeightfield: RcCompactHeightfield): RcPolyMeshDetail?

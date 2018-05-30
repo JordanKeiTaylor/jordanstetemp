@@ -1,10 +1,7 @@
-import com.sun.jna.Memory
-import com.sun.jna.Pointer
 import java.io.File
 import kotlin.system.measureTimeMillis
 import org.hamcrest.CoreMatchers.notNullValue
 import org.hamcrest.MatcherAssert.assertThat
-import org.junit.Ignore
 import org.junit.Test
 
 import io.improbable.ste.recast.*
@@ -50,7 +47,7 @@ class Benchmark {
         return recast.navmesh_data_create(ctx, config, polyMeshDetail, polymesh, mesh, 0, 0, Constants.agentHeight.toFloat(), Constants.agentRadius.toFloat(), Constants.agentMaxClimb.toFloat())
     }
 
-    private fun getMesh(ctx: RcContext) = recast.load_mesh(ctx, terrainTilePath(), true)
+    private fun getMesh(ctx: RcContext) = recast.InputGeom_load(ctx, terrainTilePath(), true)
 
     private val recast = RecastLibrary.load()
 

@@ -9,7 +9,7 @@ void rcContext_delete(rcContext* ctx) {
     delete ctx;
 }
 
-InputGeom* load_mesh(rcContext* context, const char* path, bool invertYZ) {
+InputGeom* InputGeom_load(rcContext* context, const char* path, bool invertYZ) {
     InputGeom *geom = new InputGeom();
 
     if (!geom->load(context, std::string(path), invertYZ)) {
@@ -17,6 +17,10 @@ InputGeom* load_mesh(rcContext* context, const char* path, bool invertYZ) {
     }
 
     return geom;
+}
+
+void InputGeom_delete(InputGeom* geom) {
+	delete geom;
 }
 
 void rcConfig_calc_grid_size(rcConfig* config, InputGeom* geom) {
@@ -29,50 +33,63 @@ void rcConfig_calc_grid_size(rcConfig* config, InputGeom* geom) {
 }
 
 rcCompactHeightfield* compact_heightfield_create(rcContext* context, rcConfig* config, InputGeom* geom) {
+    rcHeightfield* heightfield = 0;
+	unsigned char* triareas = 0;
+	rcCompactHeightfield* m_chf = 0;
+	const float* verts = 0;
+	int nverts;
+	int ntris;
+	const rcChunkyTriMesh* chunkyMesh = 0;
+	float tbmin[2], tbmax[2];
+	int cid[512];// TODO: Make grow when returning too many items.
+	int ncid;
 
-    rcHeightfield* heightfield = rcAllocHeightfield();
+	int m_tileTriCount = 0;
+	const bool m_filterLowHangingObstacles = false;
+	const bool m_filterLedgeSpans = false;
+	const bool m_filterWalkableLowHeightSpans = false;
 
+	const ConvexVolume* vols;
+
+    int partitionType = SAMPLE_PARTITION_WATERSHED;
+
+	heightfield = rcAllocHeightfield();
 	if (!heightfield)
 	{
 		context->log(RC_LOG_ERROR, "buildNavigation: Out of memory 'solid'.");
-		return 0;
+		goto handle_error;
 	}
 
 	if (!rcCreateHeightfield(context, *heightfield, config->width, config->height, config->bmin, config->bmax, config->cs, config->ch))
 	{
 		context->log(RC_LOG_ERROR, "buildNavigation: Could not create solid heightfield.");
-		return 0;
+		goto handle_error;
 	}
 
-    const float* verts = geom->getMesh()->getVerts();
-	const int nverts = geom->getMesh()->getVertCount();
-	const int ntris = geom->getMesh()->getTriCount();
-	const rcChunkyTriMesh* chunkyMesh = geom->getChunkyMesh();
-    context->log(RC_LOG_PROGRESS, "buildNavigation: verts=%d, tris=%d", nverts, ntris);
+    verts = geom->getMesh()->getVerts();
+	nverts = geom->getMesh()->getVertCount();
+	ntris = geom->getMesh()->getTriCount();
+	chunkyMesh = geom->getChunkyMesh();
 
     // Allocate array that can hold triangle flags.
 	// If you have multiple meshes you need to process, allocate
 	// and array which can hold the max number of triangles you need to process.
-	unsigned char* triareas = new unsigned char[chunkyMesh->maxTrisPerChunk];
+	triareas = new unsigned char[chunkyMesh->maxTrisPerChunk];
 	if (!triareas)
 	{
 		context->log(RC_LOG_ERROR, "buildNavigation: Out of memory 'm_triareas' (%d).", chunkyMesh->maxTrisPerChunk);
-		return 0;
+		goto handle_error;
 	}
 	
-	float tbmin[2], tbmax[2];
 	tbmin[0] = config->bmin[0];
 	tbmin[1] = config->bmin[2];
 	tbmax[0] = config->bmax[0];
 	tbmax[1] = config->bmax[2];
-	int cid[512];// TODO: Make grow when returning too many items.
-	const int ncid = rcGetChunksOverlappingRect(chunkyMesh, tbmin, tbmax, cid, 512);
+	ncid = rcGetChunksOverlappingRect(chunkyMesh, tbmin, tbmax, cid, 512);
 	if (!ncid) {
 		context->log(RC_LOG_ERROR, "No chunks.", chunkyMesh->maxTrisPerChunk);
-		return 0;
+		goto handle_error;
     }
-	
-	int m_tileTriCount = 0;
 	
 	for (int i = 0; i < ncid; ++i)
 	{
@@ -86,40 +103,35 @@ rcCompactHeightfield* compact_heightfield_create(rcContext* context, rcConfig* c
 		rcMarkWalkableTriangles(context, config->walkableSlopeAngle,
 								verts, nverts, ctris, nctris, triareas);
 		
-		if (!rcRasterizeTriangles(context, verts, nverts, ctris, triareas, nctris, *heightfield, config->walkableClimb))
-			return 0;
+		if (!rcRasterizeTriangles(context, verts, nverts, ctris, triareas, nctris, *heightfield, config->walkableClimb)) {
+			goto handle_error;
+		}
 	}
-
-    context->log(RC_LOG_PROGRESS, "Triangles overlapping: %d", m_tileTriCount);
-    context->log(RC_LOG_PROGRESS, "Span : %d -> %d", heightfield->spans[0]->smin, heightfield->spans[0]->smax);
-    context->log(RC_LOG_PROGRESS, "Heightfield : %d x %d", heightfield->width, heightfield->height);
 
     delete [] triareas;
     triareas = 0;
 
-    bool m_filterLowHangingObstacles = false;
-    bool m_filterLedgeSpans = false;
-    bool m_filterWalkableLowHeightSpans = false;
-
-    if (m_filterLowHangingObstacles)
+    if (m_filterLowHangingObstacles) {
 		rcFilterLowHangingWalkableObstacles(context, config->walkableClimb, *heightfield);
-	if (m_filterLedgeSpans)
+	}
+	if (m_filterLedgeSpans) {
 		rcFilterLedgeSpans(context, config->walkableHeight, config->walkableClimb, *heightfield);
-	if (m_filterWalkableLowHeightSpans)
+	}
+	if (m_filterWalkableLowHeightSpans) {
 		rcFilterWalkableLowHeightSpans(context, config->walkableHeight, *heightfield);
+	}
 
-    rcCompactHeightfield* m_chf = rcAllocCompactHeightfield();
+    m_chf = rcAllocCompactHeightfield();
 	if (!m_chf)
 	{
 		context->log(RC_LOG_ERROR, "buildNavigation: Out of memory 'chf'.");
-		return 0;
+		goto handle_error;
 	}
 	if (!rcBuildCompactHeightfield(context, config->walkableHeight, config->walkableClimb, *heightfield, *m_chf))
 	{
 		context->log(RC_LOG_ERROR, "buildNavigation: Could not build compact data.");
-		return 0;
+		goto handle_error;
 	}
-    context->log(RC_LOG_PROGRESS, "CHF Spans: %d", m_chf->spanCount);
 	
     rcFreeHeightField(heightfield);
     heightfield = 0;
@@ -128,41 +140,13 @@ rcCompactHeightfield* compact_heightfield_create(rcContext* context, rcConfig* c
 	if (!rcErodeWalkableArea(context, config->walkableRadius, *m_chf))
 	{
 		context->log(RC_LOG_ERROR, "buildNavigation: Could not erode.");
-		return 0;
+		goto handle_error;
 	}
 
 	// (Optional) Mark areas.
-	const ConvexVolume* vols = geom->getConvexVolumes();
+	vols = geom->getConvexVolumes();
 	for (int i  = 0; i < geom->getConvexVolumeCount(); ++i)
 		rcMarkConvexPolyArea(context, vols[i].verts, vols[i].nverts, vols[i].hmin, vols[i].hmax, (unsigned char)vols[i].area, *m_chf);
-
-    	// Partition the heightfield so that we can use simple algorithm later to triangulate the walkable areas.
-	// There are 3 martitioning methods, each with some pros and cons:
-	// 1) Watershed partitioning
-	//   - the classic Recast partitioning
-	//   - creates the nicest tessellation
-	//   - usually slowest
-	//   - partitions the heightfield into nice regions without holes or overlaps
-	//   - the are some corner cases where this method creates produces holes and overlaps
-	//      - holes may appear when a small obstacles is close to large open area (triangulation can handle this)
-	//      - overlaps may occur if you have narrow spiral corridors (i.e stairs), this make triangulation to fail
-	//   * generally the best choice if you precompute the nacmesh, use this if you have large open areas
-	// 2) Monotone partioning
-	//   - fastest
-	//   - partitions the heightfield into regions without holes and overlaps (guaranteed)
-	//   - creates long thin polygons, which sometimes causes paths with detours
-	//   * use this if you want fast navmesh generation
-	// 3) Layer partitoining
-	//   - quite fast
-	//   - partitions the heighfield into non-overlapping regions
-	//   - relies on the triangulation code to cope with holes (thus slower than monotone partitioning)
-	//   - produces better triangles than monotone partitioning
-	//   - does not have the corner cases of watershed partitioning
-	//   - can be slow and create a bit ugly tessellation (still better than monotone)
-	//     if you have large open areas with small obstacles (not a problem if you use tiles)
-	//   * good choice to use for tiled navmesh with medium and small sized tiles
-
-    int partitionType = SAMPLE_PARTITION_WATERSHED;
 	
 	if (partitionType == SAMPLE_PARTITION_WATERSHED)
 	{
@@ -170,14 +154,14 @@ rcCompactHeightfield* compact_heightfield_create(rcContext* context, rcConfig* c
 		if (!rcBuildDistanceField(context, *m_chf))
 		{
 			context->log(RC_LOG_ERROR, "buildNavigation: Could not build distance field.");
-			return 0;
+			goto handle_error;
 		}
 		
 		// Partition the walkable surface into simple regions without holes.
 		if (!rcBuildRegions(context, *m_chf, config->borderSize, config->minRegionArea, config->mergeRegionArea))
 		{
 			context->log(RC_LOG_ERROR, "buildNavigation: Could not build watershed regions.");
-			return 0;
+			goto handle_error;
 		}
 	}
 	else if (partitionType == SAMPLE_PARTITION_MONOTONE)
@@ -187,7 +171,7 @@ rcCompactHeightfield* compact_heightfield_create(rcContext* context, rcConfig* c
 		if (!rcBuildRegionsMonotone(context, *m_chf, config->borderSize, config->minRegionArea, config->mergeRegionArea))
 		{
 			context->log(RC_LOG_ERROR, "buildNavigation: Could not build monotone regions.");
-			return 0;
+			goto handle_error;
 		}
 	}
 	else // SAMPLE_PARTITION_LAYERS
@@ -196,45 +180,79 @@ rcCompactHeightfield* compact_heightfield_create(rcContext* context, rcConfig* c
 		if (!rcBuildLayerRegions(context, *m_chf, config->borderSize, config->minRegionArea))
 		{
 			context->log(RC_LOG_ERROR, "buildNavigation: Could not build layer regions.");
-			return 0;
+			goto handle_error;
 		}
+	}
+
+	return m_chf;
+
+handle_error:
+	if (heightfield) {
+		rcFreeHeightField(heightfield);
+		heightfield = 0;
+	}
+
+	if (triareas) {
+		delete triareas;
+		triareas = 0;
+	}
+
+	if (m_chf) {
+		rcFreeCompactHeightfield(m_chf);
+		m_chf = 0;
 	}
 	
     return m_chf;
 }
 
 rcPolyMesh* polymesh_create(rcContext* m_ctx, rcConfig* m_cfg, rcCompactHeightfield* m_chf) {
-    // Create contours.
-	rcContourSet* m_cset = rcAllocContourSet();
+	rcContourSet* m_cset = 0;
+	rcPolyMesh* m_pmesh = 0;
 
+    // Create contours.
+	m_cset = rcAllocContourSet();
 	if (!m_cset)
 	{
 		m_ctx->log(RC_LOG_ERROR, "buildNavigation: Out of memory 'cset'.");
-		return 0;
+		goto handle_error;
 	}
+
 	if (!rcBuildContours(m_ctx, *m_chf, m_cfg->maxSimplificationError, m_cfg->maxEdgeLen, *m_cset))
 	{
 		m_ctx->log(RC_LOG_ERROR, "buildNavigation: Could not create contours.");
-		return 0;
+		goto handle_error;
 	}
 	
 	if (m_cset->nconts == 0)
 	{
 		m_ctx->log(RC_LOG_ERROR, "0 contours");
-		return 0;
+		goto handle_error;
 	}
 	
 	// Build polygon navmesh from the contours.
-	rcPolyMesh* m_pmesh = rcAllocPolyMesh();
+	m_pmesh = rcAllocPolyMesh();
 	if (!m_pmesh)
 	{
 		m_ctx->log(RC_LOG_ERROR, "buildNavigation: Out of memory 'pmesh'.");
-		return 0;
+		goto handle_error;
 	}
 	if (!rcBuildPolyMesh(m_ctx, *m_cset, m_cfg->maxVertsPerPoly, *m_pmesh))
 	{
 		m_ctx->log(RC_LOG_ERROR, "buildNavigation: Could not triangulate contours.");
-		return 0;
+		goto handle_error;
+	}
+
+	return m_pmesh;
+
+handle_error:
+	if (m_cset) {
+		rcFreeContourSet(m_cset);
+		m_cset = 0;
+	}
+
+	if (m_pmesh) {
+		rcFreePolyMesh(m_pmesh);
+		m_pmesh = 0;
 	}
 
     return m_pmesh;
@@ -247,13 +265,13 @@ rcPolyMeshDetail* polymesh_detail_create(rcContext* m_ctx, rcConfig* m_cfg, rcPo
 	if (!m_dmesh)
 	{
 		m_ctx->log(RC_LOG_ERROR, "buildNavigation: Out of memory 'dmesh'.");
-		return 0;
+		goto handle_error;
 	}
 
     if (!m_pmesh)
     {
 		m_ctx->log(RC_LOG_ERROR, "m_pmesh is null");
-        return 0;
+		goto handle_error;
     }
 	
 	if (!rcBuildPolyMeshDetail(m_ctx, *m_pmesh, *m_chf,
@@ -261,10 +279,18 @@ rcPolyMeshDetail* polymesh_detail_create(rcContext* m_ctx, rcConfig* m_cfg, rcPo
 							   *m_dmesh))
 	{
 		m_ctx->log(RC_LOG_ERROR, "buildNavigation: Could build polymesh detail.");
-		return 0;
+		goto handle_error;
 	}
 
     return m_dmesh;
+
+handle_error:
+	if (m_dmesh) {
+		rcFreePolyMeshDetail(m_dmesh);
+		m_dmesh = 0;
+	}
+
+	return m_dmesh;
 }
 
 NavMeshDataResult* navmesh_data_create(rcContext* context, rcConfig* m_cfg, rcPolyMeshDetail* m_dmesh, rcPolyMesh* m_pmesh, InputGeom* m_geom, int tx, int ty, float agentHeight, float agentRadius, float agentMaxClimb) {

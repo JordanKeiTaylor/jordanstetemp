@@ -60,7 +60,8 @@ struct PolyPointResult {
 
 extern "C" rcContext* rcContext_create();
 extern "C" void rcContext_delete(rcContext* ctx);
-extern "C" InputGeom* load_mesh(rcContext* context, const char* path, bool invertYZ);
+extern "C" InputGeom* InputGeom_load(rcContext* context, const char* path, bool invertYZ);
+extern "C" void InputGeom_delete(InputGeom* geom);
 extern "C" rcCompactHeightfield* compact_heightfield_create(rcContext* context, rcConfig* config, InputGeom* geom);
 extern "C" rcPolyMesh* polymesh_create(rcContext* m_ctx, rcConfig* m_cfg, rcCompactHeightfield* m_chf);
 extern "C" rcPolyMeshDetail* polymesh_detail_create(rcContext* m_ctx, rcConfig* m_cfg, rcPolyMesh* m_pmesh, rcCompactHeightfield* m_chf);
