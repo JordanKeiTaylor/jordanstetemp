@@ -54,5 +54,8 @@ namespace Recast
 
         [DllImport(Library, CallingConvention = CallingConvention.Cdecl)]
         public static extern void navmesh_query_delete(IntPtr navMeshQuery);
+
+        [DllImport(Library, CallingConvention = CallingConvention.Cdecl)]
+        public static extern PolyPointResult navmesh_query_find_random_point(IntPtr navMeshQuery);
     }
 }

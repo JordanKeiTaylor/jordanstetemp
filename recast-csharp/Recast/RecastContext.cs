@@ -110,6 +110,11 @@ namespace Recast
 
             return navMeshQuery;
         }
+
+        public PolyPointResult FindRandomPoint(NavMeshQuery navMeshQuery)
+        {
+            return RecastLibrary.navmesh_query_find_random_point(navMeshQuery.DangerousGetHandle());
+        }
         
         public void Dispose()
         {

@@ -44,6 +44,7 @@
     <Compile Include="Types\NavMeshQuery.cs" />
     <Compile Include="Types\PolyMesh.cs" />
     <Compile Include="Types\PolyMeshDetail.cs" />
+    <Compile Include="Types\PolyPointResult.cs" />
     <Compile Include="Types\RcConfig.cs" />
     <Compile Include="Types\RcContext.cs" />
   </ItemGroup>
