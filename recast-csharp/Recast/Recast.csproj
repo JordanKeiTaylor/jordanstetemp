@@ -41,6 +41,7 @@
     <Compile Include="Types\InputGeom.cs" />
     <Compile Include="Types\NavMesh.cs" />
     <Compile Include="Types\NavMeshDataResult.cs" />
+    <Compile Include="Types\NavMeshQuery.cs" />
     <Compile Include="Types\PolyMesh.cs" />
     <Compile Include="Types\PolyMeshDetail.cs" />
     <Compile Include="Types\RcConfig.cs" />

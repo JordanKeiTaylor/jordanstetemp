@@ -48,6 +48,11 @@ namespace Recast
 
         [DllImport(Library, CallingConvention = CallingConvention.Cdecl)]
         public static extern void navmesh_delete(IntPtr navmesh);
+
+        [DllImport(Library, CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr navmesh_query_create(IntPtr navMesh);
+
+        [DllImport(Library, CallingConvention = CallingConvention.Cdecl)]
+        public static extern void navmesh_query_delete(IntPtr navMeshQuery);
     }
-    
 }

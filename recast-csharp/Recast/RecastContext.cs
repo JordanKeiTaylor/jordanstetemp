@@ -97,6 +97,19 @@ namespace Recast
 
             return navMesh;
         }
+
+        public NavMeshQuery CreateNavMeshQuery(NavMesh navMesh)
+        {
+            var handle = RecastLibrary.navmesh_query_create(navMesh.DangerousGetHandle());
+            var navMeshQuery = new NavMeshQuery(handle);
+
+            if (navMeshQuery.IsInvalid)
+            {
+                throw new ArgumentException("Exception creating navmeshQuery");
+            }
+
+            return navMeshQuery;
+        }
         
         public void Dispose()
         {
