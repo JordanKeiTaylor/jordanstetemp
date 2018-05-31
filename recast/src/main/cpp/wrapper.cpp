@@ -53,6 +53,11 @@ rcCompactHeightfield* compact_heightfield_create(rcContext* context, rcConfig* c
 
     int partitionType = SAMPLE_PARTITION_WATERSHED;
 
+	if (!geom) {
+		context->log(RC_LOG_ERROR, "buildNavigation: InputGeometry is null.");
+		goto handle_error;
+	}
+
 	heightfield = rcAllocHeightfield();
 	if (!heightfield)
 	{
@@ -205,6 +210,11 @@ handle_error:
     return m_chf;
 }
 
+
+void compact_heightfield_delete(rcCompactHeightfield* chf) {
+	rcFreeCompactHeightfield(chf);
+}
+
 rcPolyMesh* polymesh_create(rcContext* m_ctx, rcConfig* m_cfg, rcCompactHeightfield* m_chf) {
 	rcContourSet* m_cset = 0;
 	rcPolyMesh* m_pmesh = 0;
@@ -258,6 +268,10 @@ handle_error:
     return m_pmesh;
 }
 
+void polymesh_delete(rcPolyMesh* polyMesh) {
+	rcFreePolyMesh(polyMesh);
+}
+
 rcPolyMeshDetail* polymesh_detail_create(rcContext* m_ctx, rcConfig* m_cfg, rcPolyMesh* m_pmesh, rcCompactHeightfield* m_chf) {
 	// Build detail mesh.
 	rcPolyMeshDetail* m_dmesh = rcAllocPolyMeshDetail();
@@ -291,6 +305,10 @@ handle_error:
 	}
 
 	return m_dmesh;
+}
+
+void polymesh_detail_delete(rcPolyMeshDetail* polyMeshDetail) {
+	rcFreePolyMeshDetail(polyMeshDetail);
 }
 
 NavMeshDataResult* navmesh_data_create(rcContext* context, rcConfig* m_cfg, rcPolyMeshDetail* m_dmesh, rcPolyMesh* m_pmesh, InputGeom* m_geom, int tx, int ty, float agentHeight, float agentRadius, float agentMaxClimb) {
@@ -464,4 +482,8 @@ void dtQueryFilter_delete(dtQueryFilter* filter) {
 
 SmoothPathResult navmesh_query_get_smooth_path(float* startPos, dtPolyRef startRef, float* endPos, FindPathResult* path, const dtQueryFilter* filter, dtNavMesh* navMesh, dtNavMeshQuery* navQuery) {
 	return getSmoothPath(startPos, startRef, endPos, path, filter, navMesh, navQuery);
+}
+
+bool dtStatus_failed(dtStatus status) {
+	return dtStatusFailed(status);
 }

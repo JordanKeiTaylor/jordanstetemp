@@ -9,6 +9,7 @@
     <AssemblyName>Recast</AssemblyName>
     <RootNamespace>Recast</RootNamespace>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -26,15 +27,18 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-</PropertyGroup>
-
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Config.cs" />
+    <Compile Include="NavMeshDataResult.cs" />
+    <Compile Include="RcConfig.cs" />
     <Compile Include="Recast.cs" />
+    <Compile Include="RecastLibrary.cs" />
     <Compile Include="Test.cs" />
   </ItemGroup>
   <ItemGroup>

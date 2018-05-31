@@ -5,11 +5,11 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Test
 
 import io.improbable.ste.recast.*
+import org.hamcrest.CoreMatchers.equalTo
 
 class Benchmark {
     @Test
     fun ddos_mesh() {
-        val recast = io.improbable.ste.recast.RecastLibrary.load()
         val ctx = recast.rcContext_create()
         val config = createDefaultConfig()
         val mesh = getMesh(ctx!!)
