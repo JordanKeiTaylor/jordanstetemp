@@ -67,7 +67,7 @@ namespace Recast.Tests
                 var navMesh = ctx.CreateNavMesh(navMeshData);
                 var navMeshQuery = ctx.CreateNavMeshQuery(navMesh);
 
-                for (int i = 0; i < 10000; i++)
+                for (var i = 0; i < 10000; i++)
                 {
 
                     var pointA = ctx.FindRandomPoint(navMeshQuery);
