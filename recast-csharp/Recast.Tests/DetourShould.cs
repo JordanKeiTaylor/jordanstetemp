@@ -6,6 +6,11 @@ namespace Recast.Tests
 {
     public class DetourShould
     {
+        private bool success(uint status)
+        {
+            return ((status & (1u << 30)) != 0);
+        }
+
         [Test]
         public void find_random_point()
         {
@@ -23,7 +28,7 @@ namespace Recast.Tests
                 var navMeshQuery = ctx.CreateNavMeshQuery(navMesh);
                 var result = ctx.FindRandomPoint(navMeshQuery);
                 Assert.IsNotNull(result);
-                Assert.IsTrue((result.status & (1u << 30)) != 0);
+                Assert.IsTrue(success(result.status));
                 Assert.AreEqual(result.point.Length, 3);
             }
         }
@@ -48,12 +53,12 @@ namespace Recast.Tests
                 
                 var result = ctx.FindPath(navMeshQuery, pointA, pointB);
                 Assert.IsNotNull(result);
-                Assert.IsTrue((result.status & (1u << 30)) != 0);
+                Assert.IsTrue(success(result.status));
                 Assert.AreEqual(Constants.MaxPathLength, result.path.Length);
                 Assert.IsTrue(result.pathCount < Constants.MaxPathLength);
             }
         }
-        
+
         [Test]
         public void be_fast()
         {
@@ -71,6 +76,7 @@ namespace Recast.Tests
                 var navMeshQuery = ctx.CreateNavMeshQuery(navMesh);
 
                 var N = 10000;
+                var NRan = 0;
 
                 var stopwatch = Stopwatch.StartNew();
                 for (var i = 0; i < N; i++)
@@ -78,13 +84,20 @@ namespace Recast.Tests
                     stopwatch.Stop();
                     var pointA = ctx.FindRandomPoint(navMeshQuery);
                     var pointB = ctx.FindRandomPoint(navMeshQuery);
-
-                    stopwatch.Start();
-                    var result = ctx.FindPath(navMeshQuery, pointA, pointB);
-                    Assert.IsNotNull(result);
+                    if (success(pointA.status) && success(pointB.status))
+                    {
+                        stopwatch.Start();
+                        var result = ctx.FindPath(navMeshQuery, pointA, pointB);
+                        NRan++;
+                        if (success(result.status))
+                        {
+                            Assert.IsNotNull(result);
+                            Assert.GreaterOrEqual(result.pathCount, 1);
+                        }
+                    }
                 }
                 
-                Console.WriteLine($"Average time (ms): {(float)stopwatch.ElapsedMilliseconds / N}");
+                Console.WriteLine($"\nAverage time (ms) for {NRan} run(s): {(float)stopwatch.ElapsedMilliseconds / NRan}");
             }
         }
     }
