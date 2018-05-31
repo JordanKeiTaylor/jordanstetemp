@@ -2,7 +2,7 @@
 
 namespace Recast
 {
-    public static class Constants
+    public static class Config
     {
         public const float cellSize = 0.3f;
         public const float cellHeight = 0.2f;
@@ -26,19 +26,19 @@ namespace Recast
         {
             return new RcConfig
             {
-                cs = Constants.cellSize,
-                ch = Constants.cellHeight,
-                walkableSlopeAngle = Constants.agentMaxSlope,
-                walkableHeight = (int) Math.Ceiling(Constants.agentHeight / Constants.cellHeight),
-                walkableClimb = (int) Math.Ceiling(Constants.agentMaxClimb / Constants.cellHeight),
-                walkableRadius = (int) Constants.walkableRadius,
-                maxEdgeLen = (int) (Constants.edgeMaxLen / Constants.cellSize),
-                maxSimplificationError = Constants.edgeMaxError,
-                minRegionArea = Constants.regionMinSize * Constants.regionMinSize,
-                mergeRegionArea = Constants.regionMergeSize * Constants.regionMergeSize,
-                maxVertsPerPoly = (int) Constants.vertsPerPoly,
-                detailSampleDist = Constants.detailSampleDist < 0.9 ? 0.0f : (Constants.cellSize * Constants.detailSampleDist),
-                detailSampleMaxError = (Constants.cellHeight * Constants.detailSampleMaxError)
+                cs = cellSize,
+                ch = cellHeight,
+                walkableSlopeAngle = agentMaxSlope,
+                walkableHeight = (int) Math.Ceiling(agentHeight / cellHeight),
+                walkableClimb = (int) Math.Ceiling(agentMaxClimb / cellHeight),
+                walkableRadius = (int) walkableRadius,
+                maxEdgeLen = (int) (edgeMaxLen / cellSize),
+                maxSimplificationError = edgeMaxError,
+                minRegionArea = regionMinSize * regionMinSize,
+                mergeRegionArea = regionMergeSize * regionMergeSize,
+                maxVertsPerPoly = (int) vertsPerPoly,
+                detailSampleDist = detailSampleDist < 0.9 ? 0.0f : cellSize * detailSampleDist,
+                detailSampleMaxError = (cellHeight * detailSampleMaxError)
             };
         }
     }

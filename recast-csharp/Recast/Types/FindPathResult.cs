@@ -1,5 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
 namespace Recast
 {
@@ -7,7 +6,10 @@ namespace Recast
     public struct FindPathResult
     {
         public uint status;
-        public IntPtr path;
+        
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = Constants.MaxPathLength)]
+        public uint[] path;
+        
         public int pathCount;
     }
 }

@@ -12,6 +12,7 @@ struct SmoothPathResult {
     int pathCount;
 };
 
+extern "C"
 struct FindPathResult {
     dtStatus status;
     dtPolyRef path[MAX_PATH_LEN];

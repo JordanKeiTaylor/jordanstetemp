@@ -34,6 +34,7 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants.cs" />
     <Compile Include="RecastContext.cs" />
     <Compile Include="RecastLibrary.cs" />
     <Compile Include="Types\CompactHeightfield.cs" />

@@ -131,7 +131,7 @@ namespace Recast
             Marshal.FreeHGlobal(bPointer);
             RecastLibrary.dtQueryFilter_delete(filter);
 
-            return pathResult;
+            return (FindPathResult) Marshal.PtrToStructure(pathResult, typeof(FindPathResult));
         }
         
         public void Dispose()

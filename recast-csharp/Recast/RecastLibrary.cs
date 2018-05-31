@@ -66,8 +66,10 @@ namespace Recast
         [DllImport(Library, CallingConvention = CallingConvention.Cdecl)]
         public static extern void dtQueryFilter_delete(IntPtr filter);
 
+        // AS: Returning this struct by ref just doesn't seem to work. Possibly due to it's size.
+        // I have no idea why not.
         [DllImport(Library, CallingConvention = CallingConvention.Cdecl)]
-        public static extern ref FindPathResult navmesh_query_find_path(IntPtr navMeshQuery, uint startRef, uint endRef,
+        public static extern IntPtr navmesh_query_find_path(IntPtr navMeshQuery, uint startRef, uint endRef,
             IntPtr startPos, IntPtr endPos, IntPtr filter);
     }
 }
