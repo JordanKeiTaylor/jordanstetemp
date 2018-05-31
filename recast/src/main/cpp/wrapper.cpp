@@ -457,8 +457,10 @@ FindPathResult* navmesh_query_find_path(dtNavMeshQuery* navQuery, dtPolyRef star
 	return result;
 }
 
+
 static float frand()
 {
+	srand(time(NULL));
 	return (float)rand()/(float)RAND_MAX;
 }
 

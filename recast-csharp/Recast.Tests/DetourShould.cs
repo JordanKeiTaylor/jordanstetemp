@@ -1,4 +1,6 @@
-﻿using NUnit.Framework;
+﻿using System;
+using System.Diagnostics;
+using NUnit.Framework;
 
 namespace Recast.Tests
 {
@@ -53,7 +55,7 @@ namespace Recast.Tests
         }
         
         [Test]
-        public void find_many_paths()
+        public void be_fast()
         {
             using (var ctx = new RecastContext())
             {
@@ -68,15 +70,21 @@ namespace Recast.Tests
                 var navMesh = ctx.CreateNavMesh(navMeshData);
                 var navMeshQuery = ctx.CreateNavMeshQuery(navMesh);
 
-                for (var i = 0; i < 10000; i++)
-                {
+                var N = 10000;
 
+                var stopwatch = Stopwatch.StartNew();
+                for (var i = 0; i < N; i++)
+                {
+                    stopwatch.Stop();
                     var pointA = ctx.FindRandomPoint(navMeshQuery);
                     var pointB = ctx.FindRandomPoint(navMeshQuery);
 
+                    stopwatch.Start();
                     var result = ctx.FindPath(navMeshQuery, pointA, pointB);
                     Assert.IsNotNull(result);
                 }
+                
+                Console.WriteLine($"Average time (ms): {(float)stopwatch.ElapsedMilliseconds / N}");
             }
         }
     }
