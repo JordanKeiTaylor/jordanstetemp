@@ -34,12 +34,16 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CompactHeightfield.cs" />
     <Compile Include="Config.cs" />
+    <Compile Include="InputGeom.cs" />
     <Compile Include="NavMeshDataResult.cs" />
+    <Compile Include="PolyMesh.cs" />
+    <Compile Include="PolyMeshDetail.cs" />
     <Compile Include="RcConfig.cs" />
-    <Compile Include="Recast.cs" />
+    <Compile Include="RcContext.cs" />
+    <Compile Include="RecastContext.cs" />
     <Compile Include="RecastLibrary.cs" />
-    <Compile Include="Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <ContentWithTargetPath Include="../build/native_libs/windows/librecastwrapper.dll" Condition=" '$(OS)' == 'Windows_NT' ">

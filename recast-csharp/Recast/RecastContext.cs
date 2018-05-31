@@ -1,81 +1,8 @@
 using System;
 using System.IO;
-using Microsoft.Win32.SafeHandles;
 
 namespace Recast
 {
-    using System.Runtime.InteropServices;
-
-    public class RcContext : SafeHandleZeroOrMinusOneIsInvalid
-    {
-        public RcContext(IntPtr handle) : base(true)
-        {
-            SetHandle(handle);
-        }
-        
-        protected override bool ReleaseHandle()
-        {
-            RecastLibrary.rcContext_delete(handle);
-            return true;
-        }
-    }
-
-    public class InputGeom : SafeHandleZeroOrMinusOneIsInvalid
-    {
-        public InputGeom(IntPtr handle) : base(true)
-        {
-            SetHandle(handle);
-        }
-
-        protected override bool ReleaseHandle()
-        {
-            RecastLibrary.InputGeom_delete(handle);
-            return true;
-        }
-    }
-
-    public class CompactHeightfield : SafeHandleZeroOrMinusOneIsInvalid
-    {
-        public CompactHeightfield(IntPtr handle) : base(true)
-        {
-            SetHandle(handle);    
-        }
-
-        protected override bool ReleaseHandle()
-        {
-            RecastLibrary.compact_heightfield_delete(handle);
-            return true;
-        }
-    }
-
-    public class PolyMesh : SafeHandleZeroOrMinusOneIsInvalid
-    {
-        public PolyMesh(IntPtr handle) : base(true)
-        {
-            SetHandle(handle);
-        }
-
-        protected override bool ReleaseHandle()
-        {
-            RecastLibrary.polymesh_delete(handle);
-            return true;
-        }
-    }
-    
-    public class PolyMeshDetail : SafeHandleZeroOrMinusOneIsInvalid
-    {
-        public PolyMeshDetail(IntPtr handle) : base(true)
-        {
-            SetHandle(handle);
-        }
-
-        protected override bool ReleaseHandle()
-        {
-            RecastLibrary.polymesh_detail_delete(handle);
-            return true;
-        }
-    }
-
     public class RecastContext : IDisposable
     {
         private readonly RcContext _context;
