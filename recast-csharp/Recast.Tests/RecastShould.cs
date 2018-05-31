@@ -87,5 +87,23 @@ namespace Recast.Tests
                 Assert.AreEqual(bytes.Length, navMeshData.size);
             }
         }
+        
+        [Test]
+        public void create_navmesh()
+        {
+            using (var ctx = new RecastContext())
+            {
+                var config = Constants.createDefaultConfig();
+                var mesh = ctx.LoadInputGeom("./Resources/Tile_+007_+006_L21.obj", true);
+                ctx.CalcGridSize(ref config, mesh);
+                var chf = ctx.CreateCompactHeightfield(config, mesh);
+                var polyMesh = ctx.CreatePolyMesh(config, chf);
+                var polyMeshDetail = ctx.CreatePolyMeshDetail(config, polyMesh, chf);
+                var navMeshData = ctx.CreateNavMeshData(config, polyMeshDetail, polyMesh, mesh, 0, 0,
+                    Constants.agentHeight, Constants.agentRadius, Constants.agentMaxClimb);
+                var navMesh = ctx.CreateNavMesh(navMeshData);
+                Assert.IsNotNull(navMesh);
+            }
+        }
     }
 }

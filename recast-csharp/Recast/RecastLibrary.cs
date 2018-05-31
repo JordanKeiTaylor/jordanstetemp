@@ -42,5 +42,12 @@ namespace Recast
         
         [DllImport(Library, CallingConvention = CallingConvention.Cdecl)]
         public static extern ref NavMeshDataResult navmesh_data_create(IntPtr context, ref RcConfig config, IntPtr polyMeshDetail, IntPtr polyMesh, IntPtr geom, int tx, int ty, float agentHeight, float agentRadius, float agentMaxClimb);
+
+        [DllImport(Library, CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr navmesh_create(IntPtr context, ref NavMeshDataResult navMeshDataResult);
+
+        [DllImport(Library, CallingConvention = CallingConvention.Cdecl)]
+        public static extern void navmesh_delete(IntPtr navmesh);
     }
+    
 }

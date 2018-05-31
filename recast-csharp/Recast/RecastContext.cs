@@ -84,6 +84,19 @@ namespace Recast
                 agentRadius,
                 agentMaxClimb);
         }
+
+        public NavMesh CreateNavMesh(NavMeshDataResult navMeshDataResult)
+        {
+            var handle = RecastLibrary.navmesh_create(_context.DangerousGetHandle(), ref navMeshDataResult);
+            var navMesh = new NavMesh(handle);
+
+            if (navMesh.IsInvalid)
+            {
+                throw new ArgumentException("Exception creating navmesh");
+            }
+
+            return navMesh;
+        }
         
         public void Dispose()
         {

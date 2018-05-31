@@ -414,6 +414,10 @@ dtNavMesh* navmesh_create(rcContext* context, NavMeshDataResult* navmesh_data) {
 	return navmesh;
 }
 
+void navmesh_delete(dtNavMesh* navmesh) {
+	dtFreeNavMesh(navmesh);
+}
+
 dtNavMeshQuery* navmesh_query_create(dtNavMesh* navmesh) {
 	dtNavMeshQuery* navQuery = dtAllocNavMeshQuery();
 
