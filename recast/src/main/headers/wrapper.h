@@ -76,7 +76,7 @@ extern "C" dtNavMesh* navmesh_create(rcContext* context, NavMeshDataResult* navm
 extern "C" void navmesh_delete(dtNavMesh* navmesh);
 extern "C" dtNavMeshQuery* navmesh_query_create(dtNavMesh* navmesh);
 extern "C" PolyPointResult navmesh_query_find_nearest_poly(dtNavMeshQuery* navQuery, float* point, float* half_extents);
-extern "C" FindPathResult navmesh_query_find_path(dtNavMeshQuery* navQuery, dtPolyRef startRef, dtPolyRef endRef, float* startPos, float* endPos, const dtQueryFilter* filter);
+extern "C" FindPathResult* navmesh_query_find_path(dtNavMeshQuery* navQuery, dtPolyRef startRef, dtPolyRef endRef, float* startPos, float* endPos, const dtQueryFilter* filter);
 extern "C" PolyPointResult navmesh_query_find_random_point(dtNavMeshQuery* navQuery);
 extern "C" dtQueryFilter* dtQueryFilter_create();
 extern "C" void dtQueryFilter_delete(dtQueryFilter* filter);

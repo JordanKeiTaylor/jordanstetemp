@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Runtime.InteropServices;
 
 namespace Recast
 {
@@ -114,6 +115,23 @@ namespace Recast
         public PolyPointResult FindRandomPoint(NavMeshQuery navMeshQuery)
         {
             return RecastLibrary.navmesh_query_find_random_point(navMeshQuery.DangerousGetHandle());
+        }
+
+        public FindPathResult FindPath(NavMeshQuery navMeshQuery, PolyPointResult a, PolyPointResult b)
+        {
+            var filter = RecastLibrary.dtQueryFilter_create();
+            IntPtr aPointer = Marshal.AllocHGlobal(3 * 4);
+            Marshal.Copy(a.point, 0, aPointer, 3);
+            
+            IntPtr bPointer = Marshal.AllocHGlobal(3 * 4);
+            Marshal.Copy(b.point, 0, bPointer, 3);
+ 
+            var pathResult = RecastLibrary.navmesh_query_find_path(navMeshQuery.DangerousGetHandle(), a.polyRef, b.polyRef, aPointer, bPointer, filter);
+            Marshal.FreeHGlobal(aPointer);
+            Marshal.FreeHGlobal(bPointer);
+            RecastLibrary.dtQueryFilter_delete(filter);
+
+            return pathResult;
         }
         
         public void Dispose()

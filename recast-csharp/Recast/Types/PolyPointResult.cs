@@ -3,7 +3,8 @@ using System.Runtime.InteropServices;
 
 namespace Recast
 {
-    public unsafe struct PolyPointResult
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    public struct PolyPointResult
     {
         public uint status;
         public uint polyRef;

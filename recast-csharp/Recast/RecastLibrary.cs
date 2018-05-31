@@ -3,6 +3,8 @@ using System.Runtime.InteropServices;
 
 namespace Recast
 {
+    // NOTE: There is possibly a .NET bug when returning struct values larger than 8 bytes from native code.
+    // See: https://stackoverflow.com/questions/30363629/marshalling-of-c-struct-as-return-value-of-c-sharp-delegate
     internal static class RecastLibrary
     {
         const string Library = "librecastwrapper";
@@ -57,5 +59,15 @@ namespace Recast
 
         [DllImport(Library, CallingConvention = CallingConvention.Cdecl)]
         public static extern PolyPointResult navmesh_query_find_random_point(IntPtr navMeshQuery);
+
+        [DllImport(Library, CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr dtQueryFilter_create();
+        
+        [DllImport(Library, CallingConvention = CallingConvention.Cdecl)]
+        public static extern void dtQueryFilter_delete(IntPtr filter);
+
+        [DllImport(Library, CallingConvention = CallingConvention.Cdecl)]
+        public static extern ref FindPathResult navmesh_query_find_path(IntPtr navMeshQuery, uint startRef, uint endRef,
+            IntPtr startPos, IntPtr endPos, IntPtr filter);
     }
 }
