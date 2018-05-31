@@ -2,7 +2,7 @@
 
 namespace Recast
 {
-    public static class Config
+    public static class BuildSettings
     {
         public const float cellSize = 0.3f;
         public const float cellHeight = 0.2f;
@@ -22,7 +22,7 @@ namespace Recast
         public static float walkableRadius = (int) Math.Ceiling(agentRadius / cellSize);
         static float borderSize = walkableRadius + 3;
 
-        public static RcConfig createDefaultConfig()
+        public static RcConfig createDefault()
         {
             return new RcConfig
             {

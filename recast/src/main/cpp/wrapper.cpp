@@ -464,15 +464,15 @@ static float frand()
 	return (float)rand()/(float)RAND_MAX;
 }
 
-PolyPointResult navmesh_query_find_random_point(dtNavMeshQuery* navQuery) {
+PolyPointResult* navmesh_query_find_random_point(dtNavMeshQuery* navQuery) {
     dtQueryFilter filter;
-    PolyPointResult result;
+    PolyPointResult *result = new PolyPointResult();
 
 	if (!navQuery) {
-		result.status = DT_FAILURE;
+		result->status = DT_FAILURE;
 	}
 	else {
-		result.status = navQuery->findRandomPoint(&filter, frand, &result.polyRef, result.point);
+		result->status = navQuery->findRandomPoint(&filter, frand, &result->polyRef, result->point);
 	}
 
     return result;

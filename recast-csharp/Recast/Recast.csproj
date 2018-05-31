@@ -34,11 +34,11 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BuildSettings.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="RecastContext.cs" />
     <Compile Include="RecastLibrary.cs" />
     <Compile Include="Types\CompactHeightfield.cs" />
-    <Compile Include="Types\Config.cs" />
     <Compile Include="Types\FindPathResult.cs" />
     <Compile Include="Types\InputGeom.cs" />
     <Compile Include="Types\NavMesh.cs" />

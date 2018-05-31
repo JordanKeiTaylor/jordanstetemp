@@ -17,7 +17,7 @@ interface RecastLibrary : Library {
     fun navmesh_query_create(navMesh: DtNavMesh): DtNavMeshQuery
     fun navmesh_query_find_nearest_poly(navMeshQuery: DtNavMeshQuery, point: Pointer, halfExtents: Pointer): PolyPointResult.ByValue
     fun navmesh_query_find_path(navMeshQuery: DtNavMeshQuery, startRef: DtPolyRef, endRef: DtPolyRef, startPos: Pointer, endPos: Pointer, filter: DtQueryFilter): FindPathResult.ByReference
-    fun navmesh_query_find_random_point(navMeshQuery: DtNavMeshQuery): PolyPointResult.ByValue
+    fun navmesh_query_find_random_point(navMeshQuery: DtNavMeshQuery): PolyPointResult.ByReference
     fun dtQueryFilter_create(): DtQueryFilter
     fun dtQueryFilter_delete(filter: DtQueryFilter)
     fun navmesh_query_get_smooth_path(startPos: Pointer, startRef: DtPolyRef, endPos: Pointer, path: FindPathResult, filter: DtQueryFilter, navMesh: DtNavMesh, navMeshQuery: DtNavMeshQuery): SmoothPathResult.ByValue
