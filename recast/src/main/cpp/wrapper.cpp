@@ -414,6 +414,10 @@ dtNavMesh* navmesh_create(rcContext* context, NavMeshDataResult* navmesh_data) {
 	return navmesh;
 }
 
+dtNavMesh* navmesh_load_tiled_bin(const char* path) {
+	return Sample::loadAll(path);
+}
+
 void navmesh_delete(dtNavMesh* navmesh) {
 	dtFreeNavMesh(navmesh);
 }
@@ -503,12 +507,4 @@ void smooth_path_result_delete(SmoothPathResult* smoothPathResult) {
 
 bool dtStatus_failed(dtStatus status) {
 	return dtStatusFailed(status);
-}
-
-dtNavMesh* load_tiled_navmesh_bin(const char* path) {
-	return Sample::loadAll(path);
-}
-
-void dtNavMesh_delete(dtNavMesh* navMesh) {
-    dtFreeNavMesh(navMesh);
 }

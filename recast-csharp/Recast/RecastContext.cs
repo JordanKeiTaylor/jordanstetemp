@@ -60,8 +60,17 @@ namespace Recast
 
         public NavMesh CreateNavMesh(NavMeshDataResult navMeshDataResult)
         {
-            var handle = RecastLibrary.navmesh_create(_context.DangerousGetHandle(), ref navMeshDataResult);
-            return new NavMesh(handle);
+            return new NavMesh(RecastLibrary.navmesh_create(_context.DangerousGetHandle(), ref navMeshDataResult));
+        }
+
+        public NavMesh LoadTiledNavMeshBinFile(string path)
+        {
+            if (!File.Exists(path))
+            {
+                throw new FileNotFoundException("File not found.", path);
+            }
+
+            return new NavMesh(RecastLibrary.navmesh_load_tiled_bin(path.ToCharArray()));
         }
 
         public NavMeshQuery CreateNavMeshQuery(NavMesh navMesh)

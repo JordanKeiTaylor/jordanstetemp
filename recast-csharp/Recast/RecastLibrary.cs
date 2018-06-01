@@ -49,6 +49,9 @@ namespace Recast
         public static extern IntPtr navmesh_create(IntPtr context, ref NavMeshDataResult navMeshDataResult);
 
         [DllImport(Library, CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr navmesh_load_tiled_bin(char[] path);
+
+        [DllImport(Library, CallingConvention = CallingConvention.Cdecl)]
         public static extern void navmesh_delete(IntPtr navmesh);
 
         [DllImport(Library, CallingConvention = CallingConvention.Cdecl)]

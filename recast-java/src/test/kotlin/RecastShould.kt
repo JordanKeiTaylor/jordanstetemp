@@ -47,6 +47,8 @@ class RecastShould {
 
         val navMeshQuery = recast.navmesh_query_create(navMesh)
         assertThat(navMeshQuery, present())
+
+        recast.navmesh_delete(navMesh)
         recast.rcContext_delete(ctx!!)
     }
 
@@ -86,16 +88,17 @@ class RecastShould {
         assertThat(smoothPathResult.path[2], equalTo(point.getFloat(8)))
         assertThat(smoothPathResult.pathCount, equalTo(1))
 
-        recast.dtQueryFilter_delete(filter)
-        recast.rcContext_delete(ctx!!)
-
         val randomPoint = recast.navmesh_query_find_random_point(navMeshQuery)
         assertThat(dtFailed(randomPoint.status), equalTo(false))
+
+        recast.dtQueryFilter_delete(filter)
+        recast.navmesh_delete(navMesh)
+        recast.rcContext_delete(ctx!!)
     }
 
     @Test
     fun load_tiled_mesh() {
-        val navMesh = recast.load_tiled_navmesh_bin(navMeshTiledBinPath())
+        val navMesh = recast.navmesh_load_tiled_bin(navMeshTiledBinPath())
         assertThat(navMesh, present())
 
         val navMeshQuery = recast.navmesh_query_create(navMesh)
@@ -124,7 +127,7 @@ class RecastShould {
             }
         }
 
-        recast.dtNavMesh_delete(navMesh)
+        recast.navmesh_delete(navMesh)
     }
 
     @Test

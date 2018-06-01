@@ -14,6 +14,8 @@ interface RecastLibrary : Library {
     fun navmesh_data_create(rcContext: RcContext, rcConfig: RcConfig.ByReference, rcPolyMeshDetail: RcPolyMeshDetail, rcPolyMesh: RcPolyMesh, inputGeom: InputGeom, tx: Int, ty: Int, agentHeight: Float, agentRadius: Float, agentMaxClimb: Float): NavMeshDataResult.ByReference?
     fun rcConfig_calc_grid_size(config: RcConfig.ByReference, inputGeom: InputGeom)
     fun navmesh_create(rcContext: RcContext, data: NavMeshDataResult.ByReference): DtNavMesh
+    fun navmesh_load_tiled_bin(path: String): DtNavMesh
+    fun navmesh_delete(navMesh: DtNavMesh)
     fun navmesh_query_create(navMesh: DtNavMesh): DtNavMeshQuery
     fun navmesh_query_find_nearest_poly(navMeshQuery: DtNavMeshQuery, point: Pointer, halfExtents: Pointer): PolyPointResult.ByValue
     fun navmesh_query_find_path(navMeshQuery: DtNavMeshQuery, startRef: DtPolyRef, endRef: DtPolyRef, startPos: Pointer, endPos: Pointer, filter: DtQueryFilter): FindPathResult.ByReference
@@ -22,8 +24,6 @@ interface RecastLibrary : Library {
     fun dtQueryFilter_delete(filter: DtQueryFilter)
     fun navmesh_query_get_smooth_path(startPos: Pointer, startRef: DtPolyRef, endPos: Pointer, path: FindPathResult, filter: DtQueryFilter, navMesh: DtNavMesh, navMeshQuery: DtNavMeshQuery): SmoothPathResult.ByReference
     fun dtStatus_failed(dtStatus: DtStatus): Boolean
-    fun load_tiled_navmesh_bin(path: String): DtNavMesh
-    fun dtNavMesh_delete(navMesh: DtNavMesh)
 
     companion object RecastLibrary {
         fun load() = Native.loadLibrary("recastwrapper", io.improbable.ste.recast.RecastLibrary::class.java) as io.improbable.ste.recast.RecastLibrary
