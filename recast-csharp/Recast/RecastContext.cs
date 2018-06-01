@@ -75,7 +75,7 @@ namespace Recast
             var polyPointResultPointer = RecastLibrary.navmesh_query_find_random_point(navMeshQuery.DangerousGetHandle());
             var polyPointResult = Marshal.PtrToStructure(polyPointResultPointer, typeof(PolyPointResult));
             
-            RecastLibrary.delete_poly_point_result(polyPointResultPointer);
+            RecastLibrary.poly_point_result_delete(polyPointResultPointer);
 
             return (PolyPointResult) polyPointResult;
         }
@@ -95,7 +95,7 @@ namespace Recast
             RecastLibrary.dtQueryFilter_delete(filter);
 
             var pathResult = Marshal.PtrToStructure(pathResultPointer, typeof(FindPathResult));
-            RecastLibrary.delete_find_path_result(pathResultPointer);
+            RecastLibrary.find_path_result_delete(pathResultPointer);
             return (FindPathResult) pathResult;
         }
         

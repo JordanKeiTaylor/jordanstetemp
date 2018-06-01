@@ -332,15 +332,15 @@ void calcSmoothPath(float *startPos, dtPolyRef startRef, float *endPos,
     }
 }
 
-SmoothPathResult getSmoothPath(float* startPos, dtPolyRef startRef, float* endPos,
+SmoothPathResult* getSmoothPath(float* startPos, dtPolyRef startRef, float* endPos,
                                FindPathResult* path,
                                const dtQueryFilter* filter,
                                dtNavMesh* navMesh, dtNavMeshQuery* navQuery) {
-    SmoothPathResult result;
+    SmoothPathResult* result = new SmoothPathResult();
     calcSmoothPath(startPos, startRef, endPos,
                    path->path, path->pathCount,
                    *filter,
                    navMesh, *navQuery,
-                   result.path, result.pathCount);
+                   result->path, result->pathCount);
     return result;
 }

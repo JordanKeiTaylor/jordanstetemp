@@ -457,11 +457,11 @@ FindPathResult* navmesh_query_find_path(dtNavMeshQuery* navQuery, dtPolyRef star
 	return result;
 }
 
-void delete_find_path_result(FindPathResult* findPathResult) {
+void find_path_result_delete(FindPathResult* findPathResult) {
 	delete findPathResult;
 }
 
-void delete_poly_point_result(PolyPointResult* polyPointResult) {
+void poly_point_result_delete(PolyPointResult* polyPointResult) {
 	delete polyPointResult;
 }
 
@@ -493,8 +493,12 @@ void dtQueryFilter_delete(dtQueryFilter* filter) {
 	delete filter;
 }
 
-SmoothPathResult navmesh_query_get_smooth_path(float* startPos, dtPolyRef startRef, float* endPos, FindPathResult* path, const dtQueryFilter* filter, dtNavMesh* navMesh, dtNavMeshQuery* navQuery) {
+SmoothPathResult* navmesh_query_get_smooth_path(float* startPos, dtPolyRef startRef, float* endPos, FindPathResult* path, const dtQueryFilter* filter, dtNavMesh* navMesh, dtNavMeshQuery* navQuery) {
 	return getSmoothPath(startPos, startRef, endPos, path, filter, navMesh, navQuery);
+}
+
+void smooth_path_result_delete(SmoothPathResult* smoothPathResult) {
+	delete smoothPathResult;
 }
 
 bool dtStatus_failed(dtStatus status) {

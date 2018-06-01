@@ -8,6 +8,7 @@ import java.util.List;
 
 public class SmoothPathResult extends Structure {
     public static class ByValue extends SmoothPathResult implements Structure.ByValue {}
+    public static class ByReference extends SmoothPathResult implements Structure.ByReference {}
     public float path[] = new float[3 * Const.MAX_SMOOTH_PATH_LEN];
     public int pathCount;
 
