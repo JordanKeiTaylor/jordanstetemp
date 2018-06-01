@@ -20,7 +20,7 @@ namespace Recast.Tests
         {
             using (var ctx = new RecastContext())
             {
-                var mesh = ctx.LoadInputGeom("Resources/Tile_+007_+006_L21.obj", true);
+                var mesh = GetInputGeom(ctx);
                 Assert.IsNotNull(mesh);
             }
         }
@@ -30,10 +30,8 @@ namespace Recast.Tests
         {
             using (var ctx = new RecastContext())
             {
-                var config = BuildSettings.createDefault();
-                var mesh = ctx.LoadInputGeom("./Resources/Tile_+007_+006_L21.obj", true);
-                ctx.CalcGridSize(ref config, mesh);
-                var chf = ctx.CreateCompactHeightfield(config, mesh);
+                var mesh = GetInputGeom(ctx);
+                var chf = ctx.CreateCompactHeightfield(_config, mesh);
                 Assert.IsNotNull(chf);
             }
         }
@@ -43,11 +41,9 @@ namespace Recast.Tests
         {
             using (var ctx = new RecastContext())
             {
-                var config = BuildSettings.createDefault();
-                var mesh = ctx.LoadInputGeom("./Resources/Tile_+007_+006_L21.obj", true);
-                ctx.CalcGridSize(ref config, mesh);
-                var chf = ctx.CreateCompactHeightfield(config, mesh);
-                var polyMesh = ctx.CreatePolyMesh(config, chf);
+                var mesh = GetInputGeom(ctx);
+                var chf = ctx.CreateCompactHeightfield(_config, mesh);
+                var polyMesh = ctx.CreatePolyMesh(_config, chf);
                 Assert.IsNotNull(polyMesh);
             }
         }
@@ -57,12 +53,10 @@ namespace Recast.Tests
         {
             using (var ctx = new RecastContext())
             {
-                var config = BuildSettings.createDefault();
-                var mesh = ctx.LoadInputGeom("./Resources/Tile_+007_+006_L21.obj", true);
-                ctx.CalcGridSize(ref config, mesh);
-                var chf = ctx.CreateCompactHeightfield(config, mesh);
-                var polyMesh = ctx.CreatePolyMesh(config, chf);
-                var polyMeshDetail = ctx.CreatePolyMeshDetail(config, polyMesh, chf);
+                var mesh = GetInputGeom(ctx);
+                var chf = ctx.CreateCompactHeightfield(_config, mesh);
+                var polyMesh = ctx.CreatePolyMesh(_config, chf);
+                var polyMeshDetail = ctx.CreatePolyMeshDetail(_config, polyMesh, chf);
                 Assert.IsNotNull(polyMeshDetail);
             }
         }
@@ -72,13 +66,11 @@ namespace Recast.Tests
         {
             using (var ctx = new RecastContext())
             {
-                var config = BuildSettings.createDefault();
-                var mesh = ctx.LoadInputGeom("./Resources/Tile_+007_+006_L21.obj", true);
-                ctx.CalcGridSize(ref config, mesh);
-                var chf = ctx.CreateCompactHeightfield(config, mesh);
-                var polyMesh = ctx.CreatePolyMesh(config, chf);
-                var polyMeshDetail = ctx.CreatePolyMeshDetail(config, polyMesh, chf);
-                var navMeshData = ctx.CreateNavMeshData(config, polyMeshDetail, polyMesh, mesh, 0, 0,
+                var mesh = GetInputGeom(ctx);
+                var chf = ctx.CreateCompactHeightfield(_config, mesh);
+                var polyMesh = ctx.CreatePolyMesh(_config, chf);
+                var polyMeshDetail = ctx.CreatePolyMeshDetail(_config, polyMesh, chf);
+                var navMeshData = ctx.CreateNavMeshData(_config, polyMeshDetail, polyMesh, mesh, 0, 0,
                     BuildSettings.agentHeight, BuildSettings.agentRadius, BuildSettings.agentMaxClimb);
                 // TODO: This is different to Java!!
                 Assert.AreEqual(navMeshData.size, 105692);
@@ -93,13 +85,11 @@ namespace Recast.Tests
         {
             using (var ctx = new RecastContext())
             {
-                var config = BuildSettings.createDefault();
-                var mesh = ctx.LoadInputGeom("./Resources/Tile_+007_+006_L21.obj", true);
-                ctx.CalcGridSize(ref config, mesh);
-                var chf = ctx.CreateCompactHeightfield(config, mesh);
-                var polyMesh = ctx.CreatePolyMesh(config, chf);
-                var polyMeshDetail = ctx.CreatePolyMeshDetail(config, polyMesh, chf);
-                var navMeshData = ctx.CreateNavMeshData(config, polyMeshDetail, polyMesh, mesh, 0, 0,
+                var mesh = GetInputGeom(ctx);
+                var chf = ctx.CreateCompactHeightfield(_config, mesh);
+                var polyMesh = ctx.CreatePolyMesh(_config, chf);
+                var polyMeshDetail = ctx.CreatePolyMeshDetail(_config, polyMesh, chf);
+                var navMeshData = ctx.CreateNavMeshData(_config, polyMeshDetail, polyMesh, mesh, 0, 0,
                     BuildSettings.agentHeight, BuildSettings.agentRadius, BuildSettings.agentMaxClimb);
                 var navMesh = ctx.CreateNavMesh(navMeshData);
                 Assert.IsNotNull(navMesh);
@@ -111,18 +101,25 @@ namespace Recast.Tests
         {
             using (var ctx = new RecastContext())
             {
-                var config = BuildSettings.createDefault();
-                var mesh = ctx.LoadInputGeom("./Resources/Tile_+007_+006_L21.obj", true);
-                ctx.CalcGridSize(ref config, mesh);
-                var chf = ctx.CreateCompactHeightfield(config, mesh);
-                var polyMesh = ctx.CreatePolyMesh(config, chf);
-                var polyMeshDetail = ctx.CreatePolyMeshDetail(config, polyMesh, chf);
-                var navMeshData = ctx.CreateNavMeshData(config, polyMeshDetail, polyMesh, mesh, 0, 0,
+                var mesh = GetInputGeom(ctx);
+                var chf = ctx.CreateCompactHeightfield(_config, mesh);
+                var polyMesh = ctx.CreatePolyMesh(_config, chf);
+                var polyMeshDetail = ctx.CreatePolyMeshDetail(_config, polyMesh, chf);
+                var navMeshData = ctx.CreateNavMeshData(_config, polyMeshDetail, polyMesh, mesh, 0, 0,
                     BuildSettings.agentHeight, BuildSettings.agentRadius, BuildSettings.agentMaxClimb);
                 var navMesh = ctx.CreateNavMesh(navMeshData);
                 var navMeshQuery = ctx.CreateNavMeshQuery(navMesh);
                 Assert.IsNotNull(navMeshQuery);
             }
         }
+
+        private InputGeom GetInputGeom(RecastContext ctx)
+        {
+            var mesh = ctx.LoadInputGeom("./Resources/Tile_+007_+006_L21.obj", true);
+            ctx.CalcGridSize(ref _config, mesh);
+            return mesh;
+        }
+        
+        private RcConfig _config = BuildSettings.createDefault();
     }
 }

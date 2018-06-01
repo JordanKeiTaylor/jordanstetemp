@@ -8,7 +8,7 @@ namespace Recast.Tests
     {
         private bool success(uint status)
         {
-            return ((status & (1u << 30)) != 0);
+            return (status & (1u << 30)) != 0;
         }
 
         [Test]
@@ -16,15 +16,7 @@ namespace Recast.Tests
         {
             using (var ctx = new RecastContext())
             {
-                var config = BuildSettings.createDefault();
-                var mesh = ctx.LoadInputGeom("./Resources/Tile_+007_+006_L21.obj", true);
-                ctx.CalcGridSize(ref config, mesh);
-                var chf = ctx.CreateCompactHeightfield(config, mesh);
-                var polyMesh = ctx.CreatePolyMesh(config, chf);
-                var polyMeshDetail = ctx.CreatePolyMeshDetail(config, polyMesh, chf);
-                var navMeshData = ctx.CreateNavMeshData(config, polyMeshDetail, polyMesh, mesh, 0, 0,
-                    BuildSettings.agentHeight, BuildSettings.agentRadius, BuildSettings.agentMaxClimb);
-                var navMesh = ctx.CreateNavMesh(navMeshData);
+                var navMesh = CreateNavMesh(ctx);
                 var navMeshQuery = ctx.CreateNavMeshQuery(navMesh);
                 var result = ctx.FindRandomPoint(navMeshQuery);
                 Assert.IsNotNull(result);
@@ -38,15 +30,7 @@ namespace Recast.Tests
         {
             using (var ctx = new RecastContext())
             {
-                var config = BuildSettings.createDefault();
-                var mesh = ctx.LoadInputGeom("./Resources/Tile_+007_+006_L21.obj", true);
-                ctx.CalcGridSize(ref config, mesh);
-                var chf = ctx.CreateCompactHeightfield(config, mesh);
-                var polyMesh = ctx.CreatePolyMesh(config, chf);
-                var polyMeshDetail = ctx.CreatePolyMeshDetail(config, polyMesh, chf);
-                var navMeshData = ctx.CreateNavMeshData(config, polyMeshDetail, polyMesh, mesh, 0, 0,
-                    BuildSettings.agentHeight, BuildSettings.agentRadius, BuildSettings.agentMaxClimb);
-                var navMesh = ctx.CreateNavMesh(navMeshData);
+                var navMesh = CreateNavMesh(ctx);
                 var navMeshQuery = ctx.CreateNavMeshQuery(navMesh);
                 var pointA = ctx.FindRandomPoint(navMeshQuery);
                 var pointB = ctx.FindRandomPoint(navMeshQuery);
@@ -64,15 +48,7 @@ namespace Recast.Tests
         {
             using (var ctx = new RecastContext())
             {
-                var config = BuildSettings.createDefault();
-                var mesh = ctx.LoadInputGeom("./Resources/Tile_+007_+006_L21.obj", true);
-                ctx.CalcGridSize(ref config, mesh);
-                var chf = ctx.CreateCompactHeightfield(config, mesh);
-                var polyMesh = ctx.CreatePolyMesh(config, chf);
-                var polyMeshDetail = ctx.CreatePolyMeshDetail(config, polyMesh, chf);
-                var navMeshData = ctx.CreateNavMeshData(config, polyMeshDetail, polyMesh, mesh, 0, 0,
-                    BuildSettings.agentHeight, BuildSettings.agentRadius, BuildSettings.agentMaxClimb);
-                var navMesh = ctx.CreateNavMesh(navMeshData);
+                var navMesh = CreateNavMesh(ctx);
                 var navMeshQuery = ctx.CreateNavMeshQuery(navMesh);
                 var pointA = ctx.FindRandomPoint(navMeshQuery);
                 var pointB = ctx.FindRandomPoint(navMeshQuery);
@@ -91,18 +67,10 @@ namespace Recast.Tests
         {
             using (var ctx = new RecastContext())
             {
-                var config = BuildSettings.createDefault();
-                var mesh = ctx.LoadInputGeom("./Resources/Tile_+007_+006_L21.obj", true);
-                ctx.CalcGridSize(ref config, mesh);
-                var chf = ctx.CreateCompactHeightfield(config, mesh);
-                var polyMesh = ctx.CreatePolyMesh(config, chf);
-                var polyMeshDetail = ctx.CreatePolyMeshDetail(config, polyMesh, chf);
-                var navMeshData = ctx.CreateNavMeshData(config, polyMeshDetail, polyMesh, mesh, 0, 0,
-                    BuildSettings.agentHeight, BuildSettings.agentRadius, BuildSettings.agentMaxClimb);
-                var navMesh = ctx.CreateNavMesh(navMeshData);
+                var navMesh = CreateNavMesh(ctx);
                 var navMeshQuery = ctx.CreateNavMeshQuery(navMesh);
 
-                var N = 10000;
+                const int N = 10000;
                 var NRan = 0;
 
                 var stopwatch = Stopwatch.StartNew();
@@ -127,5 +95,19 @@ namespace Recast.Tests
                 Console.WriteLine($"\nAverage time (ms) for {NRan} run(s): {(float)stopwatch.ElapsedMilliseconds / NRan}");
             }
         }
+
+        private NavMesh CreateNavMesh(RecastContext ctx)
+        {
+            var mesh = ctx.LoadInputGeom("./Resources/Tile_+007_+006_L21.obj", true);
+            ctx.CalcGridSize(ref _config, mesh);
+            var chf = ctx.CreateCompactHeightfield(_config, mesh);
+            var polyMesh = ctx.CreatePolyMesh(_config, chf);
+            var polyMeshDetail = ctx.CreatePolyMeshDetail(_config, polyMesh, chf);
+            var navMeshData = ctx.CreateNavMeshData(_config, polyMeshDetail, polyMesh, mesh, 0, 0,
+                BuildSettings.agentHeight, BuildSettings.agentRadius, BuildSettings.agentMaxClimb);
+            return ctx.CreateNavMesh(navMeshData);
+        }
+        
+        private RcConfig _config = BuildSettings.createDefault();
     }
 }
