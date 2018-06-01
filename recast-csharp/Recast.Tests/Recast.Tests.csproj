@@ -37,9 +37,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DetourShould.cs" />
     <Compile Include="RecastShould.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include=".\Resources\*.*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <ContentWithTargetPath Include="../build/native_libs/windows/librecastwrapper.dll" Condition=" '$(OS)' == 'Windows_NT' ">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <TargetPath>librecastwrapper.dll</TargetPath>
@@ -61,6 +65,9 @@
       <Project>{D1FFA0DC-0ACC-4108-ADC1-2A71122C09AF}</Project>
       <Name>Recast</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

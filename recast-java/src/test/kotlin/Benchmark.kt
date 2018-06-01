@@ -1,18 +1,15 @@
-import com.sun.jna.Memory
-import com.sun.jna.Pointer
 import java.io.File
 import kotlin.system.measureTimeMillis
 import org.hamcrest.CoreMatchers.notNullValue
 import org.hamcrest.MatcherAssert.assertThat
-import org.junit.Ignore
 import org.junit.Test
 
 import io.improbable.ste.recast.*
+import org.junit.Ignore
 
 class Benchmark {
     @Test
     fun ddos_mesh() {
-        val recast = io.improbable.ste.recast.RecastLibrary.load()
         val ctx = recast.rcContext_create()
         val config = createDefaultConfig()
         val mesh = getMesh(ctx!!)
@@ -21,9 +18,11 @@ class Benchmark {
         val navMeshDataResult = createNavMeshData(ctx!!, config, mesh!!)
         val navMesh = recast.navmesh_create(ctx!!, navMeshDataResult!!)
         val navMeshQuery = recast.navmesh_query_create(navMesh)
+        assertThat(navMeshQuery, notNullValue())
+
         val filter = recast.dtQueryFilter_create()
         
-        val times = (0..10).map {
+        val times = (0..10000).map {
             measureTimeMillis {
                 val randomPointA = recast.navmesh_query_find_random_point(navMeshQuery)
                 val randomPointB = recast.navmesh_query_find_random_point(navMeshQuery)
@@ -50,7 +49,7 @@ class Benchmark {
         return recast.navmesh_data_create(ctx, config, polyMeshDetail, polymesh, mesh, 0, 0, Constants.agentHeight.toFloat(), Constants.agentRadius.toFloat(), Constants.agentMaxClimb.toFloat())
     }
 
-    private fun getMesh(ctx: RcContext) = recast.load_mesh(ctx, terrainTilePath(), true)
+    private fun getMesh(ctx: RcContext) = recast.InputGeom_load(ctx, terrainTilePath(), true)
 
     private val recast = RecastLibrary.load()
 

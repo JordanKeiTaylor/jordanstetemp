@@ -48,11 +48,13 @@ enum SamplePolyFlags
 	SAMPLE_POLYFLAGS_ALL		= 0xffff	// All abilities.
 };
 
+extern "C"
 struct NavMeshDataResult {
     unsigned char* data;
     int size;
 };
 
+extern "C"
 struct PolyPointResult {
     dtStatus status;
 	dtPolyRef polyRef;
@@ -61,19 +63,28 @@ struct PolyPointResult {
 
 extern "C" rcContext* rcContext_create();
 extern "C" void rcContext_delete(rcContext* ctx);
-extern "C" InputGeom* load_mesh(rcContext* context, const char* path, bool invertYZ);
+extern "C" InputGeom* InputGeom_load(rcContext* context, const char* path, bool invertYZ);
+extern "C" void InputGeom_delete(InputGeom* geom);
 extern "C" rcCompactHeightfield* compact_heightfield_create(rcContext* context, rcConfig* config, InputGeom* geom);
+extern "C" void compact_heightfield_delete(rcCompactHeightfield* chf);
 extern "C" rcPolyMesh* polymesh_create(rcContext* m_ctx, rcConfig* m_cfg, rcCompactHeightfield* m_chf);
+extern "C" void polymesh_delete(rcPolyMesh* polyMesh);
 extern "C" rcPolyMeshDetail* polymesh_detail_create(rcContext* m_ctx, rcConfig* m_cfg, rcPolyMesh* m_pmesh, rcCompactHeightfield* m_chf);
+extern "C" void polymesh_detail_delete(rcPolyMeshDetail* polyMeshDetail);
 extern "C" NavMeshDataResult* navmesh_data_create(rcContext* context, rcConfig* m_cfg, rcPolyMeshDetail* m_dmesh, rcPolyMesh* m_pmesh, InputGeom* m_geom, int tx, int ty, float agentHeight, float agentRadius, float agentMaxClimb);
 extern "C" void rcConfig_calc_grid_size(rcConfig* config, InputGeom* geom);
 extern "C" dtNavMesh* navmesh_create(rcContext* context, NavMeshDataResult* navmesh_data);
+extern "C" void navmesh_delete(dtNavMesh* navmesh);
 extern "C" dtNavMeshQuery* navmesh_query_create(dtNavMesh* navmesh);
 extern "C" PolyPointResult navmesh_query_find_nearest_poly(dtNavMeshQuery* navQuery, float* point, float* half_extents);
-extern "C" FindPathResult navmesh_query_find_path(dtNavMeshQuery* navQuery, dtPolyRef startRef, dtPolyRef endRef, float* startPos, float* endPos, const dtQueryFilter* filter);
-extern "C" PolyPointResult navmesh_query_find_random_point(dtNavMeshQuery* navQuery);
+extern "C" void poly_point_result_delete(PolyPointResult* polyPointResult);
+extern "C" FindPathResult* navmesh_query_find_path(dtNavMeshQuery* navQuery, dtPolyRef startRef, dtPolyRef endRef, float* startPos, float* endPos, const dtQueryFilter* filter);
+extern "C" void find_path_result_delete(FindPathResult* findPathResult);
+extern "C" PolyPointResult* navmesh_query_find_random_point(dtNavMeshQuery* navQuery);
 extern "C" dtQueryFilter* dtQueryFilter_create();
 extern "C" void dtQueryFilter_delete(dtQueryFilter* filter);
-extern "C" SmoothPathResult navmesh_query_get_smooth_path(float* startPos, dtPolyRef startRef, float* endPos, FindPathResult* path, const dtQueryFilter* filter, dtNavMesh* navMesh, dtNavMeshQuery* navQuery);
+extern "C" SmoothPathResult* navmesh_query_get_smooth_path(float* startPos, dtPolyRef startRef, float* endPos, FindPathResult* path, const dtQueryFilter* filter, dtNavMesh* navMesh, dtNavMeshQuery* navQuery);
+extern "C" void smooth_path_result_delete(SmoothPathResult* smoothPathResult);
+extern "C" bool dtStatus_failed(dtStatus status);
 extern "C" dtNavMesh* load_tiled_navmesh_bin(const char* path);
 extern "C" void dtNavMesh_delete(dtNavMesh* navMesh);

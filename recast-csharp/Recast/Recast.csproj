@@ -9,6 +9,7 @@
     <AssemblyName>Recast</AssemblyName>
     <RootNamespace>Recast</RootNamespace>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -26,16 +27,29 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-</PropertyGroup>
-
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Recast.cs" />
-    <Compile Include="Test.cs" />
+    <Compile Include="BuildSettings.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="RecastContext.cs" />
+    <Compile Include="RecastLibrary.cs" />
+    <Compile Include="Types\CompactHeightfield.cs" />
+    <Compile Include="Types\FindPathResult.cs" />
+    <Compile Include="Types\InputGeom.cs" />
+    <Compile Include="Types\NavMesh.cs" />
+    <Compile Include="Types\NavMeshDataResult.cs" />
+    <Compile Include="Types\NavMeshQuery.cs" />
+    <Compile Include="Types\PolyMesh.cs" />
+    <Compile Include="Types\PolyMeshDetail.cs" />
+    <Compile Include="Types\PolyPointResult.cs" />
+    <Compile Include="Types\RcConfig.cs" />
+    <Compile Include="Types\RcContext.cs" />
+    <Compile Include="Types\SmoothPathResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <ContentWithTargetPath Include="../build/native_libs/windows/librecastwrapper.dll" Condition=" '$(OS)' == 'Windows_NT' ">

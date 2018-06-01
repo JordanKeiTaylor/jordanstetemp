@@ -7,6 +7,7 @@ import java.util.List;
 
 public class PolyPointResult extends Structure {
     public static class ByValue extends PolyPointResult implements Structure.ByValue {}
+    public static class ByReference extends PolyPointResult implements Structure.ByReference {}
     // NOTE: These two should match Types.kt
     public int status;
     public int polyRef;
