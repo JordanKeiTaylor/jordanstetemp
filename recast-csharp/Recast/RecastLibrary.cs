@@ -77,5 +77,11 @@ namespace Recast
 
         [DllImport(Library, CallingConvention = CallingConvention.Cdecl)]
         public static extern void find_path_result_delete(IntPtr findPathResult);
+        
+        [DllImport(Library, CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr navmesh_query_get_smooth_path(IntPtr startPos, uint startRef, IntPtr endPos, ref FindPathResult path, IntPtr filter, IntPtr navMesh, IntPtr navQuery);
+
+        [DllImport(Library, CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr smooth_path_result_delete(IntPtr smoothPathResult);
     }
 }

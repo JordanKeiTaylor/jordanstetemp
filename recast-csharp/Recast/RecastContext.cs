@@ -99,6 +99,26 @@ namespace Recast
             return (FindPathResult) pathResult;
         }
         
+        public SmoothPathResult FindSmoothPath(NavMeshQuery navMeshQuery, NavMesh navMesh, FindPathResult pathResult, PolyPointResult a, PolyPointResult b)
+        {
+            var filter = RecastLibrary.dtQueryFilter_create();
+            var aPointer = Marshal.AllocHGlobal(3 * 4);
+            Marshal.Copy(a.point, 0, aPointer, 3);
+            
+            var bPointer = Marshal.AllocHGlobal(3 * 4);
+            Marshal.Copy(b.point, 0, bPointer, 3);
+
+            var pathResultPointer = RecastLibrary.navmesh_query_get_smooth_path(aPointer, a.polyRef, bPointer,
+                ref pathResult, filter, navMesh.DangerousGetHandle(), navMeshQuery.DangerousGetHandle());
+            Marshal.FreeHGlobal(aPointer);
+            Marshal.FreeHGlobal(bPointer);
+            RecastLibrary.dtQueryFilter_delete(filter);
+
+            var smoothPathResult = Marshal.PtrToStructure(pathResultPointer, typeof(SmoothPathResult));
+            RecastLibrary.smooth_path_result_delete(pathResultPointer);
+            return (SmoothPathResult) smoothPathResult;
+        }
+        
         public void Dispose()
         {
             _context.Dispose();

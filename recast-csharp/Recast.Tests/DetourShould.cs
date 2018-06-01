@@ -58,6 +58,33 @@ namespace Recast.Tests
                 Assert.IsTrue(result.pathCount < Constants.MaxPathLength);
             }
         }
+        
+        [Test]
+        public void find_smooth_path()
+        {
+            using (var ctx = new RecastContext())
+            {
+                var config = BuildSettings.createDefault();
+                var mesh = ctx.LoadInputGeom("./Resources/Tile_+007_+006_L21.obj", true);
+                ctx.CalcGridSize(ref config, mesh);
+                var chf = ctx.CreateCompactHeightfield(config, mesh);
+                var polyMesh = ctx.CreatePolyMesh(config, chf);
+                var polyMeshDetail = ctx.CreatePolyMeshDetail(config, polyMesh, chf);
+                var navMeshData = ctx.CreateNavMeshData(config, polyMeshDetail, polyMesh, mesh, 0, 0,
+                    BuildSettings.agentHeight, BuildSettings.agentRadius, BuildSettings.agentMaxClimb);
+                var navMesh = ctx.CreateNavMesh(navMeshData);
+                var navMeshQuery = ctx.CreateNavMeshQuery(navMesh);
+                var pointA = ctx.FindRandomPoint(navMeshQuery);
+                var pointB = ctx.FindRandomPoint(navMeshQuery);
+                
+                var result = ctx.FindPath(navMeshQuery, pointA, pointB);
+                Assert.IsTrue(success(result.status));
+                var smoothResult = ctx.FindSmoothPath(navMeshQuery, navMesh, result, pointA, pointB);
+                Assert.IsNotNull(smoothResult);
+                Assert.AreEqual(3 * Constants.MaxSmoothPathLength, smoothResult.path.Length);
+                Assert.IsTrue(smoothResult.pathCount < Constants.MaxSmoothPathLength * 3);
+            }
+        }
 
         [Test]
         public void be_fast()

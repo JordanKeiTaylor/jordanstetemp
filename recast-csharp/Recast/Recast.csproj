@@ -49,6 +49,7 @@
     <Compile Include="Types\PolyPointResult.cs" />
     <Compile Include="Types\RcConfig.cs" />
     <Compile Include="Types\RcContext.cs" />
+    <Compile Include="Types\SmoothPathResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <ContentWithTargetPath Include="../build/native_libs/windows/librecastwrapper.dll" Condition=" '$(OS)' == 'Windows_NT' ">
