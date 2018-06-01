@@ -504,3 +504,11 @@ void smooth_path_result_delete(SmoothPathResult* smoothPathResult) {
 bool dtStatus_failed(dtStatus status) {
 	return dtStatusFailed(status);
 }
+
+dtNavMesh* load_tiled_navmesh_bin(const char* path) {
+	return Sample::loadAll(path);
+}
+
+void dtNavMesh_delete(dtNavMesh* navMesh) {
+    dtFreeNavMesh(navMesh);
+}

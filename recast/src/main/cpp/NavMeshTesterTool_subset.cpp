@@ -17,6 +17,7 @@
 //
 
 // Code is a subset of the code found in NavMeshTesterTool.cpp
+// https://github.com/recastnavigation/recastnavigation/blob/46654531e4e5c17d2ebe1933f3e768f908540f03/RecastDemo/Source/NavMeshTesterTool.cpp#L49
 
 #include "NavMeshTesterTool_subset.h"
 #include <math.h>
