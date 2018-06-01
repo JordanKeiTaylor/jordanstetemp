@@ -21,6 +21,8 @@ interface RecastLibrary : Library {
     fun dtQueryFilter_create(): DtQueryFilter
     fun dtQueryFilter_delete(filter: DtQueryFilter)
     fun navmesh_query_get_smooth_path(startPos: Pointer, startRef: DtPolyRef, endPos: Pointer, path: FindPathResult, filter: DtQueryFilter, navMesh: DtNavMesh, navMeshQuery: DtNavMeshQuery): SmoothPathResult.ByValue
+    fun load_tiled_navmesh_bin(path: String): DtNavMesh
+    fun dtNavMesh_delete(navMesh: DtNavMesh)
 
     companion object RecastLibrary {
         fun load() = Native.loadLibrary("recastwrapper", io.improbable.ste.recast.RecastLibrary::class.java) as io.improbable.ste.recast.RecastLibrary

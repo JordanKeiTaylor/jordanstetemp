@@ -9,6 +9,7 @@
 #include "MeshLoaderObj.h"
 #include "InputGeom.h"
 #include "NavMeshTesterTool_subset.h"
+#include "Sample_subset.h"
 
 class IoRcContext : public rcContext {
     public:
@@ -74,3 +75,5 @@ extern "C" PolyPointResult navmesh_query_find_random_point(dtNavMeshQuery* navQu
 extern "C" dtQueryFilter* dtQueryFilter_create();
 extern "C" void dtQueryFilter_delete(dtQueryFilter* filter);
 extern "C" SmoothPathResult navmesh_query_get_smooth_path(float* startPos, dtPolyRef startRef, float* endPos, FindPathResult* path, const dtQueryFilter* filter, dtNavMesh* navMesh, dtNavMeshQuery* navQuery);
+extern "C" dtNavMesh* load_tiled_navmesh_bin(const char* path);
+extern "C" void dtNavMesh_delete(dtNavMesh* navMesh);

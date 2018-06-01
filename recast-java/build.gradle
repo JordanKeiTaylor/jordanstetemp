@@ -14,6 +14,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
     implementation "net.java.dev.jna:jna:4.5.1"
     testImplementation "junit:junit:4.12"
+    testCompile "com.natpryce:hamkrest:1.4.2.2"
 }
 
 repositories {

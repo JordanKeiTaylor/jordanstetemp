@@ -2,9 +2,11 @@ import com.sun.jna.Memory
 import java.awt.image.BufferedImage
 import java.io.File
 import javax.imageio.ImageIO
-import org.hamcrest.CoreMatchers.equalTo
-import org.hamcrest.CoreMatchers.notNullValue
-import org.hamcrest.MatcherAssert.assertThat
+import com.natpryce.hamkrest.equalTo
+import com.natpryce.hamkrest.greaterThanOrEqualTo
+import com.natpryce.hamkrest.lessThanOrEqualTo
+import com.natpryce.hamkrest.assertion.assertThat
+import com.natpryce.hamkrest.present
 import org.junit.Test
 
 import io.improbable.ste.recast.*
@@ -13,7 +15,7 @@ class RecastShould {
     @Test
     fun create_a_context() {
         val ctx = recast.rcContext_create()
-        assertThat(ctx, notNullValue())
+        assertThat(ctx, present())
         recast.rcContext_delete(ctx!!)
     }
 
@@ -35,16 +37,16 @@ class RecastShould {
         val config = createDefaultConfig()
         val mesh = getMesh(ctx!!)
 
-        assertThat(mesh, notNullValue())
+        assertThat(mesh, present())
         recast.rcConfig_calc_grid_size(config, mesh!!)
         val navMeshDataResult = createNavMeshData(ctx, config, mesh)
         assertThat(navMeshDataResult!!.size, equalTo(105712))
 
         val navMesh = recast.navmesh_create(ctx, navMeshDataResult)
-        assertThat(navMesh, notNullValue())
+        assertThat(navMesh, present())
 
         val navMeshQuery = recast.navmesh_query_create(navMesh)
-        assertThat(navMeshQuery, notNullValue())
+        assertThat(navMeshQuery, present())
         recast.rcContext_delete(ctx!!)
     }
 
@@ -78,7 +80,7 @@ class RecastShould {
         assertThat(pathResult.path[0], equalTo(result.polyRef))
 
         val smoothPathResult = recast.navmesh_query_get_smooth_path(point, result.polyRef, point, pathResult, filter, navMesh, navMeshQuery)
-        assertThat(smoothPathResult, notNullValue())
+        assertThat(smoothPathResult, present())
         assertThat(smoothPathResult.path[0], equalTo(point.getFloat(0)))
         assertThat(smoothPathResult.path[1], equalTo(point.getFloat(4)))
         assertThat(smoothPathResult.path[2], equalTo(point.getFloat(8)))
@@ -89,6 +91,40 @@ class RecastShould {
 
         val randomPoint = recast.navmesh_query_find_random_point(navMeshQuery)
         assertThat(dtFailed(randomPoint.status), equalTo(false))
+    }
+
+    @Test
+    fun load_tiled_mesh() {
+        val navMesh = recast.load_tiled_navmesh_bin(navMeshTiledBinPath())
+        assertThat(navMesh, present())
+
+        val navMeshQuery = recast.navmesh_query_create(navMesh)
+        assertThat(navMeshQuery, present())
+        for (i in 1..1000) {
+            val randomPoint = recast.navmesh_query_find_random_point(navMeshQuery)
+            if (dtSuccess(randomPoint.status)) {
+                assertThat(randomPoint, present())
+                println(StringBuilder()
+                    .append(i.toString())
+                    .append(" {")
+                    .append(dtSuccess(randomPoint.status))
+                    .append("} [")
+                    .append(randomPoint.point[0])
+                    .append(", ")
+                    .append(randomPoint.point[1])
+                    .append(", ")
+                    .append(randomPoint.point[2])
+                    .append("] (")
+                    .append(randomPoint.polyRef)
+                    .append(")")
+                    .toString())
+                assertWithinLimits(randomPoint)
+            } else {
+                println(i.toString() + "Failed status found: " + dtStatusDetailString(randomPoint.status))
+            }
+        }
+
+        recast.dtNavMesh_delete(navMesh)
     }
 
     @Test
@@ -123,4 +159,15 @@ class RecastShould {
     private val recast = RecastLibrary.load()
 
     private fun terrainTilePath() = File(this.javaClass.getResource("Tile_+007_+006_L21.obj").toURI()).absolutePath
+
+    private fun navMeshTiledBinPath() = File(this.javaClass.getResource("Tile_+007_+006_L21.obj.tiled.bin").toURI()).absolutePath
+
+    private fun assertWithinLimits(point: PolyPointResult) {
+        assertThat(point.point[0].toDouble(), greaterThanOrEqualTo(-431.48))
+        assertThat(point.point[0].toDouble(), lessThanOrEqualTo(-330.52))
+        assertThat(point.point[1].toDouble(), greaterThanOrEqualTo(98.50))
+        assertThat(point.point[1].toDouble(), lessThanOrEqualTo(119.83))
+        assertThat(point.point[2].toDouble(), greaterThanOrEqualTo(-289.48))
+        assertThat(point.point[2].toDouble(), lessThanOrEqualTo(-188.52))
+    }
 }
