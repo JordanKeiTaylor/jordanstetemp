@@ -59,6 +59,9 @@ namespace Recast
 
         [DllImport(Library, CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr navmesh_query_find_random_point(IntPtr navMeshQuery);
+        
+        [DllImport(Library, CallingConvention = CallingConvention.Cdecl)]
+        public static extern void delete_poly_point_result(IntPtr polyPointResult);
 
         [DllImport(Library, CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr dtQueryFilter_create();
@@ -71,5 +74,8 @@ namespace Recast
         [DllImport(Library, CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr navmesh_query_find_path(IntPtr navMeshQuery, uint startRef, uint endRef,
             IntPtr startPos, IntPtr endPos, IntPtr filter);
+
+        [DllImport(Library, CallingConvention = CallingConvention.Cdecl)]
+        public static extern void delete_find_path_result(IntPtr findPathResult);
     }
 }

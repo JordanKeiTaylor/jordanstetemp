@@ -16,14 +16,7 @@ namespace Recast
         public InputGeom LoadInputGeom(string path, bool invertYZ)
         {
             var handle = RecastLibrary.InputGeom_load(_context.DangerousGetHandle(), path, invertYZ);
-            var geom = new InputGeom(handle);
-
-            if (geom.IsInvalid)
-            {
-                throw new IOException("Unable to load geometry");
-            }
-
-            return geom;
+            return new InputGeom(handle);
         }
 
         public void CalcGridSize(ref RcConfig config, InputGeom geom)
@@ -34,40 +27,19 @@ namespace Recast
         public CompactHeightfield CreateCompactHeightfield(RcConfig config, InputGeom geom)
         {
             var handle = RecastLibrary.compact_heightfield_create(_context.DangerousGetHandle(), ref config, geom.DangerousGetHandle());
-            var chf = new CompactHeightfield(handle);
-
-            if (chf.IsInvalid)
-            {
-                throw new ArgumentException("Exception while building CompactHeightfield.");
-            }
-
-            return chf;
+            return new CompactHeightfield(handle);
         }
 
         public PolyMesh CreatePolyMesh(RcConfig config, CompactHeightfield chf)
         {
             var handle = RecastLibrary.polymesh_create(_context.DangerousGetHandle(), ref config, chf.DangerousGetHandle());
-            var polyMesh = new PolyMesh(handle);
-
-            if (polyMesh.IsInvalid)
-            {
-                throw new ArgumentException("Exception creating polymesh");
-            }
-
-            return polyMesh;
+            return new PolyMesh(handle);
         }
 
         public PolyMeshDetail CreatePolyMeshDetail(RcConfig config, PolyMesh polyMesh, CompactHeightfield chf)
         {
             var handle = RecastLibrary.polymesh_detail_create(_context.DangerousGetHandle(), ref config, polyMesh.DangerousGetHandle(), chf.DangerousGetHandle());
-            var polyMeshDetail = new PolyMeshDetail(handle);
-
-            if (polyMeshDetail.IsInvalid)
-            {
-                throw new ArgumentException("Exception creating polymesh");
-            }
-
-            return polyMeshDetail;
+            return new PolyMeshDetail(handle);
         }
 
         public NavMeshDataResult CreateNavMeshData(RcConfig config, PolyMeshDetail polyMeshDetail, PolyMesh polyMesh,
@@ -89,33 +61,23 @@ namespace Recast
         public NavMesh CreateNavMesh(NavMeshDataResult navMeshDataResult)
         {
             var handle = RecastLibrary.navmesh_create(_context.DangerousGetHandle(), ref navMeshDataResult);
-            var navMesh = new NavMesh(handle);
-
-            if (navMesh.IsInvalid)
-            {
-                throw new ArgumentException("Exception creating navmesh");
-            }
-
-            return navMesh;
+            return new NavMesh(handle);
         }
 
         public NavMeshQuery CreateNavMeshQuery(NavMesh navMesh)
         {
             var handle = RecastLibrary.navmesh_query_create(navMesh.DangerousGetHandle());
-            var navMeshQuery = new NavMeshQuery(handle);
-
-            if (navMeshQuery.IsInvalid)
-            {
-                throw new ArgumentException("Exception creating navmeshQuery");
-            }
-
-            return navMeshQuery;
+            return new NavMeshQuery(handle);
         }
 
         public PolyPointResult FindRandomPoint(NavMeshQuery navMeshQuery)
         {
-            var pathResult = RecastLibrary.navmesh_query_find_random_point(navMeshQuery.DangerousGetHandle());
-            return (PolyPointResult) Marshal.PtrToStructure(pathResult, typeof(PolyPointResult));
+            var polyPointResultPointer = RecastLibrary.navmesh_query_find_random_point(navMeshQuery.DangerousGetHandle());
+            var polyPointResult = Marshal.PtrToStructure(polyPointResultPointer, typeof(PolyPointResult));
+            
+            RecastLibrary.delete_poly_point_result(polyPointResultPointer);
+
+            return (PolyPointResult) polyPointResult;
         }
 
         public FindPathResult FindPath(NavMeshQuery navMeshQuery, PolyPointResult a, PolyPointResult b)
@@ -127,12 +89,14 @@ namespace Recast
             var bPointer = Marshal.AllocHGlobal(3 * 4);
             Marshal.Copy(b.point, 0, bPointer, 3);
  
-            var pathResult = RecastLibrary.navmesh_query_find_path(navMeshQuery.DangerousGetHandle(), a.polyRef, b.polyRef, aPointer, bPointer, filter);
+            var pathResultPointer = RecastLibrary.navmesh_query_find_path(navMeshQuery.DangerousGetHandle(), a.polyRef, b.polyRef, aPointer, bPointer, filter);
             Marshal.FreeHGlobal(aPointer);
             Marshal.FreeHGlobal(bPointer);
             RecastLibrary.dtQueryFilter_delete(filter);
 
-            return (FindPathResult) Marshal.PtrToStructure(pathResult, typeof(FindPathResult));
+            var pathResult = Marshal.PtrToStructure(pathResultPointer, typeof(FindPathResult));
+            RecastLibrary.delete_find_path_result(pathResultPointer);
+            return (FindPathResult) pathResult;
         }
         
         public void Dispose()

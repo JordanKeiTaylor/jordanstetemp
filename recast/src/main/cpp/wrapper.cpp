@@ -457,6 +457,13 @@ FindPathResult* navmesh_query_find_path(dtNavMeshQuery* navQuery, dtPolyRef star
 	return result;
 }
 
+void delete_find_path_result(FindPathResult* findPathResult) {
+	delete findPathResult;
+}
+
+void delete_poly_point_result(PolyPointResult* polyPointResult) {
+	delete polyPointResult;
+}
 
 static float frand()
 {
