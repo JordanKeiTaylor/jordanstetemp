@@ -105,7 +105,7 @@ namespace Recast.Tests
                 if (Success(result.status))
                 {
                     var smoothResult = ctx.FindSmoothPath(navMeshQuery, navMesh, result, pointA, pointB);
-                    Assert.GreaterOrEqual(smoothResult.pathCount, result.pathCount);
+                    Assert.GreaterOrEqual(smoothResult.pathCount, result.pathCount, $"smoothResult.pathCount [{ smoothResult.pathCount}] < result.pathCount [{result.pathCount}]");
                 }
                 NRan++;
             }
@@ -135,12 +135,17 @@ namespace Recast.Tests
             return (status & (1u << 30)) != 0;
         }
 
+        private bool PartialResult(uint status)
+        {
+            return (status & (1u << 6)) != 0;
+        }
+
         private FindPathResult FindPathSafer(PolyPointResult pointA, PolyPointResult pointB,
                                              RecastContext ctx, NavMeshQuery navMeshQuery,
                                              Stopwatch stopwatch = null)
         {
-            Assert.IsTrue(Success(pointA.status));
-            Assert.IsTrue(Success(pointB.status));
+            Assert.IsTrue(Success(pointA.status), "Point A not a success.");
+            Assert.IsTrue(Success(pointB.status), "Point A not a success.");
 
             if (null != stopwatch)
             {
@@ -160,11 +165,16 @@ namespace Recast.Tests
 
             if (Success(result.status))
             {
-                Assert.IsNotNull(result);
-                Assert.AreEqual(Constants.MaxPathLength, result.path.Length);
-                Assert.GreaterOrEqual(result.pathCount, 1);
-                Assert.AreEqual(pointA.polyRef, result.path[0]);
-                Assert.AreEqual(pointB.polyRef, result.path[result.pathCount - 1]);
+                Assert.IsNotNull(result, "result NULL");
+                Assert.AreEqual(Constants.MaxPathLength, result.path.Length, $"Constants.MaxPathLength != result.path.Length [{Constants.MaxPathLength} != {result.path.Length}]");
+                Assert.GreaterOrEqual(result.pathCount, 1, $"result.pathCount [{result.pathCount}] < 1");
+                Assert.AreEqual(pointA.polyRef, result.path[0], $"point A polyref does not match [{pointA.polyRef} != {result.path[0]}]");
+                if (!PartialResult(result.status))
+                {
+                    Assert.AreEqual(pointB.polyRef, result.path[result.pathCount - 1],
+                                    $"point B polyref does not match [{pointA.polyRef} != {result.path[result.pathCount - 1]}] (status={result.status} [{Convert.ToString(result.status, 2)}])");
+                }
+
             }
 
             return result;
