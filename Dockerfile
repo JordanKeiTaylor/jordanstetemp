@@ -8,15 +8,5 @@ RUN apt-get update && \
     apt-get update && \
     apt-get install -y nuget msbuild mono-devel openjdk-8-jdk cmake
 
-# Install jsonnet
-RUN  curl -L -o jsonnet.tar.gz https://github.com/google/jsonnet/archive/v0.10.0.tar.gz && ls -lh && \
-     tar xf jsonnet.tar.gz && \
-     cd jsonnet-0.10.0 && \
-     make -j 4 && \
-     chmod +x jsonnet && \
-     mv jsonnet /usr/bin && \
-     cd .. && \
-     rm -rf jsonnet-0.10.0
-
 ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64/
 WORKDIR /home/project
