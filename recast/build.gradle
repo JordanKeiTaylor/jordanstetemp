@@ -32,6 +32,7 @@ task(cloneRecast) {
 task premakeRecast(type: Exec) {
   workingDir clonePath
   commandLine "cmake", ".", "-DRECASTNAVIGATION_DEMO=OFF", "-DRECASTNAVIGATION_STATIC=ON"
+  environment CXXFLAGS: "-fPIC"
   dependsOn cloneRecast
 }
 

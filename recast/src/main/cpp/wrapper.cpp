@@ -1,5 +1,6 @@
 #include "wrapper.h"
 #include "ChunkyTriMesh.h"
+#include <cstring>
 
 rcContext* rcContext_create() {
     return new IoRcContext();
