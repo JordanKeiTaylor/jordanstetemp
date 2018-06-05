@@ -1,5 +1,6 @@
 #include "wrapper.h"
 #include "ChunkyTriMesh.h"
+#include <cstring>
 
 rcContext* rcContext_create() {
     return new IoRcContext();
@@ -471,13 +472,15 @@ void poly_point_result_delete(PolyPointResult* polyPointResult) {
 
 static float frand()
 {
-	srand(time(NULL));
 	return (float)rand()/(float)RAND_MAX;
 }
 
 PolyPointResult* navmesh_query_find_random_point(dtNavMeshQuery* navQuery) {
     dtQueryFilter filter;
     PolyPointResult *result = new PolyPointResult();
+
+	srand(time(NULL));
+	rand(); rand(); rand();
 
 	if (!navQuery) {
 		result->status = DT_FAILURE;

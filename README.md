@@ -9,3 +9,24 @@ The Enterprise STE project needs to interact with navigation meshes to allow ent
 - The `recast` project clones a pinned reivion of the `recast` github repository and builds the core libraries using `cmake` (disabling the `RecastDemo` project which depends on `SDL`). This in turn is used to compile a thin C++ wrapper library (`recastwrapper`) which exposes a C ABI for convenient binding from Java and C#.
 - `recast-java` uses [JNA](https://github.com/java-native-access/jna) to bind to `recastwrapper`.
 - `recast-csharp` uses [P/Invoke](https://en.wikipedia.org/wiki/Platform_Invocation_Services) to bind to `recastwrapper`.
+
+## Building
+### Mac/Linux
+
+```
+./gradlew build
+```
+
+### Linux (cross-compiling from Mac)
+First make a docker image in which to build the library:
+
+```
+docker build -t recast-wrapper-builder .
+```
+
+Then build:
+```
+docker run -v $PWD:/home/project recast-wrapper-builder ./gradlew clean build
+```
+
+
