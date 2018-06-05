@@ -70,7 +70,7 @@ nugetSpec {
             { file (src: "${buildDir}/msbuild/bin/Release/Recast.dll", target: 'lib/net45') },
             { file (src: "${buildDir}/msbuild/bin/Release/Recast.pdb", target: 'lib/net45') },
             { file (src: "${buildDir}/msbuild/bin/Release/librecastwrapper.dylib", target: 'runtimes/osx/native/') },
-            // { file (src: "${buildDir}/msbuild/bin/Release/librecastwrapper.so", target: 'lib/') },
+            // { file (src: "${buildDir}/msbuild/bin/Release/librecastwrapper.so", target: 'runtimes/linux/native/') },
             { file (src: "${projectDir}/Recast.targets", target: 'build/net45') },
         ]
     ]
