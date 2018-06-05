@@ -479,9 +479,6 @@ PolyPointResult* navmesh_query_find_random_point(dtNavMeshQuery* navQuery) {
     dtQueryFilter filter;
     PolyPointResult *result = new PolyPointResult();
 
-	srand(time(NULL));
-	rand(); rand(); rand();
-
 	if (!navQuery) {
 		result->status = DT_FAILURE;
 	}
@@ -510,4 +507,12 @@ void smooth_path_result_delete(SmoothPathResult* smoothPathResult) {
 
 bool dtStatus_failed(dtStatus status) {
 	return dtStatusFailed(status);
+}
+
+bool dtPolyRef_is_64bit() {
+	return sizeof(dtPolyRef) == 8;
+}
+
+void random_set_seed(int seed) {
+	srand(seed);
 }

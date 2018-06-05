@@ -40,7 +40,7 @@ class RecastShould {
         assertThat(mesh, present())
         recast.rcConfig_calc_grid_size(config, mesh!!)
         val navMeshDataResult = createNavMeshData(ctx, config, mesh)
-        assertThat(navMeshDataResult!!.size, equalTo(105712))
+        assertThat(navMeshDataResult!!.size, equalTo(114784))
 
         val navMesh = recast.navmesh_create(ctx, navMeshDataResult)
         assertThat(navMesh, present())
@@ -72,7 +72,7 @@ class RecastShould {
         halfExtents.setFloat(8, 100.0f);
 
         val result = recast.navmesh_query_find_nearest_poly(navMeshQuery, point, halfExtents)
-        assertThat(result.polyRef, equalTo(1579))
+        assertThat(result.polyRef, equalTo(281474976711211L))
 
         val filter = recast.dtQueryFilter_create()
 
@@ -163,7 +163,7 @@ class RecastShould {
 
     private fun terrainTilePath() = File(this.javaClass.getResource("Tile_+007_+006_L21.obj").toURI()).absolutePath
 
-    private fun navMeshTiledBinPath() = File(this.javaClass.getResource("Tile_+007_+006_L21.obj.tiled.bin").toURI()).absolutePath
+    private fun navMeshTiledBinPath() = File(this.javaClass.getResource("Tile_+007_+006_L21.obj.tiled.bin64").toURI()).absolutePath
 
     private fun assertWithinLimits(point: PolyPointResult) {
         assertThat(point.point[0].toDouble(), greaterThanOrEqualTo(-431.48))

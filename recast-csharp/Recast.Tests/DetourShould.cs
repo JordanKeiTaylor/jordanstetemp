@@ -114,7 +114,7 @@ namespace Recast.Tests
             Console.WriteLine($"\nAverage time (ms) for {NRan} run(s): {avg}");
             return avg;
         }
-
+        
         private NavMesh CreateNavMesh(RecastContext ctx)
         {
             var mesh = ctx.LoadInputGeom("./Resources/Tile_+007_+006_L21.obj", true);
@@ -194,7 +194,7 @@ namespace Recast.Tests
 
         private NavMesh LoadNavMeshBinFile(RecastContext ctx)
         {
-            var navMesh = ctx.LoadTiledNavMeshBinFile("./Resources/Tile_+007_+006_L21.obj.tiled.bin");
+            var navMesh = ctx.LoadTiledNavMeshBinFile("./Resources/Tile_+007_+006_L21.obj.tiled.bin64");
             Assert.IsNotNull(navMesh);
             return navMesh;
         }

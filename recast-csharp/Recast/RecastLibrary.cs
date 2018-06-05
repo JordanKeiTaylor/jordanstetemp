@@ -3,6 +3,8 @@ using System.Runtime.InteropServices;
 
 namespace Recast
 {
+    using DtPolyRef = UInt64;
+    
     // NOTE: There is possibly a .NET bug when returning struct values larger than 8 bytes from native code.
     // See: https://stackoverflow.com/questions/30363629/marshalling-of-c-struct-as-return-value-of-c-sharp-delegate
     internal static class RecastLibrary
@@ -75,16 +77,23 @@ namespace Recast
         // AS: Returning this struct by ref just doesn't seem to work. Possibly due to it's size.
         // I have no idea why not.
         [DllImport(Library, CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr navmesh_query_find_path(IntPtr navMeshQuery, uint startRef, uint endRef,
+        public static extern IntPtr navmesh_query_find_path(IntPtr navMeshQuery, DtPolyRef startRef, DtPolyRef endRef,
             IntPtr startPos, IntPtr endPos, IntPtr filter);
 
         [DllImport(Library, CallingConvention = CallingConvention.Cdecl)]
         public static extern void find_path_result_delete(IntPtr findPathResult);
         
         [DllImport(Library, CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr navmesh_query_get_smooth_path(IntPtr startPos, uint startRef, IntPtr endPos, ref FindPathResult path, IntPtr filter, IntPtr navMesh, IntPtr navQuery);
+        public static extern IntPtr navmesh_query_get_smooth_path(IntPtr startPos, DtPolyRef startRef, IntPtr endPos, ref FindPathResult path, IntPtr filter, IntPtr navMesh, IntPtr navQuery);
 
         [DllImport(Library, CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr smooth_path_result_delete(IntPtr smoothPathResult);
+
+        [DllImport(Library, CallingConvention = CallingConvention.Cdecl)]
+        public static extern bool dtPolyRef_is_64bit();
+
+        [DllImport(Library, CallingConvention = CallingConvention.Cdecl)]
+        public static extern void random_set_seed(int seed);
+
     }
 }

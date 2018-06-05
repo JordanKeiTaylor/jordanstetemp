@@ -87,3 +87,5 @@ extern "C" void dtQueryFilter_delete(dtQueryFilter* filter);
 extern "C" SmoothPathResult* navmesh_query_get_smooth_path(float* startPos, dtPolyRef startRef, float* endPos, FindPathResult* path, const dtQueryFilter* filter, dtNavMesh* navMesh, dtNavMeshQuery* navQuery);
 extern "C" void smooth_path_result_delete(SmoothPathResult* smoothPathResult);
 extern "C" bool dtStatus_failed(dtStatus status);
+extern "C" bool dtPolyRef_is_64bit();
+extern "C" void random_set_seed(int seed);

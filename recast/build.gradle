@@ -32,7 +32,7 @@ task(cloneRecast) {
 task premakeRecast(type: Exec) {
   workingDir clonePath
   commandLine "cmake", ".", "-DRECASTNAVIGATION_DEMO=OFF", "-DRECASTNAVIGATION_STATIC=ON"
-  environment CXXFLAGS: "-fPIC"
+  environment CXXFLAGS: "-fPIC -DDT_POLYREF64=1"
   dependsOn cloneRecast
 }
 
@@ -53,6 +53,10 @@ components.main.binaries.whenElementFinalized { binary ->
         add(binary.includePathConfiguration.name, files(libRecastIncludePath))
         add(binary.includePathConfiguration.name, files(libDetourIncludePath))
     }
+}
+
+tasks.withType(CppCompile) {
+    compilerArgs.add "-DDT_POLYREF64=1"
 }
 
 tasks.matching { it.name != "clean" && it.name != "buildRecast" && it.name != "premakeRecast" && it.name != "cloneRecast"}

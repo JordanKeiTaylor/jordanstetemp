@@ -11,6 +11,7 @@ namespace Recast
         public RecastContext()
         {
             _context = new RcContext(RecastLibrary.rcContext_create());
+            RecastLibrary.random_set_seed(new Random().Next());
         }
 
         public InputGeom LoadInputGeom(string path, bool invertYZ)
@@ -126,6 +127,11 @@ namespace Recast
             var smoothPathResult = Marshal.PtrToStructure(pathResultPointer, typeof(SmoothPathResult));
             RecastLibrary.smooth_path_result_delete(pathResultPointer);
             return (SmoothPathResult) smoothPathResult;
+        }
+
+        public static bool IsUsing64BitPolyRefs()
+        {
+            return RecastLibrary.dtPolyRef_is_64bit();
         }
         
         public void Dispose()

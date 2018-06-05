@@ -73,7 +73,7 @@ namespace Recast.Tests
                 var navMeshData = ctx.CreateNavMeshData(_config, polyMeshDetail, polyMesh, mesh, 0, 0,
                     BuildSettings.agentHeight, BuildSettings.agentRadius, BuildSettings.agentMaxClimb);
                 // TODO: This is different to Java!!
-                Assert.AreEqual(navMeshData.size, 105692);
+                Assert.AreEqual(114764, navMeshData.size);
 
                 var bytes = navMeshData.GetData();
                 Assert.AreEqual(bytes.Length, navMeshData.size);

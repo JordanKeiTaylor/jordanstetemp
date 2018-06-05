@@ -2,7 +2,7 @@
 
 namespace Recast
 {
-    [StructLayout(LayoutKind.Sequential, Pack=1)]
+    [StructLayout(LayoutKind.Sequential, Pack=0)]
     public unsafe struct RcConfig
     {
         /// The width of the field along the x-axis. [Limit: >= 0] [Units: vx]

@@ -1,13 +1,17 @@
 ﻿
+using System;
 using System.Runtime.InteropServices;
 
 namespace Recast
 {
-    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    using DtPolyRef = UInt64;
+        
+    [StructLayout(LayoutKind.Sequential, Pack = 0)]
     public struct PolyPointResult
     {
         public uint status;
-        public uint polyRef;
+        
+        public DtPolyRef polyRef;
 
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
         public float[] point;
