@@ -440,19 +440,10 @@ dtNavMeshQuery* navmesh_query_create(dtNavMesh* navmesh) {
 	return navQuery;
 }
 
-PolyPointResult navmesh_query_find_nearest_poly(dtNavMeshQuery* navQuery, float* point, float* half_extents) {
-	dtPolyRef polyRef;
-	float nearestPoint[3];
+PolyPointResult* navmesh_query_find_nearest_poly(dtNavMeshQuery* navQuery, float* point, float* half_extents) {
 	dtQueryFilter filter;
-	dtStatus status = navQuery->findNearestPoly(point, half_extents, &filter, &polyRef, nearestPoint);
-
-	PolyPointResult result;
-	result.status = status;
-	result.point[0] = nearestPoint[0];
-	result.point[1] = nearestPoint[1];
-	result.point[2] = nearestPoint[2];
-	result.polyRef = polyRef;
-
+	PolyPointResult *result = new PolyPointResult();
+	result->status = navQuery->findNearestPoly(point, half_extents, &filter, &result->polyRef, result->point);
 	return result;
 }
 

@@ -63,6 +63,9 @@ namespace Recast
         public static extern void navmesh_query_delete(IntPtr navMeshQuery);
 
         [DllImport(Library, CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr navmesh_query_find_nearest_poly(IntPtr navQuery, float[] point, float[] half_extents);
+
+        [DllImport(Library, CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr navmesh_query_find_random_point(IntPtr navMeshQuery);
         
         [DllImport(Library, CallingConvention = CallingConvention.Cdecl)]

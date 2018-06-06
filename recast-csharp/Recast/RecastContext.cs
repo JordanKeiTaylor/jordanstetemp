@@ -80,6 +80,16 @@ namespace Recast
             return new NavMeshQuery(handle);
         }
 
+        public PolyPointResult FindNearestPoly(NavMeshQuery navMeshQuery, float[] point, float[] halfExtents)
+        {
+            var polyPointResultPointer = RecastLibrary.navmesh_query_find_nearest_poly(navMeshQuery.DangerousGetHandle(), point, halfExtents);
+            var polyPointResult = Marshal.PtrToStructure(polyPointResultPointer, typeof(PolyPointResult));
+            
+            RecastLibrary.poly_point_result_delete(polyPointResultPointer);
+
+            return (PolyPointResult) polyPointResult;
+        }
+
         public PolyPointResult FindRandomPoint(NavMeshQuery navMeshQuery)
         {
             var polyPointResultPointer = RecastLibrary.navmesh_query_find_random_point(navMeshQuery.DangerousGetHandle());

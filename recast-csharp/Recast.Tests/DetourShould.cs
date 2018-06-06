@@ -28,6 +28,20 @@ namespace Recast.Tests
                 Assert.AreEqual(result.point.Length, 3);
             }
         }
+
+        [Test]
+        public void find_nearest_poly()
+        {
+            using (var ctx = new RecastContext()) {
+                var navMesh = CreateNavMesh(ctx);
+                var navMeshQuery = ctx.CreateNavMeshQuery(navMesh);
+
+                var point = new float[] { -575f, -69.1874f, 54f };
+                var halfExtents = new float[] { 10.0f, 10.0f, 10.0f };
+                var result = ctx.FindNearestPoly(navMeshQuery, point, halfExtents);
+                Assert.AreEqual(result.polyRef, 281474976711211L);
+            }
+        }
         
         [Test]
         public void find_path()
