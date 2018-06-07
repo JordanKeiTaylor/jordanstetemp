@@ -39,6 +39,7 @@ class Benchmark {
         println("Average time: ${times.average()}")
 
         recast.dtQueryFilter_delete(filter)
+        recast.navmesh_query_delete(navMeshQuery)
         recast.navmesh_delete(navMesh)
         recast.rcContext_delete(ctx)
     }

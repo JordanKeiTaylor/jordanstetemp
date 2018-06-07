@@ -57,7 +57,6 @@ namespace Recast.Tests
                 var chf = ctx.CreateCompactHeightfield(_config, mesh);
                 var polyMesh = ctx.CreatePolyMesh(_config, chf);
                 var polyMeshDetail = ctx.CreatePolyMeshDetail(_config, polyMesh, chf);
-                Assert.IsNotNull(polyMeshDetail);
             }
         }
         
@@ -71,7 +70,7 @@ namespace Recast.Tests
                 var polyMesh = ctx.CreatePolyMesh(_config, chf);
                 var polyMeshDetail = ctx.CreatePolyMeshDetail(_config, polyMesh, chf);
                 var navMeshData = ctx.CreateNavMeshData(_config, polyMeshDetail, polyMesh, mesh, 0, 0,
-                    BuildSettings.agentHeight, BuildSettings.agentRadius, BuildSettings.agentMaxClimb);
+                                                        BuildSettings.agentHeight, BuildSettings.agentRadius, BuildSettings.agentMaxClimb);
                 // TODO: This is different to Java!!
                 Assert.AreEqual(114764, navMeshData.size);
 
@@ -90,7 +89,7 @@ namespace Recast.Tests
                 var polyMesh = ctx.CreatePolyMesh(_config, chf);
                 var polyMeshDetail = ctx.CreatePolyMeshDetail(_config, polyMesh, chf);
                 var navMeshData = ctx.CreateNavMeshData(_config, polyMeshDetail, polyMesh, mesh, 0, 0,
-                    BuildSettings.agentHeight, BuildSettings.agentRadius, BuildSettings.agentMaxClimb);
+                                                        BuildSettings.agentHeight, BuildSettings.agentRadius, BuildSettings.agentMaxClimb);
                 var navMesh = ctx.CreateNavMesh(navMeshData);
                 Assert.IsNotNull(navMesh);
             }
@@ -106,11 +105,34 @@ namespace Recast.Tests
                 var polyMesh = ctx.CreatePolyMesh(_config, chf);
                 var polyMeshDetail = ctx.CreatePolyMeshDetail(_config, polyMesh, chf);
                 var navMeshData = ctx.CreateNavMeshData(_config, polyMeshDetail, polyMesh, mesh, 0, 0,
-                    BuildSettings.agentHeight, BuildSettings.agentRadius, BuildSettings.agentMaxClimb);
+                                                        BuildSettings.agentHeight, BuildSettings.agentRadius, BuildSettings.agentMaxClimb);
                 var navMesh = ctx.CreateNavMesh(navMeshData);
                 var navMeshQuery = ctx.CreateNavMeshQuery(navMesh);
                 Assert.IsNotNull(navMeshQuery);
             }
+        }
+
+        [Test]
+        public void disposes_work()
+        {
+            var ctx = new RecastContext();
+            var mesh = GetInputGeom(ctx);
+            var chf = ctx.CreateCompactHeightfield(_config, mesh);
+            var polyMesh = ctx.CreatePolyMesh(_config, chf);
+            var polyMeshDetail = ctx.CreatePolyMeshDetail(_config, polyMesh, chf);
+            var navMeshData = ctx.CreateNavMeshData(_config, polyMeshDetail, polyMesh, mesh, 0, 0,
+                                                    BuildSettings.agentHeight, BuildSettings.agentRadius, BuildSettings.agentMaxClimb);
+            var navMesh = ctx.CreateNavMesh(navMeshData);
+            var navMeshQuery = ctx.CreateNavMeshQuery(navMesh);
+            Assert.IsNotNull(navMeshQuery);
+
+            navMeshQuery.Dispose();
+            navMesh.Dispose();
+            polyMeshDetail.Dispose();
+            polyMesh.Dispose();
+            chf.Dispose();
+            mesh.Dispose();
+            ctx.Dispose();
         }
 
         private InputGeom GetInputGeom(RecastContext ctx)
