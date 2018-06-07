@@ -53,6 +53,42 @@ task unixNativeLibs(type: Sync) {
     into "${nativeLibDir}/linux-x86-64"
 }
 
+def nuspecMetadata = [
+    version: version,
+    title: 'Recast Wrapper',
+    authors: 'Improbable',
+    owners: 'Improbable',
+    projectUrl: 'https://github.com/improbable/recast-wrapper',
+    requireLicenseAcceptance: false,
+    dependencies: []
+]
+
+// See https://stackoverflow.com/questions/40104838/automatic-native-and-managed-dlls-extracting-from-nuget-package/40652794#40652794
+// and https://stackoverflow.com/questions/10198428/where-to-place-dlls-for-unmanaged-libraries
+// and https://www.nuget.org/packages/Grpc.Core/1.12.0
+// for how to package native libraries.
+nugetSpec {
+    nuspec = [
+        metadata: nuspecMetadata,
+        files: [
+            { file (src: "${buildDir}/msbuild/bin/Release/Recast.dll", target: 'lib/net45') },
+            { file (src: "${buildDir}/msbuild/bin/Release/Recast.pdb", target: 'lib/net45') },
+            { file (src: "${buildDir}/msbuild/bin/Release/librecastwrapper.dylib", target: 'runtimes/osx/native/') },
+            // { file (src: "${buildDir}/msbuild/bin/Release/librecastwrapper.so", target: 'runtimes/linux/native/') },
+            { file (src: "${projectDir}/Recast.targets", target: 'build/net45') },
+        ]
+    ]
+}
+
+nugetPush {
+    // TODO: changeme
+    serverUrl = "file://$projectDir/local_publish"
+    // apiKey = project.properties.nugetApiKey
+    nupkgFile = nugetPack.packageFile
+}
+
+nugetPack.dependsOn msbuild
+
 tasks.matching { it.name != 'darwinNativeLibs' && it.name != 'unixNativeLibs' && it.name != 'clean' && it.name != 'cleanMsbuild' }.all { task ->
     task.dependsOn(darwinNativeLibs)
     task.dependsOn(unixNativeLibs)
