@@ -1,30 +1,6 @@
-import org.ajoberstar.grgit.Grgit
-import org.gradle.internal.os.OperatingSystem
-import io.improbable.ste.gradle.CMake
-
 plugins {
-  id 'org.ajoberstar.grgit' version '1.7.2' apply false
   id "cpp-library"
 }
-
-
-//task premakeRecast(type: Exec) {
-//    inputs.dir(clonePath)
-//    outputs.file("$clonePath/Makefile")
-//
-//    workingDir clonePath
-//    commandLine "cmake", ".", "-DRECASTNAVIGATION_DEMO=OFF", "-DRECASTNAVIGATION_STATIC=ON"
-//    environment CXXFLAGS: "-fPIC -DDT_POLYREF64=1"
-//}
-//
-//task buildRecast(type: Exec) {
-//    inputs.file("$clonePath/Makefile")
-//    outputs.file("$clonePath/Recast/libRecast.a")
-//    outputs.file("$clonePath/Detour/libDetour.a")
-//
-//    workingDir clonePath
-//    commandLine "make"
-//}
 
 library {
     baseName.set("recastwrapper")
@@ -34,26 +10,6 @@ library {
     }
 }
 
-//components.main.binaries.whenElementFinalized { binary ->
-//    project.dependencies {
-//        add(binary.linkLibraries.name, files(libRecastLib))
-//        add(binary.linkLibraries.name, files(libDetourLib))
-//        add(binary.includePathConfiguration.name, files(libRecastIncludePath))
-//        add(binary.includePathConfiguration.name, files(libDetourIncludePath))
-//    }
-//}
-
-//afterEvaluate {
-//    artifacts { a ->
-//        fileTree("$buildDir/lib/main/release").visit { f ->
-//            if (f.getFile().getPath().endsWith(".so")) a.add("releaseLinkElements", f.getFile())
-//        }
-//    }
-//}
-
 tasks.withType(CppCompile) {
     compilerArgs.add "-DDT_POLYREF64=1"
 }
-
-//tasks.matching { it.name != "clean" && it.name != "buildRecast" && it.name != "premakeRecast" && it.name != "cloneRecast"}
-//    .all { task -> task.dependsOn(buildRecast) }

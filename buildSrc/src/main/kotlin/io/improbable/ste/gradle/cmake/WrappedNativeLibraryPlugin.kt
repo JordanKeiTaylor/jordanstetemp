@@ -1,4 +1,4 @@
-package io.improbable.ste.gradle
+package io.improbable.ste.gradle.cmake
 
 /*
  * Copyright 2018 the original author or authors.
@@ -15,6 +15,7 @@ package io.improbable.ste.gradle
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.attributes.Usage

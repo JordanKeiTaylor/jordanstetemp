@@ -1,4 +1,4 @@
-package io.improbable.ste.gradle
+package io.improbable.ste.gradle.cmake
 
 /*
  * Copyright 2018 the original author or authors.
