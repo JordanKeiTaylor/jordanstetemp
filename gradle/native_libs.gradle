@@ -1,0 +1,19 @@
+def nativeLibDir = "$buildDir/native_libs"
+
+configurations {
+    nativeLib
+}
+
+task darwinNativeLibs(type: Sync) {
+    dependsOn configurations.nativeLib
+    from configurations.nativeLib.filter { it.path.endsWith(".dylib") }
+    into "${nativeLibDir}/darwin"
+}
+
+task unixNativeLibs(type: Sync) {
+    dependsOn configurations.nativeLib
+    from configurations.nativeLib.filter { it.path.endsWith(".so") }
+    into "${nativeLibDir}/linux-x86-64"
+}
+
+ext.nativeLibDir = nativeLibDir

@@ -1,7 +1,0 @@
-ext {
-    libraries = [:]
-}
-
-libraries.keanu = "io.improbable:keanu:0.0.4"
-
-

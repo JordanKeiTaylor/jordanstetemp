@@ -1,3 +1,5 @@
 include ":recast"
+include ":detour"
+include ":recast-wrapper"
 include ":recast-java"
 include ":recast-csharp"
