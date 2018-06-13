@@ -29,6 +29,7 @@ assemble.dependsOn(msbuild)
 check.dependsOn(nunit)
 
 dependencies {
+    // Needs to be intransitive as we don't want the underlying recast library files (they get linked into recast-wrapper)
     nativeLib(project(path: ':recast-wrapper', configuration: "debugLinkElements")) { transitive = false }
 }
 

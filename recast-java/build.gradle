@@ -6,9 +6,12 @@ plugins {
 apply from: "$rootDir/gradle/native_libs.gradle"
 
 dependencies {
+    // Needs to be intransitive as we don't want the underlying recast library files (they get linked into recast-wrapper)
     nativeLib(project(path: ':recast-wrapper', configuration: "debugLinkElements")) { transitive = false }
+
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
     implementation "net.java.dev.jna:jna:4.5.1"
+
     testImplementation "junit:junit:4.12"
     testCompile "com.natpryce:hamkrest:1.4.2.2"
 }
