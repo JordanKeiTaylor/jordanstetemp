@@ -48,6 +48,7 @@ class RecastShould {
         val navMeshQuery = recast.navmesh_query_create(navMesh)
         assertThat(navMeshQuery, present())
 
+        recast.navmesh_query_delete(navMeshQuery)
         recast.navmesh_delete(navMesh)
         recast.rcContext_delete(ctx!!)
     }
@@ -92,6 +93,7 @@ class RecastShould {
         assertThat(dtFailed(randomPoint.status), equalTo(false))
 
         recast.dtQueryFilter_delete(filter)
+        recast.navmesh_query_delete(navMeshQuery)
         recast.navmesh_delete(navMesh)
         recast.rcContext_delete(ctx!!)
     }
@@ -127,6 +129,7 @@ class RecastShould {
             }
         }
 
+        recast.navmesh_query_delete(navMeshQuery)
         recast.navmesh_delete(navMesh)
     }
 

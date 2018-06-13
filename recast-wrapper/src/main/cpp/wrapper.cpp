@@ -440,6 +440,10 @@ dtNavMeshQuery* navmesh_query_create(dtNavMesh* navmesh) {
 	return navQuery;
 }
 
+void navmesh_query_delete(dtNavMeshQuery* navQuery) {
+	dtFreeNavMeshQuery(navQuery);
+}
+
 PolyPointResult* navmesh_query_find_nearest_poly(dtNavMeshQuery* navQuery, float* point, float* half_extents) {
 	dtQueryFilter filter;
 	PolyPointResult *result = new PolyPointResult();
