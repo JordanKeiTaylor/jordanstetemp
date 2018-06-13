@@ -1,0 +1,37 @@
+---
+- import_tasks: redhat.yml
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'RedHat'
+
+- import_tasks: debian.yml
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- service:
+    name: docker
+    state: started
+    enabled: true
+  become: true
+
+- name: Check if docker-compose is installed
+  command: docker-compose --version
+  register: docker_compose_check
+  ignore_errors: yes
+
+- name: Install docker-compose
+  shell: |
+    curl -L https://github.com/docker/compose/releases/download/1.19.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+    chmod +x /usr/local/bin/docker-compose 
+  when: docker_compose_check.rc != 0
+  become: true
+
+- name: Create docker group
+  become: true
+  group:
+    name: docker
+    state: present
+
+- name: Add user to docker group
+  become: true
+  user:
+    name: "{{ ansible_user_id }}"
+    groups: docker
+    append: true

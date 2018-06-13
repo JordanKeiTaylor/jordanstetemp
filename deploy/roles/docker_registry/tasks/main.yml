@@ -1,0 +1,28 @@
+---
+- name: Copy docker repository to server
+  copy:
+    src: repository.tar
+    dest: "~"
+  notify: load docker images
+  become: true
+
+# https://stackoverflow.com/questions/34018862/how-to-force-handler-to-run-before-executing-a-task-in-ansible
+- meta: flush_handlers
+  
+- name: Start docker registry
+  command: docker run -d -p 5000:5000 --restart=always --name registry registry
+  register: command_result
+  # To make this idempotent, don't worry if there's a conflict
+  failed_when: "(command_result.rc) != 0 and ('Conflict.' not in command_result.stderr)"
+  become: true
+
+- name: Tag docker images
+  command: docker tag {{ item.key }}:{{ item.value.tag }} master:5000/{{ item.key }}:{{ item.value.tag }}
+  with_dict: "{{ docker_images }}"
+  become: true
+
+- name: Publish docker images
+  command: docker push master:5000/{{ item.key }}:{{ item.value.tag }}
+  with_dict: "{{ docker_images }}"
+  become: true
+ 
