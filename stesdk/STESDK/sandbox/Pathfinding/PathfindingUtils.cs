@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using QuickGraph;
-using stesdk.sandbox.Extensions;
 
 namespace stesdk.sandbox.Pathfinding
 {
@@ -15,7 +14,7 @@ namespace stesdk.sandbox.Pathfinding
         /// <param name="end">End</param>
         /// <param name="speedLimit">Speed</param>
         /// <returns>Relative time to travel from start to end</returns>
-        public static double CalculateEdgeWeight(Coordinate start, Coordinate end, float speedLimit)
+        public static double CalculateEdgeWeight(Coordinates start, Coordinates end, float speedLimit)
         {
             return start.DistanceTo(end) / speedLimit;
         }

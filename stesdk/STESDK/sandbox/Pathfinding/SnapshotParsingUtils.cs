@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using Improbable;
-using stesdk.sandbox.Extensions;
-using stesdk.sandbox.Pathfinding.Api;
 
 namespace stesdk.sandbox.Pathfinding
 {
@@ -27,7 +25,7 @@ namespace stesdk.sandbox.Pathfinding
                         new PathNode
                         {
                             EntityId = new EntityId(long.Parse(row[0])),
-                            Coords = new Coordinate(double.Parse(row[2]), double.Parse(row[3]), double.Parse(row[4])),
+                            Coords = new Coordinates(double.Parse(row[2]), double.Parse(row[3]), double.Parse(row[4])),
                         });
                 }
             }

@@ -23,14 +23,14 @@
         /// </summary>
         /// <returns>The length.</returns>
         /// <param name="vector">Vector along interpolation.</param>
-        double LengthAt(Coordinate vector);
+        double LengthAt(Vector3d vector);
 
         /// <summary>
         /// Gets positions at step.
         /// </summary>
         /// <returns>Vector along interpolation.</returns>
         /// <param name="step">Step from 0 to 1.</param>
-        Coordinate PositionAt(double step);
+        Vector3d PositionAt(double step);
 
         /// <summary>
         /// Gets step at specified distance.
@@ -44,6 +44,6 @@
         /// </summary>
         /// <returns>Step value from 0 to 1.</returns>
         /// <param name="vector">Vector along interpolation.</param>
-        double StepAt(Coordinate vector);
+        double StepAt(Vector3d vector);
     }
 }

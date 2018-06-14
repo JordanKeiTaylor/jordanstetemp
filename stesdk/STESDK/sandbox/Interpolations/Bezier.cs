@@ -1,5 +1,4 @@
 ﻿using System;
-using stesdk.sandbox.Extensions;
 
 namespace stesdk.sandbox.Interpolations
 {
@@ -14,15 +13,15 @@ namespace stesdk.sandbox.Interpolations
         private readonly Curve _curve;
         private readonly double _tolerance;
 
-        private readonly Coordinate _p1;
-        private readonly Coordinate _p2;
-        private readonly Coordinate _cp1;
-        private readonly Coordinate _cp2;
+        private readonly Vector3d _p1;
+        private readonly Vector3d _p2;
+        private readonly Vector3d _cp1;
+        private readonly Vector3d _cp2;
 
         private double _length;
         private double[] _steps;
         private double[] _lengths;
-        private Coordinate[] _points;
+        private Vector3d[] _points;
 
         /// <summary>
         /// Initializes a new instance of a Quadratic <see cref="T:stesdk.sandbox.Interpolations.Bezier"/> Bezier interpolator.
@@ -33,9 +32,9 @@ namespace stesdk.sandbox.Interpolations
         /// <param name="smaples">Number of samples along bezier curve.</param>
         /// <param name="tolerance">Tolerance.</param>
         public Bezier(
-            Coordinate point1,
-            Coordinate point2,
-            Coordinate controlPoint,
+            Vector3d point1,
+            Vector3d point2,
+            Vector3d controlPoint,
             int smaples = 100,
             double tolerance = 0.0001)
         {
@@ -57,10 +56,10 @@ namespace stesdk.sandbox.Interpolations
         /// <param name="smaples">Number of samples along bezier curve.</param>
         /// <param name="tolerance">Tolerance.</param>
         public Bezier(
-            Coordinate point1,
-            Coordinate point2,
-            Coordinate controlPoint1,
-            Coordinate controlPoint2,
+            Vector3d point1,
+            Vector3d point2,
+            Vector3d controlPoint1,
+            Vector3d controlPoint2,
             int samples = 100,
             double tolerance = 0.0001)
         {
@@ -75,7 +74,7 @@ namespace stesdk.sandbox.Interpolations
 
         public double Length => _length;
 
-        public Coordinate PositionAt(double step)
+        public Vector3d PositionAt(double step)
         {
             var safeStep = step.Clamp(0, 1, _tolerance);
             if (_curve == Curve.Quadratic)
@@ -86,7 +85,7 @@ namespace stesdk.sandbox.Interpolations
             return Interpolate.Bezier(_p1, _p2, _cp1, _cp2, safeStep);
         }
 
-        public double StepAt(Coordinate vector)
+        public double StepAt(Vector3d vector)
         {
             var index = FindIndexAt(vector);
             return _steps[index];
@@ -116,7 +115,7 @@ namespace stesdk.sandbox.Interpolations
             return _lengths[index];
         }
 
-        public double LengthAt(Coordinate vector)
+        public double LengthAt(Vector3d vector)
         {
             var index = FindIndexAt(vector);
             return _lengths[index];
@@ -131,13 +130,13 @@ namespace stesdk.sandbox.Interpolations
 
             _steps = new double[samples + 1];
             _lengths = new double[samples + 1];
-            _points = new Coordinate[samples + 1];
+            _points = new Vector3d[samples + 1];
 
             _steps[0] = 0;
             _lengths[0] = 0;
             _points[0] = _p1;
 
-            Coordinate prevP = _p1;
+            Vector3d prevP = _p1;
 
             _length = 0;
             var stepSize = 1d / samples;
@@ -154,7 +153,7 @@ namespace stesdk.sandbox.Interpolations
             }
         }
 
-        private int FindIndexAt(Coordinate vector)
+        private int FindIndexAt(Vector3d vector)
         {
             var minIndex = 0;
             var minDistance = _p1.DistanceSquaredTo(vector);

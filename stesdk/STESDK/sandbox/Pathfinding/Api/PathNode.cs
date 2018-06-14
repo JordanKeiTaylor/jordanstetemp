@@ -6,6 +6,6 @@ namespace stesdk.sandbox.Pathfinding.Api
     {
         public EntityId EntityId { get; set; }
 
-        public Coordinate Coords { get; set; }
+        public Coordinates Coords { get; set; }
     }
 }

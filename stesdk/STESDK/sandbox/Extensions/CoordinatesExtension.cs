@@ -4,6 +4,15 @@ namespace stesdk.sandbox.Extensions
 {
     public static class CoordinatesExtension
     {
+        /// <summary>
+        /// Converts this coordinate to a vector3d.
+        /// </summary>
+        /// <returns>Vector.</returns>
+        /// <param name="coord">Coordinate.</param>
+        public static Vector3d ToVector3d(this Coordinates coord)
+        {
+            return new Vector3d(coord.x, coord.y, coord.z);
+        }
 
         /// <summary>
         /// Euclidean distance squared from this point to specified point.
@@ -11,7 +20,7 @@ namespace stesdk.sandbox.Extensions
         /// <returns>Distance squared.</returns>
         /// <param name="p">P.</param>
         /// <param name="point">Point.</param>
-        public static double DistanceSquaredTo(this Coordinate p, Coordinate point)
+        public static double DistanceSquaredTo(this Coordinates p, Coordinates point)
         {
             var dx = p.x - point.x;
             var dy = p.y - point.y;
@@ -25,7 +34,7 @@ namespace stesdk.sandbox.Extensions
         /// <returns>Distance.</returns>
         /// <param name="p">P.</param>
         /// <param name="point">Point.</param>
-        public static double DistanceTo(this Coordinate p, Coordinate point)
+        public static double DistanceTo(this Coordinates p, Coordinates point)
         {
             return Math.Sqrt(p.DistanceSquaredTo(point));
         }
@@ -36,9 +45,9 @@ namespace stesdk.sandbox.Extensions
         /// <returns>(c2 -c1).</returns>
         /// <param name="c1">c1.</param>
         /// <param name="c2">c2.</param>
-        public static Coordinate Subtract(this Coordinate c1, Coordinate c2)
+        public static Coordinates Subtract(this Coordinates c1, Coordinates c2)
         {
-            return new Coordinate(c1.x - c2.x, c1.y - c2.y, c1.z - c2.z);
+            return new Coordinates(c1.x - c2.x, c1.y - c2.y, c1.z - c2.z);
         }
     }
 }

@@ -2,9 +2,9 @@
 {
     public static class CoordinateOffset
     {
-        public static Coordinate ApplyOffset(double x, double y, double z, double offsetX, double offsetZ)
+        public static Vector3d ApplyOffset(double x, double y, double z, double offsetX, double offsetZ)
         {
-            return new Coordinate(
+            return new Vector3d(
                 x + offsetX,
                 y,
                 z + offsetZ);
