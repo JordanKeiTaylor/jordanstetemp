@@ -5,8 +5,8 @@ apply from: "$rootDir/gradle/recast.gradle"
 apply plugin: io.improbable.ste.gradle.cmake.CMakeLibraryPlugin
 
 cmake {
-    binary = OperatingSystem.current().getStaticLibraryName("Recast/Recast")
-    includeDirectory = file("$clonePath/Recast/Include")
+    binary = OperatingSystem.current().getStaticLibraryName("Detour/Detour")
+    includeDirectory = file("$clonePath/Detour/Include")
     projectDirectory = clonePath
     args = ["-DRECASTNAVIGATION_DEMO=OFF", "-DRECASTNAVIGATION_STATIC=ON"]
     env = [CXXFLAGS: "-fPIC -DDT_POLYREF64=1"]

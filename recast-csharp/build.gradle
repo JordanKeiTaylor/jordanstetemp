@@ -1,15 +1,10 @@
-import org.gradle.internal.os.OperatingSystem
 plugins {
     id 'com.ullink.msbuild' version '2.15'
     id 'com.ullink.nunit' version '1.12'
     id 'com.ullink.nuget' version '2.12'
 }
 
-def nativeLibDir = "$buildDir/native_libs"
-
-configurations {
-    nativeLib
-}
+apply from: "$rootDir/gradle/native_libs.gradle"
 
 nuget {
     version = '4.4.1'
@@ -34,24 +29,14 @@ assemble.dependsOn(msbuild)
 check.dependsOn(nunit)
 
 dependencies {
-    nativeLib project(path: ':recast', configuration: 'releaseLinkElements')
+    // Needs to be intransitive as we don't want the underlying recast library files (they get linked into recast-wrapper)
+    nativeLib(project(path: ':recast-wrapper', configuration: "debugLinkElements")) { transitive = false }
 }
 
 repositories {
     mavenCentral()
 }
 
-task darwinNativeLibs(type: Sync) {
-    dependsOn configurations.nativeLib
-    from configurations.nativeLib.filter { it.path.endsWith(".dylib") }
-    into "${nativeLibDir}/darwin"
-}
-
-task unixNativeLibs(type: Sync) {
-    dependsOn configurations.nativeLib
-    from configurations.nativeLib.filter { it.path.endsWith(".so") }
-    into "${nativeLibDir}/linux-x86-64"
-}
 
 def nuspecMetadata = [
     version: version,
@@ -73,17 +58,17 @@ nugetSpec {
         files: [
             { file (src: "${buildDir}/msbuild/bin/Release/Recast.dll", target: 'lib/net45') },
             { file (src: "${buildDir}/msbuild/bin/Release/Recast.pdb", target: 'lib/net45') },
-            { file (src: "${buildDir}/msbuild/bin/Release/librecastwrapper.dylib", target: 'runtimes/osx/native/') },
-            // { file (src: "${buildDir}/msbuild/bin/Release/librecastwrapper.so", target: 'runtimes/linux/native/') },
+            { file (src: "${nativeLibDir}/darwin/librecastwrapper.dylib", target: 'runtimes/osx/native/') },
+//            { file (src: "${nativeLibDir}/linux-x86-64/librecastwrapper.so", target: 'runtimes/linux/native/') },
             { file (src: "${projectDir}/Recast.targets", target: 'build/net45') },
         ]
     ]
 }
 
 nugetPush {
-    // TODO: changeme
     serverUrl = "file://$projectDir/local_publish"
-    // apiKey = project.properties.nugetApiKey
+    //serverUrl = "http://localhost:8081/repository/nuget-hosted/"
+    //apiKey = "8bac9540-1b94-33ba-a276-39cdadc014a1" //project.properties.nugetApiKey
     nupkgFile = nugetPack.packageFile
 }
 
