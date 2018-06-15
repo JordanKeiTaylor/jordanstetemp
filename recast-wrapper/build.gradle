@@ -1,15 +1,4 @@
-plugins {
-  id "cpp-library"
-}
 
-library {
-    baseName.set("recastwrapper")
-    dependencies {
-        api project(":recast")
-        api project(":detour")
-    }
-}
-
-tasks.withType(CppCompile) {
-    compilerArgs.add "-DDT_POLYREF64=1"
+allprojects {
+    version = "0.0.1"
 }
