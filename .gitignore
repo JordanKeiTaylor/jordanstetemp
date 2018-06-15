@@ -1,0 +1,9 @@
+.gradle
+build
+.idea
+*.iml
+out/
+.vscode
+hs_err_pid*.log
+replay_pid*.log
+recast-csharp/packages
