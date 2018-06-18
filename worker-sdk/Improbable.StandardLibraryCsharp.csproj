@@ -44,5 +44,6 @@
     <Exec Command="spatial worker_package unpack-to worker_sdk csharp build/worker-sdk/" />
     <Exec Command="cp build/worker-sdk/Improbable.WorkerSdkCsharp.dll worker-sdk/" />
     <Exec Command="spatial schema generate --language csharp --output build/generated-code/csharp/" />
+    <Exec Command="sed -i -e 's/public partial struct/public struct/g' build/generated-code/csharp/improbable/*" />
   </Target>
 </Project>

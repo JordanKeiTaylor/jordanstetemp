@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using Improbable;
+using stesdk.sandbox.Pathfinding.Api;
 
 namespace stesdk.sandbox.Pathfinding
 {

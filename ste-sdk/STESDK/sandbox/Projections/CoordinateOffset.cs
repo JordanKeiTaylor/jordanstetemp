@@ -1,4 +1,6 @@
-﻿namespace stesdk.sandbox.Projections
+﻿using Improbable;
+
+namespace stesdk.sandbox.Projections
 {
     public static class CoordinateOffset
     {

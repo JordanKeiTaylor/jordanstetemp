@@ -39,8 +39,11 @@
     <AdditionalFiles Include="stylecop.json" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Improbable.StandardLibraryCsharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\Improbable.StandardLibraryCsharp.12.2.0\Improbable.StandardLibraryCsharp.dll</HintPath>
+    </Reference>
     <Reference Include="Improbable.WorkerSdkCsharp, Version=12.2.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\Improbable.WorkerSdkCsharp.dll.1.0.0\Improbable.WorkerSdkCsharp.dll</HintPath>
+      <HintPath>..\packages\Improbable.WorkerSdkCsharp.12.2.0\Improbable.WorkerSdkCsharp.dll</HintPath>
     </Reference>
     <Reference Include="QuickGraph, Version=3.6.61114.0, Culture=neutral, PublicKeyToken=f3fb40175eec2af3">
       <HintPath>..\packages\QuickGraph.3.6.61119.7\lib\net4\QuickGraph.dll</HintPath>
