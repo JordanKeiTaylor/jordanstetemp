@@ -3,3 +3,7 @@ build/
 obj/
 logs/
 .idea/
+**/*.dll
+**/*.md5
+**/*.pdb
+**/*.xml

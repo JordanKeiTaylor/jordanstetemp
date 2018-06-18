@@ -22,7 +22,7 @@
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Platform)' == 'x64' And ('$(Configuration)' == 'Release')">
-    <OutputPath>build\standard-library\</OutputPath>
+    <OutputPath>standard-library\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -30,7 +30,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Improbable.WorkerSdkCsharp, Version=12.2.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>build\worker-sdk\Improbable.WorkerSdkCsharp.dll</HintPath>
+      <HintPath>worker-sdk\Improbable.WorkerSdkCsharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -41,7 +41,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="BeforeBuild">
-    <Exec Command="spatial worker_package unpack-to worker_sdk csharp build/worker-sdk/" />
+    <Exec Command="spatial worker_package unpack-to worker_sdk csharp worker-sdk/" />
     <Exec Command="spatial schema generate --language csharp --output build/generated-code/csharp/" />
   </Target>
 </Project>
