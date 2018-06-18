@@ -7,3 +7,4 @@ logs/
 **/*.md5
 **/*.pdb
 **/*.xml
+**/*.nupkg
