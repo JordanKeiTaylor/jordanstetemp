@@ -46,7 +46,7 @@ nuget add Improbable.WorkerSdkCsharp.12.2.0.nupkg -source ~/.nuget/packages/
 which should add the artifacts to your specified NuGet `source`
 
 ```
-/Users/christophergatto/.nuget/packages/
+~/.nuget/packages/
 ├── improbable.standardlibrarycsharp
 │   └── 12.2.0
 ├── improbable.workersdkcsharp
