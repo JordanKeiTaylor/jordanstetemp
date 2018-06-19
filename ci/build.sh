@@ -6,11 +6,11 @@ tc_progress() {
 }
 
 tc_progress "building OBJ-Tools"
-pushd OBJ-Tools
+cd OBJ-Tools
 ./gradlew check
-popd
+cd ..
 
 tc_progress "building minisseur"
-pushd minisseur
+cd minisseur
 ./gradlew check
-popd
+cd ..
