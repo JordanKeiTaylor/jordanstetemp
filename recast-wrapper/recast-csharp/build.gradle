@@ -1,0 +1,80 @@
+plugins {
+    id 'com.ullink.msbuild' version '2.15'
+    id 'com.ullink.nunit' version '1.12'
+    id 'com.ullink.nuget' version '2.12'
+}
+
+apply from: "$rootDir/gradle/native_libs.gradle"
+
+nuget {
+    version = '4.4.1'
+}
+
+msbuild {
+    solutionFile = file('recast-csharp.sln')
+    configuration = 'Release'
+    projectName = 'Recast'
+    inputs.file(project.buildFile)
+    intermediateDir = 'build/msbuild/obj'
+}
+
+nunit {
+    testAssemblies = [file("$buildDir/msbuild/bin/Release/Recast.Tests.dll")]
+}
+
+msbuild.dependsOn(nugetRestore)
+nunit.dependsOn(msbuild)
+
+assemble.dependsOn(msbuild)
+check.dependsOn(nunit)
+
+dependencies {
+    // Needs to be intransitive as we don't want the underlying recast library files (they get linked into recast-wrapper)
+    nativeLib(project(path: ':recast-wrapper', configuration: "debugLinkElements")) { transitive = false }
+}
+
+repositories {
+    mavenCentral()
+}
+
+
+def nuspecMetadata = [
+    version: version,
+    title: 'Recast Wrapper',
+    authors: 'Improbable',
+    owners: 'Improbable',
+    projectUrl: 'https://github.com/improbable/recast-wrapper',
+    requireLicenseAcceptance: false,
+    dependencies: []
+]
+
+// See https://stackoverflow.com/questions/40104838/automatic-native-and-managed-dlls-extracting-from-nuget-package/40652794#40652794
+// and https://stackoverflow.com/questions/10198428/where-to-place-dlls-for-unmanaged-libraries
+// and https://www.nuget.org/packages/Grpc.Core/1.12.0
+// for how to package native libraries.
+nugetSpec {
+    nuspec = [
+        metadata: nuspecMetadata,
+        files: [
+            { file (src: "${buildDir}/msbuild/bin/Release/Recast.dll", target: 'lib/net45') },
+            { file (src: "${buildDir}/msbuild/bin/Release/Recast.pdb", target: 'lib/net45') },
+            { file (src: "${nativeLibDir}/darwin/librecastwrapper.dylib", target: 'runtimes/osx/native/') },
+//            { file (src: "${nativeLibDir}/linux-x86-64/librecastwrapper.so", target: 'runtimes/linux/native/') },
+            { file (src: "${projectDir}/Recast.targets", target: 'build/net45') },
+        ]
+    ]
+}
+
+nugetPush {
+    serverUrl = "file://$projectDir/local_publish"
+    //serverUrl = "http://localhost:8081/repository/nuget-hosted/"
+    //apiKey = "8bac9540-1b94-33ba-a276-39cdadc014a1" //project.properties.nugetApiKey
+    nupkgFile = nugetPack.packageFile
+}
+
+nugetPack.dependsOn msbuild
+
+tasks.matching { it.name != 'darwinNativeLibs' && it.name != 'unixNativeLibs' && it.name != 'clean' && it.name != 'cleanMsbuild' }.all { task ->
+    task.dependsOn(darwinNativeLibs)
+    task.dependsOn(unixNativeLibs)
+}
