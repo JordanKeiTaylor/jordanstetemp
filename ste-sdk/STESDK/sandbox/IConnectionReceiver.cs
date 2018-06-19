@@ -1,13 +1,10 @@
-﻿using Improbable.Shared.Environment;
-
-namespace Improbable.Shared
+﻿namespace stesdk.sandbox
 {
     /// <summary>
     /// Indicates that the class can handle changes to the Connection state - used in conjunction with the IConnectionManager.
     /// </summary>
     public interface IConnectionReceiver
     {
-
         /// <summary>
         /// Called when a connection is established.
         /// </summary>
@@ -17,6 +14,5 @@ namespace Improbable.Shared
         /// Called when a connection is lost.
         /// </summary>
         void DetachConnection(IConnection c);
-
     }
 }
