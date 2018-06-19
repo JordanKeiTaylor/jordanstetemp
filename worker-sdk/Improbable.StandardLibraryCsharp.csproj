@@ -41,11 +41,4 @@
     <Compile Include="main/**/*.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Target Name="BeforeBuild">
-    <Exec Command="spatial worker_package unpack-to worker_sdk csharp build/worker-sdk/" />
-    <Exec Command="cp build/worker-sdk/Improbable.WorkerSdkCsharp.dll worker-sdk/" />
-    <Exec Command="spatial schema generate --language csharp --output build/generated-code/csharp/" />
-    <Exec Command="cp -R build/generated-code/csharp/* main/" />
-    <Exec Command="sed -i -e 's/public partial struct/public struct/g' main/improbable/*" />
-  </Target>
 </Project>
