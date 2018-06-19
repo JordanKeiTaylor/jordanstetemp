@@ -1,36 +1,25 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using Improbable;
+using Improbable.Shared.Environment;
 using Improbable.Worker;
 
-namespace stesdk.sandbox
+namespace Improbable.Shared
 {
-    [Flags]
-    public enum ComponentMapEvent
-    {
-        AddComponent = 1,
-        UpdateComponent = 2,
-        RemoveEntity = 4,
-        AuthorityChange = 8,
-    }
-
     public class ComponentMap<T> : IEnumerable<KeyValuePair<EntityId, IComponentData<T>>>
         where T : IComponentMetaclass
     {
-        private static readonly Random Rand = new Random();
+        private readonly Random _random = new Random();
 
         private readonly HashSet<EntityId> _authority;
         private readonly Dictionary<EntityId, IComponentData<T>> _components;
 
-        private bool _hasUpdated = true;
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:stesdk.sandbox.ComponentMap`1"/> class.
+        /// Initializes a new instance of the <see cref="T:Improbable.Shared.ComponentMap`1"/> class.
         /// </summary>
         /// <param name="dispatcher">Dispatcher.</param>
         /// <param name="disableEvents">
-        /// Events to disable.
+        /// Events to disable. 
         /// Note: Can pass in multiple flags using bitwise OR. For example, AddComponent | UpdateComponent.
         /// </param>
         public ComponentMap(IDispatcher dispatcher, ComponentMapEvent? disableEvents = null)
@@ -59,9 +48,15 @@ namespace stesdk.sandbox
             }
         }
 
-        public Dictionary<EntityId, IComponentData<T>>.KeyCollection Keys => _components.Keys;
+        public Dictionary<EntityId, IComponentData<T>>.KeyCollection Keys
+        {
+            get { return _components.Keys; }
+        }
 
-        public Dictionary<EntityId, IComponentData<T>>.ValueCollection Values => _components.Values;
+        public Dictionary<EntityId, IComponentData<T>>.ValueCollection Values
+        {
+            get { return _components.Values; }
+        }
 
         public bool ContainsKey(EntityId id)
         {
@@ -88,31 +83,20 @@ namespace stesdk.sandbox
             return _components.GetEnumerator();
         }
 
-        public bool HasUpdated()
-        {
-            return _hasUpdated;
-        }
-
-        public void AckUpdated()
-        {
-            _hasUpdated = false;
-        }
-
         public EntityId GetRandomAuthorativeId()
         {
             var e = _authority.GetEnumerator();
-            var index = Rand.Next(_authority.Count);
-            for (int i = 0; i < index; i++)
+            var index = _random.Next(_authority.Count);
+            for (var i = 0; i < index; i++)
             {
                 e.MoveNext();
             }
 
-            return e.Current;
-        }
+            EntityId currentId = e.Current;
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
+            e.Dispose();
+            
+            return currentId;
         }
 
         private void SetAuthority(AuthorityChangeOp authorityChange)
@@ -132,14 +116,12 @@ namespace stesdk.sandbox
             if (!HasAuthority(update.EntityId) && _components.ContainsKey(update.EntityId))
             {
                 update.Update.ApplyTo(_components[update.EntityId]);
-                _hasUpdated = true;
             }
         }
 
         private void AddComponent(AddComponentOp<T> add)
         {
             _components[add.EntityId] = add.Data;
-            _hasUpdated = true;
         }
 
         private void RemoveEntity(RemoveEntityOp removeEntityOp)
@@ -147,13 +129,26 @@ namespace stesdk.sandbox
             if (_components.ContainsKey(removeEntityOp.EntityId))
             {
                 _components.Remove(removeEntityOp.EntityId);
-                _hasUpdated = true;
             }
         }
 
-        private bool HasFlag(ComponentMapEvent? allFlags, ComponentMapEvent flag)
+        private static bool HasFlag(ComponentMapEvent? allFlags, ComponentMapEvent flag)
         {
             return allFlags.HasValue && allFlags.Value.HasFlag(flag);
         }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+    }
+
+    [Flags]
+    public enum ComponentMapEvent
+    {
+        AddComponent = 1,
+        UpdateComponent = 2,
+        RemoveEntity = 4,
+        AuthorityChange = 8
     }
 }
