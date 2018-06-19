@@ -1,0 +1,11 @@
+.spatialos/
+build/
+obj/
+logs/
+.idea/
+main/*
+**/*.dll
+**/*.md5
+**/*.pdb
+**/*.xml
+**/*.nupkg

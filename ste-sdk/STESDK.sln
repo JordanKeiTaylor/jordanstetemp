@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "STESDK", "STESDK\STESDK.csproj", "{FF482747-DB6A-4977-95DE-C0899A17A83B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FF482747-DB6A-4977-95DE-C0899A17A83B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF482747-DB6A-4977-95DE-C0899A17A83B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF482747-DB6A-4977-95DE-C0899A17A83B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF482747-DB6A-4977-95DE-C0899A17A83B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
