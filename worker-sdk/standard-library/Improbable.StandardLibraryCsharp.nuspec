@@ -3,8 +3,8 @@
   <metadata>
     <id>Improbable.StandardLibraryCsharp</id>
     <version>12.2.0</version>
-    <authors>christophergatto</authors>
-    <owners>christophergatto</owners>
+    <authors>Improbable</authors>
+    <owners>Improbable</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Standard Library Schema Compiled Classes</description>
     <releaseNotes>Standard Library Schema based on v12.2.0 of SpatialOS Worker SDK</releaseNotes>
