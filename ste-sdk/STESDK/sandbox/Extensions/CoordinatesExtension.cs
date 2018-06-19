@@ -1,7 +1,6 @@
 ﻿using System;
-using Improbable;
 
-namespace stesdk.sandbox.Extensions
+namespace Improbable.Enterprise.Sandbox.Extensions
 {
     public static class CoordinatesExtension
     {

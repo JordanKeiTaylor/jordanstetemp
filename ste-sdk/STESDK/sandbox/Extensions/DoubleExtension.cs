@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace stesdk.sandbox.Extensions
+namespace Improbable.Enterprise.Sandbox.Extensions
 {
     public static class DoubleExtension
     {

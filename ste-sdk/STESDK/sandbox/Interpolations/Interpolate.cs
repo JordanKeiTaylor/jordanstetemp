@@ -1,7 +1,6 @@
 ﻿using System;
-using Improbable;
 
-namespace stesdk.sandbox.Interpolations
+namespace Improbable.Enterprise.Sandbox.Interpolations
 {
     public static class Interpolate
     {

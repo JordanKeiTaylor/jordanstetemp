@@ -1,9 +1,8 @@
 ﻿using System;
-using Improbable;
 using Improbable.Collections;
 using Improbable.Worker;
 
-namespace stesdk.sandbox.Log
+namespace Improbable.Enterprise.Sandbox.Log
 {
     public class NamedLogger : ILogger
     {

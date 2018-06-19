@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Threading;
 
-namespace stesdk.sandbox
+namespace Improbable.Enterprise.Sandbox
 {
     public class ExponentialBackoff
     {

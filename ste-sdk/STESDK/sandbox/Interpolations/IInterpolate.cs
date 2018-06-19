@@ -1,6 +1,4 @@
-﻿using Improbable;
-
-namespace stesdk.sandbox.Interpolations
+﻿namespace Improbable.Enterprise.Sandbox.Interpolations
 {
     /// <summary>
     /// Interface for interpolating.

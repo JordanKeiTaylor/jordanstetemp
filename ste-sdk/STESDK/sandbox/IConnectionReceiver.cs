@@ -1,6 +1,6 @@
-﻿using stesdk.sandbox.Environment;
+﻿using Improbable.Enterprise.Sandbox.Environment;
 
-namespace stesdk.sandbox
+namespace Improbable.Enterprise.Sandbox
 {
     /// <summary>
     /// Indicates that the class can handle changes to the Connection state - used in conjunction with the IConnectionManager.

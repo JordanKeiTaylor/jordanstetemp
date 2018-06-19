@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 
-namespace stesdk.sandbox.Projections
+namespace Improbable.Enterprise.Sandbox.Projections
 {
     /// <summary>
     /// Azimuthal equidistant projection.
@@ -15,7 +15,7 @@ namespace stesdk.sandbox.Projections
         private readonly double _lonROrig;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:stesdk.sandbox.Projections.AzimuthalEquidistant"/>
+        /// Initializes a new instance of the <see cref="T:Improbable.Enterprise.Sandbox.Projections.AzimuthalEquidistant"/>
         /// class centered at the specified lat/lon position.
         /// </summary>
         /// <param name="lat">Latitude origin.</param>

@@ -7,7 +7,7 @@
     <ProjectGuid>{FF482747-DB6A-4977-95DE-C0899A17A83B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>main/Properties</AppDesignerFolder>
-    <RootNamespace>stesdk</RootNamespace>
+    <RootNamespace>Improbable.Enterprise</RootNamespace>
     <AssemblyName>STESDK</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -32,7 +32,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="sandbox\**\*.cs" />
+    <Compile Include="Sandbox\**\*.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

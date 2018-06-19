@@ -1,10 +1,9 @@
 ﻿using System;
-using Improbable;
 using Improbable.Collections;
 using Improbable.Worker;
 using Improbable.Worker.Query;
 
-namespace stesdk.sandbox.Environment
+namespace Improbable.Enterprise.Sandbox.Environment
 {
     public interface IConnection : IDisposable
     {

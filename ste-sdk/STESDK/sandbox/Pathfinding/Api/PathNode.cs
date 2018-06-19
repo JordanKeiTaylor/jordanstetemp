@@ -1,6 +1,4 @@
-﻿using Improbable;
-
-namespace stesdk.sandbox.Pathfinding.Api
+﻿namespace Improbable.Enterprise.Sandbox.Pathfinding.Api
 {
     public class PathNode
     {
