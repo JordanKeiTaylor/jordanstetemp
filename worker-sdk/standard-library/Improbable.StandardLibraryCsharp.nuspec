@@ -9,8 +9,5 @@
     <description>Standard Library Schema Compiled Classes</description>
     <releaseNotes>Standard Library Schema based on v12.2.0 of SpatialOS Worker SDK</releaseNotes>
     <copyright>Copyright 2018</copyright>
-    <dependencies>
-      <dependency id="Improbable.WorkerSdkCsharp" version="12.2.0" />
-    </dependencies>
   </metadata>
 </package>
