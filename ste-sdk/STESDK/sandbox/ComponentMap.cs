@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Improbable;
+using Improbable.Shared.Environment;
 using Improbable.Worker;
 
 namespace stesdk.sandbox

@@ -1,4 +1,5 @@
-﻿using stesdk.sandbox;
+﻿using Improbable.Shared.Environment;
+using stesdk.sandbox;
 
 namespace Improbable.Shared
 {
