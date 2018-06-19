@@ -37,11 +37,11 @@ Prior to building the STESDK, the [worker-sdk](../worker-sdk/README.md) project 
 ## Build
 ```
 nuget restore
-msbuild STESDK.sln /p:Configuration=Release
+msbuild /p:Configuration=Release
 ```
 
 ## Publish
 ```
-nuget pack STESDK/STESDK.csproj
-nuget add STESDK.*.nupkg -source ~/.nuget/packages/
+nuget pack STESDK/STESDK.csproj -Prop Configuration=Release
+nuget add Improbable.Enterprise.STESDK.*.nupkg -source ~/.nuget/packages/
 ```
