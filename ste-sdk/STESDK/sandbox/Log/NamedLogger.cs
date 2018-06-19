@@ -1,6 +1,7 @@
 ﻿using System;
 using Improbable;
 using Improbable.Collections;
+using Improbable.Shared;
 using Improbable.Worker;
 
 namespace stesdk.sandbox.Log
