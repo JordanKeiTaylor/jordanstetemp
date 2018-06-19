@@ -1,0 +1,44 @@
+import org.ajoberstar.grgit.Grgit
+import org.gradle.internal.os.OperatingSystem
+
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "org.ajoberstar:grgit:2.2.1"
+    }
+}
+
+def getOsArch() {
+    if (org.gradle.internal.os.OperatingSystem.current().isMacOsX()) {
+        return "darwin"
+    } else if (org.gradle.internal.os.OperatingSystem.current().isLinux()) {
+        return "linux-x86-64"
+    } else {
+        throw new RuntimeException("Unsupported architecture");
+    }
+}
+
+def clonePath = file("${rootProject.buildDir}/recastnavigation-${getOsArch()}")
+def recastRef = "ba12abead9956e69afa1248e535b07249df45e48"
+
+task cloneRecast() {
+    doLast {
+        if (!clonePath.exists()) {
+            println("Cloning recast")
+            Grgit.clone(
+                    dir: clonePath,
+                    uri: 'https://github.com/recastnavigation/recastnavigation.git',
+                    refToCheckout: recastRef
+            )
+        }
+
+        println("Resetting recast to: $recastRef")
+        Grgit.open(dir: clonePath).reset(mode: "HARD", commit: recastRef)
+    }
+}
+
+ext.clonePath = clonePath

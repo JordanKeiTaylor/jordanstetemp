@@ -14,4 +14,3 @@ gradle-app.setting
 # gradle/wrapper/gradle-wrapper.properties
 out
 .idea
-gradle
