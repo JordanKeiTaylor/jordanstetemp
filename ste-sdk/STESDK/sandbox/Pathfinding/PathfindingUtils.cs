@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Improbable;
 using QuickGraph;
+using stesdk.sandbox.Extensions;
 
 namespace stesdk.sandbox.Pathfinding
 {

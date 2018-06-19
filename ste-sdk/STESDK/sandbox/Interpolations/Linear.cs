@@ -1,4 +1,7 @@
-﻿namespace stesdk.sandbox.Interpolations
+﻿using Improbable;
+using stesdk.sandbox.Extensions;
+
+namespace stesdk.sandbox.Interpolations
 {
     public class Linear : IInterpolate
     {

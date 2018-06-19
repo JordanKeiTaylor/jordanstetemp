@@ -1,4 +1,6 @@
-﻿namespace stesdk.sandbox.Interpolations
+﻿using Improbable;
+
+namespace stesdk.sandbox.Interpolations
 {
     /// <summary>
     /// Interface for interpolating.

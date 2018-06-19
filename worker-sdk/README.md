@@ -4,6 +4,7 @@ This repository builds the standard library schema classes and packages them, as
 
 ## Build `Improbable.StandardLibraryCsharp.csproj`
 ```
+./setup.sh
 msbuild Improbable.StandardLibraryCsharp.csproj /p:Configuration=Release
 ```
 
