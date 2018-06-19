@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using Improbable;
 using Improbable.Collections;
-using Improbable.Shared.Environment;
 using Improbable.Worker;
-using stesdk.sandbox;
+using stesdk.sandbox.Environment;
 
-namespace Improbable.Shared
+namespace stesdk.sandbox.Log
 {
     public class Logger : IConnectionReceiver
     {

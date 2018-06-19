@@ -1,7 +1,6 @@
-﻿using Improbable.Shared.Environment;
-using stesdk.sandbox;
+﻿using stesdk.sandbox.Environment;
 
-namespace Improbable.Shared
+namespace stesdk.sandbox
 {
     /// <summary>
     /// Indicates that the class can handle changes to the Connection state - used in conjunction with the IConnectionManager.

@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Improbable.Shared.Environment;
 using Improbable.Worker;
-using stesdk.sandbox;
+using stesdk.sandbox.Environment;
+using stesdk.sandbox.Log;
 
-namespace Improbable.Shared
+namespace stesdk.sandbox
 {
     /// <summary>
     /// A dynamic flag that is able to recompute itself as a function of some number of underlying worker flags. 
@@ -61,7 +61,7 @@ namespace Improbable.Shared
         {
         }
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:Improbable.Shared.DynamicFlag`1"/> class from a single worker flag.
+        /// Initializes a new instance of the <see cref="T:stesdk.sandbox.DynamicFlag`1"/> class from a single worker flag.
         /// </summary>
         /// <param name="connection">Connection.</param>
         /// <param name="dispatcher">Dispatcher.</param>
@@ -74,7 +74,7 @@ namespace Improbable.Shared
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:Improbable.Shared.DynamicFlag`1"/> class dependent on two worker flags.
+        /// Initializes a new instance of the <see cref="T:stesdk.sandbox.DynamicFlag`1"/> class dependent on two worker flags.
         /// </summary>
         /// <param name="connection">Connection.</param>
         /// <param name="dispatcher">Dispatcher.</param>

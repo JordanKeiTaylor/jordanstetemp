@@ -1,4 +1,4 @@
-﻿namespace Improbable.Shared.Behaviour
+﻿namespace stesdk.sandbox.Behaviour
 {
     public interface ITickBehaviour
     {

@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
-using Improbable.Shared.Behaviour;
-using Improbable.Shared.Environment;
 using Improbable.Worker;
+using stesdk.sandbox.Behaviour;
+using stesdk.sandbox.Environment;
+using stesdk.sandbox.Log;
 
-namespace Improbable.Shared.Worker
+namespace stesdk.sandbox.Worker
 {
     public abstract class GenericTickWorker<E> where E : Environment.Environment
     {
@@ -23,7 +24,7 @@ namespace Improbable.Shared.Worker
 
         protected GenericTickWorker(string workerType)
         {
-            Logger = Shared.Logger.DefaultWithName(LoggerName);
+            Logger = Log.Logger.DefaultWithName(LoggerName);
             WorkerType = workerType;
         }
 

@@ -1,11 +1,9 @@
 ﻿using System;
-﻿using System.Collections;
-using System.Collections.Generic;
-using Improbable.Collections;
+using System.Collections;
 using Improbable.Worker;
-using stesdk.sandbox;
+using stesdk.sandbox.Log;
 
-namespace Improbable.Shared.Environment
+namespace stesdk.sandbox.Environment
 {
     /// <summary>
     /// EnvironmentBase creates and exposes the following:
@@ -18,7 +16,7 @@ namespace Improbable.Shared.Environment
     public abstract class Environment
     {
         private const string LoggerName = "Environment.cs";
-        private static readonly Logger.NamedLogger Logger = Shared.Logger.DefaultWithName(LoggerName);
+        private static readonly Logger.NamedLogger Logger = Log.Logger.DefaultWithName(LoggerName);
 
         private readonly string _workerType;
         private readonly Connection _connection;
@@ -55,7 +53,7 @@ namespace Improbable.Shared.Environment
             _wrappedConnection = new ConnectionWrapper(_connection);
             _wrappedDispatcher = new DispatcherWrapper(_dispatcher);
 
-            Shared.Logger.DefaultLogger.AttachConnection(_wrappedConnection);
+            Log.Logger.DefaultLogger.AttachConnection(_wrappedConnection);
 
             IsDispatcherConnected = _connection.IsConnected;
         }

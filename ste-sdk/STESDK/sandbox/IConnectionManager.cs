@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
-using Improbable.Shared;
-using Improbable.Shared.Environment;
+using stesdk.sandbox.Environment;
 
 namespace stesdk.sandbox
 {
