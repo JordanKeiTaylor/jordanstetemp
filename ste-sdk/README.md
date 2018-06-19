@@ -31,6 +31,9 @@ To declare the local NuGet cache as a source:
 nuget source add -name local -source
 ```
 
+## Setup
+Prior to building the STESDK, the [worker-sdk](../worker-sdk/README.md) project must be built and published. This enables `Improbable.StandardLibraryCsharp` and `Improbable.WorkerSdkCsharp` to be NuGet accessible. 
+
 ## Build
 ```
 nuget restore
