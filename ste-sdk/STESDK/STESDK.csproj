@@ -62,4 +62,7 @@
   <Target Name="BeforeBuild">
     <Exec Command="nuget restore -PackagesDirectory ../packages" />
   </Target>
+  <Target Name="AfterBuild" Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <Exec Command="cp bin/Release/Improbable.STESDK.dll ../" />
+  </Target>
 </Project>
