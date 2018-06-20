@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
-using Improbable.Enterprise.Sandbox.Behaviour;
-using Improbable.Enterprise.Sandbox.Environment;
-using Improbable.Enterprise.Sandbox.Log;
+using Improbable.Sandbox.Behaviour;
+using Improbable.Sandbox.Environment;
+using Improbable.Sandbox.Log;
 using Improbable.Worker;
 
-namespace Improbable.Enterprise.Sandbox.Worker
+namespace Improbable.Sandbox.Worker
 {
     public abstract class GenericTickWorker<E> where E : Environment.Environment
     {

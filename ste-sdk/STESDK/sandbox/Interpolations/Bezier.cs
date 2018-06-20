@@ -1,7 +1,7 @@
 ﻿using System;
-using Improbable.Enterprise.Sandbox.Extensions;
+using Improbable.Sandbox.Extensions;
 
-namespace Improbable.Enterprise.Sandbox.Interpolations
+namespace Improbable.Sandbox.Interpolations
 {
     internal enum Curve
     {
@@ -25,7 +25,7 @@ namespace Improbable.Enterprise.Sandbox.Interpolations
         private Vector3d[] _points;
 
         /// <summary>
-        /// Initializes a new instance of a Quadratic <see cref="T:Improbable.Enterprise.Sandbox.Interpolations.Bezier"/> Bezier interpolator.
+        /// Initializes a new instance of a Quadratic <see cref="T:Improbable.Sandbox.Interpolations.Bezier"/> Bezier interpolator.
         /// </summary>
         /// <param name="point1">Start point.</param>
         /// <param name="point2">End point.</param>

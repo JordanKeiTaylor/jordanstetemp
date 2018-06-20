@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using Improbable.Collections;
-using Improbable.Enterprise.Sandbox.Environment;
+using Improbable.Sandbox.Environment;
 using Improbable.Worker;
 
-namespace Improbable.Enterprise.Sandbox.Log
+namespace Improbable.Sandbox.Log
 {
     public class Logger : IConnectionReceiver
     {

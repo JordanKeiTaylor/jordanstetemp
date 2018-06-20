@@ -1,4 +1,4 @@
-﻿namespace Improbable.Enterprise.Sandbox.Interpolations
+﻿namespace Improbable.Sandbox.Interpolations
 {
     /// <summary>
     /// Interface for interpolating.

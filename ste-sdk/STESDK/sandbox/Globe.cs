@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Improbable.Enterprise.Sandbox
+namespace Improbable.Sandbox
 {
     public class Globe
     {

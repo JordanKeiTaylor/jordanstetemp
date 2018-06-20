@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections;
-using Improbable.Enterprise.Sandbox.Log;
+using Improbable.Sandbox.Log;
 using Improbable.Worker;
 
-namespace Improbable.Enterprise.Sandbox.Environment
+namespace Improbable.Sandbox.Environment
 {
     /// <summary>
     /// EnvironmentBase creates and exposes the following:

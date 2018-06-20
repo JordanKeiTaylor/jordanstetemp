@@ -1,6 +1,6 @@
-﻿using Improbable.Enterprise.Sandbox.Environment;
+﻿using Improbable.Sandbox.Environment;
 
-namespace Improbable.Enterprise.Sandbox
+namespace Improbable.Sandbox
 {
     /// <summary>
     /// Indicates that the class can handle changes to the Connection state - used in conjunction with the IConnectionManager.

@@ -1,7 +1,7 @@
 ﻿using System;
 using Improbable.Worker;
 
-namespace Improbable.Enterprise.Sandbox.Environment
+namespace Improbable.Sandbox.Environment
 {
     public interface IDispatcher : IDisposable
     {
