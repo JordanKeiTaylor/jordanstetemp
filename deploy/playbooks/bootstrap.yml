@@ -1,0 +1,30 @@
+- hosts: all
+  become: true
+  tasks:
+  - name: Make sure we have a 'wheel' group
+    group:
+      name: wheel
+      state: present
+
+  - name: Allow 'wheel' group to have passwordless sudo
+    lineinfile:
+      dest: /etc/sudoers
+      state: present
+      regexp: '^%wheel'
+      line: '%wheel ALL=(ALL) NOPASSWD: ALL'
+      validate: 'visudo -cf %s'
+
+  - name: Add demo user to wheel group
+    user: 
+      name: demo
+      groups: wheel
+      append: yes
+      state: present
+      createhome: yes
+
+  - name: Copy SSH keys
+    authorized_key:
+      user: demo
+      state: present
+      key: '{{ item }}'
+    with_items: "{{ ssh_keys }}"

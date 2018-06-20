@@ -1,0 +1,21 @@
+all:
+  vars:
+    ansible_user: root
+  hosts:
+    master:
+      ansible_host: 10.0.0.201
+    slave1:
+      ansible_host: 10.0.0.203
+    slave2:
+      ansible_host: 10.0.0.205
+    slave3:
+      ansible_host: 10.0.0.207
+  children:
+    manager:
+      hosts:
+        master:
+    worker:
+      hosts:
+        slave1:
+        slave2:
+        slave3:
