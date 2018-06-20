@@ -1,0 +1,49 @@
+---
+- name: Add docker repo
+  yum_repository:
+    name: docker-ce-edge
+    description: Docker CE Edge - $basearch
+    baseurl: https://download.docker.com/linux/centos/7/$basearch/edge
+    gpgkey: https://download.docker.com/linux/centos/gpg
+  become: true
+
+# We need to be on 18.01 until https://github.com/moby/moby/issues/36247 is fixed
+- name: Install docker
+  yum:
+    name: docker-ce-18.01.0.ce-1.el7.centos
+    state: installed
+    allow_downgrade: yes
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'RedHat'
+  become: true
+
+- name: Check if yum cron is configured
+  stat:
+    path: /etc/yum/yum-cron.conf
+  register: yum_cron_check
+
+# GCE boxes are configured to automatically update boxes. This puts us on the wrong docker version and causes a bounce
+# so we disable.
+- name: Disable autoupdates
+  lineinfile:
+    path: /etc/yum/yum-cron.conf
+    regexp: '^apply_updates ='
+    line: 'apply_updates = no'
+  become: true
+  when: yum_cron_check.stat.exists == False
+
+# Swarm doesn't support currently support ulimits: https://github.com/moby/moby/issues/25209
+# so we set the docker services limits and bounce it. These get inherited by containers.
+- name: Up dockerd file limit
+  lineinfile:
+    path: /usr/lib/systemd/system/docker.service
+    regexp: '^LimitNOFILE='
+    line: 'LimitNOFILE=1048576'
+  become: true
+  notify:
+    - restart docker
+
+- name: Disable firewall
+  systemd:
+    name: firewalld
+    enabled: no
+    state: stopped

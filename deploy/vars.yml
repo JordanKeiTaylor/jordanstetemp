@@ -1,0 +1,20 @@
+---
+# docker_registry: eu.gcr.io/disappointing-tode
+docker_registry: master:5000
+
+docker_images:
+  toolbelt: 
+    tag: 17b8242f39
+  fnanny:
+    tag: 17b8242f39
+  prometheus: 
+    tag: 17b8242f39-prometheus.e9cd0b5
+  node-exporter:
+    tag: latest
+
+gcloud_docker: "{{ docker_registry | match(\".*.gcr.io\")}}"
+
+snapshot: poland-100k.snapshot
+config_file: local_100k.pb.json
+swarm_iface: eth0 # Cloud
+#swarm_iface: em1 # Hardware

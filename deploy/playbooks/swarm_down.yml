@@ -1,0 +1,5 @@
+  - hosts: all
+    tasks:
+      - name: leave docker swarm
+        shell: >
+          docker swarm leave --force

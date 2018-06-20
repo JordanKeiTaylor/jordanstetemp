@@ -1,0 +1,5 @@
+  - hosts: manager
+    tasks:
+      - name: stop fabric
+        shell: >
+          docker stack rm fabric
