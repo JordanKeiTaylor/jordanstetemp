@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
+    <Platform Condition="'$(Platform)' == ''">AnyCPU</Platform>
+    <ProjectGuid>{D1FFA0DC-0ACC-4108-ADC1-2A71122C09AF}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AssemblyName>Recast</AssemblyName>
+    <RootNamespace>Recast</RootNamespace>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\build\msbuild\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\build\msbuild\bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BuildSettings.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="RecastContext.cs" />
+    <Compile Include="RecastLibrary.cs" />
+    <Compile Include="Types\CompactHeightfield.cs" />
+    <Compile Include="Types\FindPathResult.cs" />
+    <Compile Include="Types\InputGeom.cs" />
+    <Compile Include="Types\NavMesh.cs" />
+    <Compile Include="Types\NavMeshDataResult.cs" />
+    <Compile Include="Types\NavMeshQuery.cs" />
+    <Compile Include="Types\PolyMesh.cs" />
+    <Compile Include="Types\PolyMeshDetail.cs" />
+    <Compile Include="Types\PolyPointResult.cs" />
+    <Compile Include="Types\RcConfig.cs" />
+    <Compile Include="Types\RcContext.cs" />
+    <Compile Include="Types\SmoothPathResult.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ContentWithTargetPath Include="../build/native_libs/windows/librecastwrapper.dll" Condition=" '$(OS)' == 'Windows_NT' ">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>librecastwrapper.dll</TargetPath>
+    </ContentWithTargetPath>
+    <ContentWithTargetPath Include="../build/native_libs/linux-x86-64/librecastwrapper.so" Condition=" '$(OS)' == 'Unix' and ! $([System.IO.File]::Exists('/usr/lib/libc.dylib')) ">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>librecastwrapper.so</TargetPath>
+    </ContentWithTargetPath>
+    <ContentWithTargetPath Include="../build/native_libs/darwin/librecastwrapper.dylib" Condition=" '$(OS)' == 'Unix' and $([System.IO.File]::Exists('/usr/lib/libc.dylib')) ">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>librecastwrapper.dylib</TargetPath>
+    </ContentWithTargetPath>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
