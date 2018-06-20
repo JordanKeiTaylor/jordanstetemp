@@ -1,6 +1,6 @@
 ﻿using QuickGraph;
 
-namespace stesdk.sandbox.Pathfinding.Api
+namespace Improbable.Sandbox.Pathfinding.Api
 {
     public class PathEdge : IEdge<PathNode>
     {

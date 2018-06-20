@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace stesdk.sandbox
+namespace Improbable.Sandbox
 {
     public static class Yaw
     {

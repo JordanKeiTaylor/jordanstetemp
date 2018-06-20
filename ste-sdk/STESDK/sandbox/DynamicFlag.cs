@@ -1,61 +1,80 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Improbable.Sandbox.Environment;
+using Improbable.Sandbox.Log;
 using Improbable.Worker;
-using stesdk.sandbox.Log;
 
-namespace stesdk.sandbox
+namespace Improbable.Sandbox
 {
     /// <summary>
-    /// A dynamic flag that is able to recompute itself as a function of some number of underlying worker flags.
+    /// A dynamic flag that is able to recompute itself as a function of some number of underlying worker flags. 
     /// Arbitrary arity functions are supported internally but the API currently only exposes support for 1 and 2-argument functions.
     /// </summary>
     public class DynamicFlag<T> : IConnectionReceiver
     {
-        private readonly NamedLogger _logger;
+        private readonly Logger.NamedLogger _logger;
         private readonly SortedSet<string> _names;
-        private readonly List<Action<T>> _changeCallbacks = new List<Action<T>>();
-        private readonly Delegate _parser;
-        private readonly T _defaultValue;
         private Dictionary<string, string> _values;
         private T _value;
+        private readonly Delegate _parser;
+        private readonly T _defaultValue;
         private IConnection _connection;
+        private readonly List<Action<T>> _changeCallbacks = new List<Action<T>>();
 
-        public DynamicFlag(IConnection connection, IDispatcher dispatcher, string name, Func<string, T> parser, T defaultValue)
-            : this(connection, dispatcher, new string[] { name }, parser, defaultValue)
+        private DynamicFlag(IConnection connection, IDispatcher dispatcher, IEnumerable<string> names, Delegate parser, T defaultValue)
+        {
+            _logger = Logger.DefaultWithName("DynamicFlag " + string.Concat(names));
+            _names = new SortedSet<string>(names);
+            _parser = parser;
+            _defaultValue = defaultValue;
+            _value = defaultValue;
+            dispatcher.OnFlagUpdate(OnFlagUpdate);
+            if (connection != null)
+            {
+                AttachConnection(connection);
+            }
+        }
+
+        private DynamicFlag(IDispatcher dispatcher, IEnumerable<string> names, Delegate parser, T defaultValue) :
+            this(null, dispatcher, names, parser, defaultValue)
         {
         }
 
-        public DynamicFlag(IConnection connection, IDispatcher dispatcher, string name1, string name2, Func<string, string, T> parser, T defaultValue)
-            : this(connection, dispatcher, new string[] { name1, name2 }, parser, defaultValue)
+        public DynamicFlag(IConnection connection, IDispatcher dispatcher, string name, Func<string, T> parser, T defaultValue) :
+           this(connection, dispatcher, new string[] { name }, parser, defaultValue)
         {
         }
 
-        public DynamicFlag(IDispatcher dispatcher, string name, Func<string, T> parser, T defaultValue)
-            : this(null, dispatcher, new string[] { name }, parser, defaultValue)
+        public DynamicFlag(IConnection connection, IDispatcher dispatcher, string name1, string name2, Func<string, string, T> parser, T defaultValue) :
+            this(connection, dispatcher, new string[] { name1, name2 }, parser, defaultValue)
         {
         }
 
-        public DynamicFlag(IDispatcher dispatcher, string name1, string name2, Func<string, string, T> parser, T defaultValue)
-            : this(null, dispatcher, new string[] { name1, name2 }, parser, defaultValue)
+        public DynamicFlag(IDispatcher dispatcher, string name, Func<string, T> parser, T defaultValue) :
+           this(null, dispatcher, new string[] { name }, parser, defaultValue)
         {
         }
 
+        public DynamicFlag(IDispatcher dispatcher, string name1, string name2, Func<string, string, T> parser, T defaultValue) :
+            this(null, dispatcher, new string[] { name1, name2 }, parser, defaultValue)
+        {
+        }
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:stesdk.sandbox.DynamicFlag`1"/> class from a single worker flag.
+        /// Initializes a new instance of the <see cref="T:Improbable.Sandbox.DynamicFlag`1"/> class from a single worker flag.
         /// </summary>
         /// <param name="connection">Connection.</param>
         /// <param name="dispatcher">Dispatcher.</param>
         /// <param name="name">Worker flag name.</param>
         /// <param name="parser">Worker flag parser.</param>
         /// <param name="defaultValue">Default value.</param>
-        public DynamicFlag(IConnection connection, Dispatcher dispatcher, string name, Func<string, T> parser, T defaultValue)
-            : this(connection, new DispatcherWrapper(dispatcher), new string[] { name }, parser, defaultValue)
+        public DynamicFlag(IConnection connection, Dispatcher dispatcher, string name, Func<string, T> parser, T defaultValue) :
+            this(connection, new DispatcherWrapper(dispatcher), new string[] { name }, parser, defaultValue)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:stesdk.sandbox.DynamicFlag`1"/> class dependent on two worker flags.
+        /// Initializes a new instance of the <see cref="T:Improbable.Sandbox.DynamicFlag`1"/> class dependent on two worker flags.
         /// </summary>
         /// <param name="connection">Connection.</param>
         /// <param name="dispatcher">Dispatcher.</param>
@@ -63,28 +82,9 @@ namespace stesdk.sandbox
         /// <param name="name2">Worker flag 2 name.</param>
         /// <param name="parser">Function to parse flag 1 and flag 2.</param>
         /// <param name="defaultValue">Default value.</param>
-        public DynamicFlag(IConnection connection, Dispatcher dispatcher, string name1, string name2, Func<string, string, T> parser, T defaultValue)
-            : this(connection, new DispatcherWrapper(dispatcher), new string[] { name1, name2 }, parser, defaultValue)
+        public DynamicFlag(IConnection connection, Dispatcher dispatcher, string name1, string name2, Func<string, string, T> parser, T defaultValue) :
+            this(connection, new DispatcherWrapper(dispatcher), new string[] { name1, name2 }, parser, defaultValue)
         {
-        }
-
-        private DynamicFlag(IDispatcher dispatcher, IEnumerable<string> names, Delegate parser, T defaultValue)
-            : this(null, dispatcher, names, parser, defaultValue)
-        {
-        }
-
-        private DynamicFlag(IConnection connection, IDispatcher dispatcher, IEnumerable<string> names, Delegate parser, T defaultValue)
-        {
-            this._logger = Logger.DefaultWithName("DynamicFlag " + string.Concat(names));
-            this._names = new SortedSet<string>(names);
-            this._parser = parser;
-            this._defaultValue = defaultValue;
-            this._value = defaultValue;
-            dispatcher.OnFlagUpdate(OnFlagUpdate);
-            if (connection != null)
-            {
-                AttachConnection(connection);
-            }
         }
 
         /// <summary>
@@ -96,7 +96,7 @@ namespace stesdk.sandbox
         }
 
         /// <summary>
-        /// Flag default value.
+        /// Flag default value.    
         /// </summary>
         /// <value>The default.</value>
         public T Default
@@ -114,31 +114,7 @@ namespace stesdk.sandbox
             return string.Format("[DynamicFlag: Value={0}, Default={1}]", Value, Default);
         }
 
-        public void AttachConnection(IConnection c)
-        {
-            _connection = c;
-            _values = GetValues(_connection, _names);
-            SetValue(Recompute());
-        }
-
-        public void DetachConnection(IConnection c)
-        {
-            _connection = null;
-        }
-
-        public void SetValue(T newValue)
-        {
-            if (!_value.Equals(newValue))
-            {
-                _value = newValue;
-                foreach (Action<T> callback in _changeCallbacks)
-                {
-                    callback(newValue);
-                }
-            }
-        }
-
-        private static Dictionary<string, string> GetValues(IConnection connection, IEnumerable<string> names)
+        private static Dictionary<string, string> getValues(IConnection connection, IEnumerable<string> names)
         {
             if (connection != null)
             {
@@ -188,6 +164,30 @@ namespace stesdk.sandbox
                 }
 
                 SetValue(Recompute());
+            }
+        }
+
+        public void AttachConnection(IConnection c)
+        {
+            _connection = c;
+            _values = getValues(_connection, _names);
+            SetValue(Recompute());
+        }
+
+        public void DetachConnection(IConnection c)
+        {
+            _connection = null;
+        }
+
+        public void SetValue(T newValue)
+        {
+            if (!_value.Equals(newValue))
+            {
+                _value = newValue;
+                foreach (Action<T> callback in _changeCallbacks)
+                {
+                    callback(newValue);
+                }
             }
         }
     }

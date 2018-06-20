@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace stesdk.sandbox.Pathfinding.Api
+namespace Improbable.Sandbox.Pathfinding.Api
 {
     public class NoPathFoundException : Exception
     {
