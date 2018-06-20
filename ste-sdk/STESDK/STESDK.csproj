@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>main/Properties</AppDesignerFolder>
     <RootNamespace>Improbable</RootNamespace>
-    <AssemblyName>Improbable.Enterprise.STESDK</AssemblyName>
+    <AssemblyName>Improbable.STESDK</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

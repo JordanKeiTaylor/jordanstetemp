@@ -38,6 +38,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <!-- TODO [cgatto] : Compile against structure, not explicitly stated files-->
     <Compile Include="main\improbable\Coordinates.cs" />
     <Compile Include="main\improbable\EntityAcl.cs" />
     <Compile Include="main\improbable\EntityAclData.cs" />
