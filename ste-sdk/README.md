@@ -36,7 +36,6 @@ Prior to building the STESDK, the [worker-sdk](../worker-sdk/README.md) project 
 
 ## Build
 ```
-nuget restore
 msbuild /p:Configuration=Release
 ```
 
