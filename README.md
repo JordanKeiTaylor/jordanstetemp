@@ -14,4 +14,4 @@ This repository will host tools and libraries built as part of the STE project.
 [recast-wrapper](recast-wrapper/README.md) is a wrapper around the Recast/Detour C++ library to allow basic generation and querying of navigation meshes in Java and C#.
 
 ## STESDK
-[STESDK](stesdk/README.md) is a C# library of Worker SDK extentions, utilities, and STE API's to facilitate the development of STE applications.
+[STESDK](ste-sdk/README.md) is a C# library of Worker SDK extentions, utilities, and STE API's to facilitate the development of STE applications.
