@@ -7,6 +7,6 @@ msbuild /p:Configuration=Release
 
 ## Publish
 ```
-nuget pack STESDK/STESDK.csproj -Prop Configuration=Release
-nuget add Improbable.Enterprise.STESDK.*.nupkg -source ~/.nuget/packages/
+nuget pack STESDK.nuspec -Prop Configuration=Release
+nuget add Improbable.STESDK.*.nupkg -source ~/.nuget/packages/
 ```
