@@ -38,7 +38,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="main/**/*.cs" />
+    <Compile Include="main\improbable\Coordinates.cs" />
+    <Compile Include="main\improbable\EntityAcl.cs" />
+    <Compile Include="main\improbable\EntityAclData.cs" />
+    <Compile Include="main\improbable\Metadata.cs" />
+    <Compile Include="main\improbable\MetadataData.cs" />
+    <Compile Include="main\improbable\Persistence.cs" />
+    <Compile Include="main\improbable\PersistenceData.cs" />
+    <Compile Include="main\improbable\Position.cs" />
+    <Compile Include="main\improbable\PositionData.cs" />
+    <Compile Include="main\improbable\Vector3d.cs" />
+    <Compile Include="main\improbable\Vector3f.cs" />
+    <Compile Include="main\improbable\WorkerAttributeSet.cs" />
+    <Compile Include="main\improbable\WorkerRequirementSet.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="BeforeBuild">
