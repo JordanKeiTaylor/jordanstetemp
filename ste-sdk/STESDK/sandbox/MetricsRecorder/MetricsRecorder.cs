@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using Improbable.Collections;
 
-namespace stesdk.sandbox.MetricsRecorder
+namespace Improbable.Sandbox.MetricsRecorder
 {
     public class MetricsRecorder
     {

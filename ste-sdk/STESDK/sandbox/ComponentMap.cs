@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using Improbable;
+using Improbable.Sandbox.Environment;
 using Improbable.Worker;
 
-namespace stesdk.sandbox
+namespace Improbable.Sandbox
 {
     [Flags]
     public enum ComponentMapEvent
@@ -26,7 +26,7 @@ namespace stesdk.sandbox
         private bool _hasUpdated = true;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:stesdk.sandbox.ComponentMap`1"/> class.
+        /// Initializes a new instance of the <see cref="T:Improbable.Sandbox.ComponentMap`1"/> class.
         /// </summary>
         /// <param name="dispatcher">Dispatcher.</param>
         /// <param name="disableEvents">

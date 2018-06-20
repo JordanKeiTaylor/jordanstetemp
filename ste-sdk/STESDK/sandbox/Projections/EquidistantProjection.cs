@@ -1,4 +1,4 @@
-﻿namespace stesdk.sandbox.Projections
+﻿namespace Improbable.Sandbox.Projections
 {
     public class EquidistantProjection
     {

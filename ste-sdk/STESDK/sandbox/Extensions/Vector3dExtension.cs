@@ -1,7 +1,6 @@
 ﻿using System;
-using Improbable;
 
-namespace stesdk.sandbox.Extensions
+namespace Improbable.Sandbox.Extensions
 {
     public static class Vector3dExtension
     {
