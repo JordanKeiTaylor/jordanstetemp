@@ -1,0 +1,3 @@
+---
+- import_playbook: apply_base_roles.yml
+- import_playbook: apply_proj_roles.yml

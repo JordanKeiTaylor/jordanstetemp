@@ -1,0 +1,14 @@
+---
+- name: Extract local_inspector
+  unarchive:
+    src: local_inspector.tar.gz
+    dest: ~/
+
+- file:
+    dest: ~/prometheus_rules
+    state: directory
+
+- name: Extract prometheus rules
+  unarchive:
+    src: prometheus_rules.tar.gz
+    dest: ~/prometheus_rules
