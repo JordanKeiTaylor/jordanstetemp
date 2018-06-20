@@ -10,4 +10,4 @@ namespace Improbable.Sandbox.Pathfinding.Api
 
         public double Weight { get; set; }
     }
-}
+}l
