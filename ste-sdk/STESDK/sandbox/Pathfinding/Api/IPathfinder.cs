@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace stesdk.sandbox.Pathfinding.Api
+namespace Improbable.Sandbox.Pathfinding.Api
 {
     public interface IPathfinder
     {

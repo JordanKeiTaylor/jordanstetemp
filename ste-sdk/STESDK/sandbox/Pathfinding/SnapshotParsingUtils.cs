@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using Improbable;
-using stesdk.sandbox.Extensions;
-using stesdk.sandbox.Pathfinding.Api;
+using Improbable.Sandbox.Extensions;
+using Improbable.Sandbox.Pathfinding.Api;
 
-namespace stesdk.sandbox.Pathfinding
+namespace Improbable.Sandbox.Pathfinding
 {
     public static class SnapshotParsingUtils
     {
