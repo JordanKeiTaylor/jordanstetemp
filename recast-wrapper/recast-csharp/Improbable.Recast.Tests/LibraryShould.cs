@@ -1,6 +1,7 @@
-﻿using NUnit.Framework;
+﻿using Improbable.Recast.Types;
+using NUnit.Framework;
 
-namespace Recast.Tests
+namespace Improbable.Recast.Tests
 {
     public class LibraryShould
     {

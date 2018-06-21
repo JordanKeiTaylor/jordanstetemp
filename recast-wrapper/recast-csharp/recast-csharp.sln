@@ -2,9 +2,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26430.16
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Recast", "Recast\Recast.csproj", "{D1FFA0DC-0ACC-4108-ADC1-2A71122C09AF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Improbable.Recast", "Improbable.Recast\Improbable.Recast.csproj", "{D1FFA0DC-0ACC-4108-ADC1-2A71122C09AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Recast.Tests", "Recast.Tests\Recast.Tests.csproj", "{CB0DD4B0-6DCA-4842-8A36-C434D0CD66E2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Improbable.Recast.Tests", "Improbable.Recast.Tests\Improbable.Recast.Tests.csproj", "{CB0DD4B0-6DCA-4842-8A36-C434D0CD66E2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

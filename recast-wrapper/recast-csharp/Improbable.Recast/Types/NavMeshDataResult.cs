@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace Recast
+namespace Improbable.Recast.Types
 {
     public struct NavMeshDataResult
     {

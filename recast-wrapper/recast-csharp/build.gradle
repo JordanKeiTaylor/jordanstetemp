@@ -13,7 +13,7 @@ nuget {
 msbuild {
     solutionFile = file('recast-csharp.sln')
     configuration = 'Release'
-    projectName = 'Recast'
+    projectName = 'Improbable.Recast'
     inputs.file(project.buildFile)
     intermediateDir = 'build/msbuild/obj'
 }
@@ -39,11 +39,12 @@ repositories {
 
 
 def nuspecMetadata = [
+    id: 'Improbable.Recast',
     version: version,
-    title: 'Recast Wrapper',
+    title: 'Improbable Recast Wrapper',
     authors: 'Improbable',
     owners: 'Improbable',
-    projectUrl: 'https://github.com/improbable/recast-wrapper',
+    projectUrl: 'https://github.com/improbable/ste/recast-wrapper',
     requireLicenseAcceptance: false,
     dependencies: []
 ]
@@ -60,7 +61,7 @@ nugetSpec {
             { file (src: "${buildDir}/msbuild/bin/Release/Recast.pdb", target: 'lib/net45') },
             { file (src: "${nativeLibDir}/darwin/librecastwrapper.dylib", target: 'runtimes/osx/native/') },
 //            { file (src: "${nativeLibDir}/linux-x86-64/librecastwrapper.so", target: 'runtimes/linux/native/') },
-            { file (src: "${projectDir}/Recast.targets", target: 'build/net45') },
+            { file (src: "${projectDir}/Improbable.Recast.targets", target: 'build/net45') },
         ]
     ]
 }

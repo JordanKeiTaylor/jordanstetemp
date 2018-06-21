@@ -1,18 +1,18 @@
 ﻿using System;
 using Microsoft.Win32.SafeHandles;
 
-namespace Recast
+namespace Improbable.Recast.Types
 {
-    public class InputGeom : SafeHandleZeroOrMinusOneIsInvalid
+    public class NavMesh : SafeHandleZeroOrMinusOneIsInvalid
     {
-        public InputGeom(IntPtr handle) : base(true)
+        public NavMesh(IntPtr handle) : base(true)
         {
             SetHandle(handle);
         }
 
         protected override bool ReleaseHandle()
         {
-            RecastLibrary.InputGeom_delete(handle);
+            RecastLibrary.navmesh_delete(handle);
             return true;
         }
     }

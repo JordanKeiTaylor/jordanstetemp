@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using Improbable.Recast.Types;
 
-namespace Recast
+namespace Improbable.Recast
 {
     using DtPolyRef = UInt64;
     
