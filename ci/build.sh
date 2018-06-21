@@ -15,6 +15,11 @@ cd minisseur
 ./gradlew check
 cd ..
 
+tc_progress "building recast-wrapper"
+cd recast-wrapper
+./gradlew check
+cd ..
+
 tc_progress "building ste-sdk"
 cd ste-sdk
 msbuild
