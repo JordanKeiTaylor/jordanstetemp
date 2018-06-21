@@ -30,15 +30,32 @@
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Improbable.WorkerSdkCsharp, Version=12.2.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\worker-sdk\Improbable.WorkerSdkCsharp.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml" />
-    <Reference Include="Improbable.WorkerSdkCsharp">
-      <HintPath>worker-sdk\Improbable.WorkerSdkCsharp.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="main/**/*.cs" />
+    <!-- TODO [cgatto] : Compile against structure, not explicitly stated files. Build was dying on first CoreCompile. -->
+    <Compile Include="main\improbable\Coordinates.cs" />
+    <Compile Include="main\improbable\EntityAcl.cs" />
+    <Compile Include="main\improbable\EntityAclData.cs" />
+    <Compile Include="main\improbable\Metadata.cs" />
+    <Compile Include="main\improbable\MetadataData.cs" />
+    <Compile Include="main\improbable\Persistence.cs" />
+    <Compile Include="main\improbable\PersistenceData.cs" />
+    <Compile Include="main\improbable\Position.cs" />
+    <Compile Include="main\improbable\PositionData.cs" />
+    <Compile Include="main\improbable\Vector3d.cs" />
+    <Compile Include="main\improbable\Vector3f.cs" />
+    <Compile Include="main\improbable\WorkerAttributeSet.cs" />
+    <Compile Include="main\improbable\WorkerRequirementSet.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="BeforeBuild">
+    <Exec Command="spatial worker_package unpack-to worker_sdk csharp ../packages/worker-sdk/ --force=true" />
+    <Exec Command="spatial schema generate --language csharp --output main/" />
+  </Target>
 </Project>
