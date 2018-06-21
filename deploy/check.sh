@@ -1,4 +1,5 @@
 #!/bin/sh
+set -eux
 
 ./do bootstrap root --syntax-check
 ./do apply_roles --syntax-check
