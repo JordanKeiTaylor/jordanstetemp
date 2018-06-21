@@ -19,7 +19,7 @@ msbuild {
 }
 
 nunit {
-    testAssemblies = [file("$buildDir/msbuild/bin/Release/Recast.Tests.dll")]
+    testAssemblies = [file("$buildDir/msbuild/bin/Release/Improbable.Recast.Tests.dll")]
 }
 
 msbuild.dependsOn(nugetRestore)
