@@ -5,4 +5,4 @@ obj/
 *.nupkg
 packages/*
 .vs/
-Improbable.STESDK.dll
+*.dll
