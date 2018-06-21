@@ -14,3 +14,8 @@ tc_progress "building minisseur"
 cd minisseur
 ./gradlew check
 cd ..
+
+tc_progress "checking deploy"
+cd deploy
+./check.sh
+cd ..
