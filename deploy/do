@@ -103,7 +103,7 @@ case "$1" in
 			echo
 			usage
 		fi
-		do_bootstrap $2
+		do_bootstrap $2 ${@:3}
 	;;
 	swarm_up)
 		do_swarm_up ${@:2}
