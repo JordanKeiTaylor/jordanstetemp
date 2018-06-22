@@ -17,4 +17,4 @@ echo "Installing gcc, make"
 pacman -S --noconfirm gcc make
 echo
 
-./gradlew :recast-csharp:check
+./gradlew :recast-wrapper:assemble
