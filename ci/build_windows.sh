@@ -1,7 +1,7 @@
 #!/bin/sh
 
 cd recast-wrapper
-set path=%%cd%%/cmake-3.12.0-rc1-win64-x64/bin;%%path%%
+export PATH="$PWD/cmake-3.12.0-rc1-win64-x64/bin;$PATH"
 echo "PATH is: %%path%%"
 echo
 
