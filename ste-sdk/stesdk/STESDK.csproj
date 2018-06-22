@@ -13,7 +13,7 @@
     <Version>0.0.1</Version>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
-  <Import Project="../BuildTargets.targets" />
+  <Import Project="../resources/BuildTargets.targets" />
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
@@ -62,6 +62,6 @@
     <Exec Command="nuget restore -PackagesDirectory ../packages" />
   </Target>
   <Target Name="AfterBuild" Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <Exec Command="cp bin/Release/Improbable.STESDK.dll nuget/" />
+    <Exec Command="cp ../build/Improbable.STESDK/Improbable.STESDK.dll nuget/" />
   </Target>
 </Project>

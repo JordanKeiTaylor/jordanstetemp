@@ -15,7 +15,7 @@
     <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
     <RootNamespace>Improbable</RootNamespace>
   </PropertyGroup>
-  <Import Project="../BuildTargets.targets" />
+  <Import Project="../resources/BuildTargets.targets" />
   <PropertyGroup Condition="'$(Platform)' == 'x64' And ('$(Configuration)' == 'Debug')">
     <DebugSymbols>true</DebugSymbols>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
