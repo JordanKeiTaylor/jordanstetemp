@@ -5,7 +5,7 @@ apply from: "$rootDir/gradle/recast.gradle"
 apply plugin: io.improbable.ste.gradle.cmake.CMakeLibraryPlugin
 
 cmake {
-    binary = OperatingSystem.forName("linux").getStaticLibraryName("Recast/Recast")
+    binary = osForStaticLibraryName.getStaticLibraryName("Recast/Recast")
     includeDirectory = file("$clonePath/Recast/Include")
     projectDirectory = clonePath
     args = ["-DRECASTNAVIGATION_DEMO=OFF", "-DRECASTNAVIGATION_STATIC=ON", "-GUnix Makefiles"]

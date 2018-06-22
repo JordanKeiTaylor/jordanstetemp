@@ -44,3 +44,10 @@ task cloneRecast() {
 }
 
 ext.clonePath = clonePath
+
+// On Windows we use the GNU toolchain and thus static libraries have .a extension instead .of .lib
+if (OperatingSystem.current().isWindows()) {
+    ext.osForStaticLibraryName = OperatingSystem.forName("linux")
+} else {
+    ext.osForStaticLibraryName = OperatingSystem.current()
+}
