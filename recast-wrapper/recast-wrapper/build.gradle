@@ -1,3 +1,5 @@
+import org.gradle.nativeplatform.toolchain.internal.NativeLanguage
+
 plugins {
   id "cpp-library"
 }
@@ -8,12 +10,13 @@ library {
         api project(":recast")
         api project(":detour")
     }
+
 }
 
 tasks.withType(CppCompile) {
     compilerArgs.add "-DDT_POLYREF64=1"
 }
 
-toolChains {
-    gcc(org.gradle.nativeplatform.toolchain.Gcc)
+tasks.withType(AbstractNativeCompileTask) {
+    toolChain.set(toolChains.getByName("gcc"))
 }
