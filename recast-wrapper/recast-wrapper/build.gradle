@@ -8,7 +8,6 @@ library {
         api project(":recast")
         api project(":detour")
     }
-
 }
 
 tasks.withType(CppCompile) {
@@ -16,7 +15,7 @@ tasks.withType(CppCompile) {
 }
 
 // Force gcc on wind0w$ otherwise we get link errors: LNK2019
-// I believe this is because cmake use the GNU tooling and gradle tries to use the visual studio linker
+// I believe this is because cmake uses the GNU tooling and gradle tries to use the visual studio linker
 if (org.gradle.internal.os.OperatingSystem.current().isWindows()) {
     tasks.withType(LinkSharedLibrary) {
         toolChain.set(toolChains.getByName("gcc"))
@@ -28,5 +27,3 @@ if (org.gradle.internal.os.OperatingSystem.current().isWindows()) {
         }
     }
 }
-
-

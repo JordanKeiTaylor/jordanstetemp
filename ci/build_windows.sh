@@ -13,8 +13,8 @@ echo
 cmake --version
 echo
 
-echo "Installing cmake, gcc, make"
-pacman -S --noconfirm cmake gcc make
+echo "Installing gcc, make"
+pacman -S --noconfirm gcc make
 echo
 
-./gradlew :recast-wrapper:build
+./gradlew :recast-csharp:check
