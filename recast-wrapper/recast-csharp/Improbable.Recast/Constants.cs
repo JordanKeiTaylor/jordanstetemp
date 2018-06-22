@@ -1,4 +1,4 @@
-﻿namespace Recast
+﻿namespace Improbable.Recast
 {
     public static class Constants
     {

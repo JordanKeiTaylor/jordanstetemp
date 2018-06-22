@@ -1,8 +1,9 @@
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
+using Improbable.Recast.Types;
 
-namespace Recast
+namespace Improbable.Recast
 {
     public class RecastContext : IDisposable
     {

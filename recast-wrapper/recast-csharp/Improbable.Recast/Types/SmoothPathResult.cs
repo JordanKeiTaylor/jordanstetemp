@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace Recast
+namespace Improbable.Recast.Types
 {
     [StructLayout(LayoutKind.Sequential, Pack = 0)]
     public struct SmoothPathResult

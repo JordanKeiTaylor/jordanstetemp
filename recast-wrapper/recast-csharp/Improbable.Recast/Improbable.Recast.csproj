@@ -1,15 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\NUnit.3.10.1\build\NUnit.props" Condition="Exists('..\packages\NUnit.3.10.1\build\NUnit.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
     <Platform Condition="'$(Platform)' == ''">AnyCPU</Platform>
-    <ProjectGuid>{CB0DD4B0-6DCA-4842-8A36-C434D0CD66E2}</ProjectGuid>
+    <ProjectGuid>{D1FFA0DC-0ACC-4108-ADC1-2A71122C09AF}</ProjectGuid>
     <OutputType>Library</OutputType>
+    <AssemblyName>Improbable.Recast</AssemblyName>
+    <RootNamespace>Improbable.Recast</RootNamespace>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <RootNamespace>Recast.Tests</RootNamespace>
-    <AssemblyName>Recast.Tests</AssemblyName>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -32,19 +32,26 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="nunit.framework">
-      <HintPath>..\packages\NUnit.2.6.4\lib\net45\nunit.framework.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DetourShould.cs" />
-    <Compile Include="LibraryShould.cs" />
-    <Compile Include="RecastShould.cs" />
+    <Compile Include="BuildSettings.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="RecastContext.cs" />
+    <Compile Include="RecastLibrary.cs" />
+    <Compile Include="Types\CompactHeightfield.cs" />
+    <Compile Include="Types\FindPathResult.cs" />
+    <Compile Include="Types\InputGeom.cs" />
+    <Compile Include="Types\NavMesh.cs" />
+    <Compile Include="Types\NavMeshDataResult.cs" />
+    <Compile Include="Types\NavMeshQuery.cs" />
+    <Compile Include="Types\PolyMesh.cs" />
+    <Compile Include="Types\PolyMeshDetail.cs" />
+    <Compile Include="Types\PolyPointResult.cs" />
+    <Compile Include="Types\RcConfig.cs" />
+    <Compile Include="Types\RcContext.cs" />
+    <Compile Include="Types\SmoothPathResult.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include=".\Resources\*.*">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <ContentWithTargetPath Include="../build/native_libs/windows/librecastwrapper.dll" Condition=" '$(OS)' == 'Windows_NT' ">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <TargetPath>librecastwrapper.dll</TargetPath>
@@ -57,18 +64,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <TargetPath>librecastwrapper.dylib</TargetPath>
     </ContentWithTargetPath>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Recast\Recast.csproj">
-      <Project>{D1FFA0DC-0ACC-4108-ADC1-2A71122C09AF}</Project>
-      <Name>Recast</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
