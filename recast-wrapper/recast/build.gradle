@@ -8,7 +8,7 @@ cmake {
     binary = OperatingSystem.forName("linux").getStaticLibraryName("Recast/Recast")
     includeDirectory = file("$clonePath/Recast/Include")
     projectDirectory = clonePath
-    args = ["-DRECASTNAVIGATION_DEMO=OFF", "-DRECASTNAVIGATION_STATIC=ON", "-GNMake Makefiles 14 Win64"]
+    args = ["-DRECASTNAVIGATION_DEMO=OFF", "-DRECASTNAVIGATION_STATIC=ON", "-GNMake Makefiles"]
     env = [CXXFLAGS: "-fPIC -DDT_POLYREF64=1"]
 }
 
