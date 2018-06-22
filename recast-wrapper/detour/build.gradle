@@ -8,9 +8,7 @@ cmake {
     binary = OperatingSystem.current().getStaticLibraryName("Detour/Detour")
     includeDirectory = file("$clonePath/Detour/Include")
     projectDirectory = clonePath
-    args = ["-DRECASTNAVIGATION_DEMO=OFF",
-            //"-DRECASTNAVIGATION_STATIC=ON",
-             "-GNMake Makefiles"]
+    args = ["-DRECASTNAVIGATION_DEMO=OFF", "-DRECASTNAVIGATION_STATIC=ON", "-GNMake Makefiles"]
     env = [CXXFLAGS: "-fPIC -DDT_POLYREF64=1"]
 }
 
