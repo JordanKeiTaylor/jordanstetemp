@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
+using Improbable.Recast.Types;
 using NUnit.Framework;
 
-namespace Recast.Tests
+namespace Improbable.Recast.Tests
 {
     public class DetourShould
     {

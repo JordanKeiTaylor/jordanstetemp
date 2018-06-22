@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Win32.SafeHandles;
 
-namespace Recast
+namespace Improbable.Recast.Types
 {
     public class CompactHeightfield : SafeHandleZeroOrMinusOneIsInvalid
     {

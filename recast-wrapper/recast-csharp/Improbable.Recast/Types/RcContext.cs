@@ -1,18 +1,18 @@
 ﻿using System;
 using Microsoft.Win32.SafeHandles;
 
-namespace Recast
+namespace Improbable.Recast.Types
 {
-    public class PolyMesh : SafeHandleZeroOrMinusOneIsInvalid
+    public class RcContext : SafeHandleZeroOrMinusOneIsInvalid
     {
-        public PolyMesh(IntPtr handle) : base(true)
+        public RcContext(IntPtr handle) : base(true)
         {
             SetHandle(handle);
         }
-
+        
         protected override bool ReleaseHandle()
         {
-            RecastLibrary.polymesh_delete(handle);
+            RecastLibrary.rcContext_delete(handle);
             return true;
         }
     }
