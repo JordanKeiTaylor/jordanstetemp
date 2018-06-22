@@ -1,5 +1,3 @@
-import org.gradle.nativeplatform.toolchain.internal.NativeLanguage
-
 plugins {
   id "cpp-library"
 }
@@ -15,9 +13,18 @@ library {
 
 tasks.withType(CppCompile) {
     compilerArgs.add "-DDT_POLYREF64=1"
+}
+
+tasks.withType(LinkSharedLibrary) {
+    println("Wat")
     toolChain.set(toolChains.getByName("gcc"))
 }
 
-tasks.withType(AbstractLinkTask) {
-    toolChain.set(toolChains.getByName("clang"))
+model {
+    toolChains {
+        gcc(Gcc) {
+        }
+    }
 }
+
+
