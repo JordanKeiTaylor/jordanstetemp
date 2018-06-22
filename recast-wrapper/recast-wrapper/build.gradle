@@ -13,6 +13,3 @@ library {
 tasks.withType(CppCompile) {
     compilerArgs.add "-DDT_POLYREF64=1"
 }
-
-toolChains {
-}
