@@ -1,6 +1,7 @@
 ﻿using System;
+using Improbable.Recast.Types;
 
-namespace Recast
+namespace Improbable.Recast
 {
     public static class BuildSettings
     {
