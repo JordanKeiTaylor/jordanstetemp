@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Improbable.Sandbox.Environment;
-using Improbable.Sandbox.Log;
+using Improbable.Environment;
+using Improbable.Log;
 using Improbable.Worker;
 
 namespace Improbable.Sandbox

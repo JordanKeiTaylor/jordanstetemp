@@ -2,7 +2,7 @@
 using Improbable.Collections;
 using Improbable.Worker;
 
-namespace Improbable.Sandbox.Log
+namespace Improbable.Log
 {
     public class NamedLogger : ILogger
     {

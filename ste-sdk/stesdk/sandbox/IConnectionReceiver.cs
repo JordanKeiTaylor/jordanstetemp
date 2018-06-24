@@ -1,4 +1,4 @@
-﻿using Improbable.Sandbox.Environment;
+﻿using Improbable.Environment;
 
 namespace Improbable.Sandbox
 {
