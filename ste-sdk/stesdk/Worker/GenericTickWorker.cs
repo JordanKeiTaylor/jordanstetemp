@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
@@ -8,29 +9,30 @@ using Improbable.Log;
 
 namespace Improbable.Worker
 {
-    public abstract class GenericTickWorker<E> where E : Environment.Environment
+    public abstract class GenericTickWorker
     {
-        protected string LoggerName = "GenericTickWorker.cs";
-        protected Logger.NamedLogger Logger;
+        private const string LoggerName = "GenericTickWorker.cs";
+        private readonly Logger.NamedLogger _logger = Log.Logger.DefaultWithName(LoggerName);
         
         protected const int ErrorExitStatus = 1;
-        
-        protected readonly string WorkerType;
-        protected readonly Stopwatch FetchAndProcessOpsTimer = new Stopwatch();
-        protected readonly Stopwatch BehaviourTimer = new Stopwatch();
-        
-        protected string WorkerId = "";
 
-        protected GenericTickWorker(string workerType)
+        private readonly double _tickTimeMs;
+        private readonly string _workerId;
+        private readonly string _workerType;
+        private readonly TickTimeRollingMetric _tickTimeRollingMetric;
+        private readonly DeploymentContext _deploymentContext;
+        
+        protected GenericTickWorker(double tickTimeMs, string workerType, string workerId, string hostname, ushort port)
         {
-            Logger = Log.Logger.DefaultWithName(LoggerName);
-            WorkerType = workerType;
+            _tickTimeMs = tickTimeMs;
+            _workerType = workerType;
+            _workerId = workerId;
+            _tickTimeRollingMetric = new TickTimeRollingMetric(30);
+            _deploymentContext = new DeploymentContext(workerType, hostname, port, workerId);
         }
 
         public abstract int Run(string hostname, ushort port, string workerId);
 
-        protected abstract E GetEnvironment();
-        
         protected abstract Dictionary<string, ITickBehaviour> GetBehaviours();
         
         protected void RunEventLoop()
@@ -39,14 +41,14 @@ namespace Improbable.Worker
 
             // run loop
             var frameTimer = new Stopwatch();
-            while (GetEnvironment().IsDispatcherConnected)
+            while (GetContext().IsDispatcherConnected)
             {
                 frameTimer.Restart();
 
                 // process messages
                 FetchAndProcessOps(
-                    GetEnvironment().GetConnection(), 
-                    GetEnvironment().GetDispatcher().GetBaseDispatcher(), 
+                    GetContext().GetConnection(), 
+                    GetContext().GetDispatcher().GetBaseDispatcher(), 
                     0);
 
                 // process behaviours
@@ -55,38 +57,88 @@ namespace Improbable.Worker
                 {
                     try
                     {
-                        BehaviourTimer.Restart();
                         behaviour.Value.Tick();
                     }
                     catch (Exception e)
                     {
-                        Logger.Error("Caught exception during Tick() for behaviour [" + behaviour.Key + "]", e);
+                        _logger.Error("Caught exception during Tick() for behaviour [" + behaviour.Key + "]", e);
                     }
                 }
+                
+                GetContext().GetDispatcher().OnMetrics(metricOp =>
+                {
+                    var avgSleepTimeMs = _tickTimeMs - _tickTimeRollingMetric.GetAvg();
+                    if (avgSleepTimeMs < 0.0)
+                    {
+                        metricOp.Metrics.Load = 1.0 + ((-avgSleepTimeMs) / _tickTimeMs);
+                    }
+                    else
+                    {
+                        metricOp.Metrics.Load = (_tickTimeMs - avgSleepTimeMs) / _tickTimeMs;
+                    }
 
-                GetEnvironment().GetTickTimeRollingMetric().Record(frameTimer.ElapsedMilliseconds);
+                    GetContext().GetConnection().SendMetrics(metricOp.Metrics);
+                });
+
+                _tickTimeRollingMetric.Record(frameTimer.ElapsedMilliseconds);
 
                 // wait for the next frame to ensure frame rate isn't too fast
-                double waitTimeMs = GetEnvironment().TimeStepMs - frameTimer.ElapsedMilliseconds;
+                double waitTimeMs = _tickTimeMs - frameTimer.ElapsedMilliseconds;
                 if (waitTimeMs > 10.0)
                 {
                     Thread.Sleep((int)Math.Floor(waitTimeMs));
                 }
                 else if (waitTimeMs < -10.0)
                 {
-                    Logger.Warn("Worker fell behind by " + waitTimeMs + "ms.");
+                    _logger.Warn("Worker fell behind by " + waitTimeMs + "ms.");
                 }
             }
         }
 
         protected void FetchAndProcessOps(IConnection conn, Dispatcher dispatch, double waitTimeMs)
         {
-            FetchAndProcessOpsTimer.Restart();
-
             dispatch.Process(conn.GetOpList((uint)waitTimeMs));
-            while (GetEnvironment().IsDispatcherInCritical)
+            while (GetContext().IsDispatcherInCritical)
             {
                 dispatch.Process(conn.GetOpList(0));
+            }
+        }
+
+        protected DeploymentContext GetContext()
+        {
+            return _deploymentContext;
+        }
+
+        private class TickTimeRollingMetric {
+
+            private double _total;
+            private readonly Queue _values;
+            private readonly int _size;
+
+            private readonly object _lock = new object();
+
+            public TickTimeRollingMetric(int size) {
+                _size = size;
+                _values = new Queue(size + 1);
+            }
+
+            public void Record(double value) {
+                lock (_lock) {
+                    _total += value;
+                    _values.Enqueue(value);
+                    while (_values.Count > _size) {
+                        _total = _total - (double)_values.Dequeue();
+                    }
+                }
+            }
+
+            public double GetAvg() {
+                lock (_lock) {
+                    if (_values.Count == 0) {
+                        return 0.0;
+                    }
+                    return _total / _values.Count;
+                }
             }
         }
     }

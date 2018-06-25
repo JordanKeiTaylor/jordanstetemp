@@ -13,6 +13,7 @@ namespace Improbable.Environment
     ///
     /// For worker specific environment management, this class can be extended for addition functionality.
     /// </summary>
+    [Obsolete]
     public abstract class Environment
     {
         private const string LoggerName = "Environment.cs";
