@@ -1,7 +1,8 @@
 #!/bin/sh
 
 ls "C:/Windows/Microsoft.Net/Framework/v4.0.30319/MSBuild/15.0/Bin/msbuild.exe"
-ls "C:/Program Files (x86)/Microsoft Visual Studio/2017/BuildTools/MSBuild/15.0/Bin\msbuild.exe"
+export MSBUILD_DIR="C:/Program Files (x86)/Microsoft Visual Studio/2017/BuildTools/MSBuild/" 
+#15.0/Bin\msbuild.exe"
 
 cd recast-wrapper
 export PATH="$PWD/cmake-3.12.0-rc1-win64-x64/bin;$PATH"
@@ -12,17 +13,6 @@ echo "Fetching cmake 3.12"
 wget -q https://cmake.org/files/v3.12/cmake-3.12.0-rc1-win64-x64.zip
 unzip -q cmake-3.12.0-rc1-win64-x64.zip
 echo
-
-echo "Fetching vswhere"
-mkdir bin
-cd bin
-wget -q https://github.com/Microsoft/vswhere/releases/download/2.5.2/vswhere.exe
-echo
-cd ..
-
-# ls bin
-# export VSPATH=`bin/vswhere.exe -latest -products * -requires Microsoft.Component.MSBuild -property installationPath`
-# echo $VSPATH
 
 cmake --version
 echo

@@ -16,6 +16,7 @@ msbuild {
     projectName = 'Improbable.Recast'
     inputs.file(project.buildFile)
     intermediateDir = 'build/msbuild/obj'
+    msbuildDir = System.getenv('MSBUILD_DIR')
 }
 
 nunit {
