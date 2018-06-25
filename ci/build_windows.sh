@@ -1,7 +1,7 @@
 #!/bin/sh
 
 cd recast-wrapper
-export PATH="$PWD/cmake-3.12.0-rc1-win64-x64/bin;$PWD/bin;$PATH"
+export PATH="$PWD/cmake-3.12.0-rc1-win64-x64/bin;$PATH"
 echo "PATH is: $PATH"
 echo
 
@@ -18,8 +18,8 @@ echo
 cd ..
 
 ls bin
-bin/vswhere.exe -latest -products * -requires Microsoft.Component.MSBuild -property installationPath
-which msbuild
+export VSPATH=`bin/vswhere.exe -latest -products * -requires Microsoft.Component.MSBuild -property installationPath`
+echo $VSPATH
 
 cmake --version
 echo
