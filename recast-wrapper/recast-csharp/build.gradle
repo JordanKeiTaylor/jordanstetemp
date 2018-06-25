@@ -11,16 +11,14 @@ nuget {
 }
 
 msbuild {
+    version = 15
     solutionFile = file('recast-csharp.sln')
     configuration = 'Release'
     projectName = 'Improbable.Recast'
     inputs.file(project.buildFile)
     intermediateDir = 'build/msbuild/obj'
-    msbuildDir = System.getenv('MSBUILD_DIR')
+    //msbuildDir = System.getenv('MSBUILD_DIR')
 }
-
-
-println(System.getenv('MSBUILD_DIR'))
 
 nunit {
     testAssemblies = [file("$buildDir/msbuild/bin/Release/Improbable.Recast.Tests.dll")]
