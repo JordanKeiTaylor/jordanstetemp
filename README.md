@@ -2,7 +2,7 @@
 This repository will host tools and libraries built as part of the STE project.
 
 ## OBJ-Tools
-[OBJ-Tools](OBJ-Tools/README.md) is a collection of tools that manipulate [OBJ files](https://en.wikipedia.org/wiki/Wavefront_.obj_file).
+[OBJ-Tools](obj-tools/README.md) is a collection of tools that manipulate [OBJ files](https://en.wikipedia.org/wiki/Wavefront_.obj_file).
 
 ## deploy
 [deploy](deploy/README.md) contains tooling for deploying a `spatial loco` cluster.
