@@ -22,8 +22,7 @@ msbuild {
 
 nunit {
     testAssemblies = [file("$buildDir/msbuild/bin/Release/Improbable.Recast.Tests.dll")]
-    nunitVersion = '3.8.0'
-    ignoreFailures = true
+    nunitVersion = '3.0.0'
 }
 
 msbuild.dependsOn(nugetRestore)
