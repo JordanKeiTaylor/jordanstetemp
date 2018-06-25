@@ -11,13 +11,13 @@ nuget {
 }
 
 msbuild {
-    version = 15
+//    version = 14
     solutionFile = file('recast-csharp.sln')
     configuration = 'Release'
     projectName = 'Improbable.Recast'
     inputs.file(project.buildFile)
     intermediateDir = 'build/msbuild/obj'
-    //msbuildDir = System.getenv('MSBUILD_DIR')
+    msbuildDir = System.getenv('MSBUILD_DIR')
 }
 
 nunit {
@@ -77,7 +77,8 @@ nugetPush {
 
 nugetPack.dependsOn msbuild
 
-tasks.matching { it.name != 'darwinNativeLibs' && it.name != 'unixNativeLibs' && it.name != 'clean' && it.name != 'cleanMsbuild' }.all { task ->
+tasks.matching { it.name != 'darwinNativeLibs' && it.name != 'unixNativeLibs' && it.name != 'windowsNativeLibs' && it.name != 'clean' && it.name != 'cleanMsbuild' }.all { task ->
     task.dependsOn(darwinNativeLibs)
     task.dependsOn(unixNativeLibs)
+    task.dependsOn(windowsNativeLibs)
 }
