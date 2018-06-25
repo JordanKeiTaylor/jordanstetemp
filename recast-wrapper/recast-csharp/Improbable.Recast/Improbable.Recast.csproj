@@ -52,7 +52,7 @@
     <Compile Include="Types\SmoothPathResult.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ContentWithTargetPath Include="../build/native_libs/windows/librecastwrapper.dll" Condition=" '$(OS)' == 'Windows_NT' ">
+    <ContentWithTargetPath Include="../build/native_libs/windows/recastwrapper.dll" Condition=" '$(OS)' == 'Windows_NT' ">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <TargetPath>recastwrapper.dll</TargetPath>
     </ContentWithTargetPath>
