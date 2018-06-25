@@ -1,6 +1,6 @@
 ﻿using QuickGraph;
 
-namespace Improbable.Sandbox.Pathfinding.Api
+namespace Improbable.sandbox.Navigation.Api
 {
     public class PathEdge : IEdge<PathNode>
     {

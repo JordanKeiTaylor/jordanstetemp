@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Improbable.Collections;
-using Improbable.Sandbox.Pathfinding.Api;
 using Improbable.Recast;
 using Improbable.Recast.Types;
+using Improbable.sandbox.Navigation.Api;
 using Improbable.Sandbox.Extensions;
 
-namespace Improbable.Sandbox.Pathfinding
+namespace Improbable.sandbox.Navigation
 {
     public class DefaultMeshNavigator : IMeshNavigator
     {

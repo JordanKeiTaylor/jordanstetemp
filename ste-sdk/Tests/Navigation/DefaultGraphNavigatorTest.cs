@@ -4,14 +4,14 @@ using System.Diagnostics;
 using System.Linq;
 using Castle.Core.Internal;
 using Improbable;
-using Improbable.Sandbox.Pathfinding;
-using Improbable.Sandbox.Pathfinding.Api;
+using Improbable.sandbox.Navigation;
+using Improbable.sandbox.Navigation.Api;
 using NUnit.Framework;
 
 namespace Tests.Navigation
 {
     [TestFixture]
-    public class PathfindingTest
+    public class DefaultGraphNavigatorTest
     {
         private const int PathsToTest = 1000;
         private const int RandSeed = 1928;

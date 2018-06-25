@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Improbable.Sandbox.Pathfinding.Api
+namespace Improbable.sandbox.Navigation.Api
 {
     public interface IMeshNavigator
     {

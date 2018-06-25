@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Improbable.Sandbox.Pathfinding.Api
+namespace Improbable.sandbox.Navigation.Api
 {
     public class PathResult
     {
