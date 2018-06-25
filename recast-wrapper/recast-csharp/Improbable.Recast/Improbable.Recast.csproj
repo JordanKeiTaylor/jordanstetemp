@@ -54,7 +54,7 @@
   <ItemGroup>
     <ContentWithTargetPath Include="../build/native_libs/windows/librecastwrapper.dll" Condition=" '$(OS)' == 'Windows_NT' ">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <TargetPath>librecastwrapper.dll</TargetPath>
+      <TargetPath>recastwrapper.dll</TargetPath>
     </ContentWithTargetPath>
     <ContentWithTargetPath Include="../build/native_libs/linux-x86-64/librecastwrapper.so" Condition=" '$(OS)' == 'Unix' and ! $([System.IO.File]::Exists('/usr/lib/libc.dylib')) ">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
