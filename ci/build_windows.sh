@@ -1,6 +1,6 @@
 #!/bin/sh
 
-ls "C:/Windows/Microsoft.Net/Framework/v4.0.30319"
+ls "C:/Windows/Microsoft.Net/Framework/v4.0.30319/MSBuild/15.0/Bin/msbuild.exe"
 
 cd recast-wrapper
 export PATH="$PWD/cmake-3.12.0-rc1-win64-x64/bin;$PATH"
