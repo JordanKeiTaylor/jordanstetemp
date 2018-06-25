@@ -17,6 +17,8 @@ def getOsArch() {
         return "darwin"
     } else if (org.gradle.internal.os.OperatingSystem.current().isLinux()) {
         return "linux-x86-64"
+    } else if (org.gradle.internal.os.OperatingSystem.current().isWindows()) {
+	return "windows-x86-64"
     } else {
         throw new RuntimeException("Unsupported architecture");
     }
@@ -42,3 +44,10 @@ task cloneRecast() {
 }
 
 ext.clonePath = clonePath
+
+// On Windows we use the GNU toolchain and thus static libraries have .a extension instead .of .lib
+if (OperatingSystem.current().isWindows()) {
+    ext.osForStaticLibraryName = OperatingSystem.forName("linux")
+} else {
+    ext.osForStaticLibraryName = OperatingSystem.current()
+}
