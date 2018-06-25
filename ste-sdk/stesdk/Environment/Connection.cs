@@ -3,7 +3,7 @@ using Improbable.Collections;
 using Improbable.Worker;
 using Improbable.Worker.Query;
 
-namespace Improbable.Sandbox.Environment
+namespace Improbable.Environment
 {
     public interface IConnection : IDisposable
     {

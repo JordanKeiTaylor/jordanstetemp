@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections;
-using Improbable.Sandbox.Log;
+using Improbable.Log;
 using Improbable.Worker;
 
-namespace Improbable.Sandbox.Environment
+namespace Improbable.Environment
 {
     /// <summary>
     /// EnvironmentBase creates and exposes the following:
-    /// * Connection to SpatialOS
-    /// * Dispatcher to SpatialOS
+    /// * Connection Wrapper to SpatialOS
+    /// * Dispatcher Wrapper to SpatialOS
     /// * TimeStep Amount
     ///
     /// For worker specific environment management, this class can be extended for addition functionality.
@@ -69,22 +69,30 @@ namespace Improbable.Sandbox.Environment
             _wrappedDispatcher = dispatcher;
         }
 
+        /// <summary>
+        /// Returns an IConnection wrapper of the instantiated Worker SDK Connection
+        /// </summary>
+        /// <returns>IConnection</returns>
         public IConnection GetConnection()
         {
             return _wrappedConnection;
         }
 
+        /// <summary>
+        /// Returns an IDispatcher wrapper of the instantiated Worker SDK Dispatcher
+        /// </summary>
+        /// <returns>IDispatcher</returns>
         public IDispatcher GetDispatcher()
         {
             return _wrappedDispatcher;
         }
 
-        public TickTimeRollingMetric GetTickTimeRollingMetric()
+        internal TickTimeRollingMetric GetTickTimeRollingMetric()
         {
             return _tickTimeRollingMetric;
         }
 
-    public void Exit(int status)
+        public void Exit(int status)
         {
             _connection.Dispose();
             _dispatcher.Dispose();
@@ -184,7 +192,7 @@ namespace Improbable.Sandbox.Environment
             return dispatch;
         }
 
-        public class TickTimeRollingMetric {
+        internal class TickTimeRollingMetric {
 
             private double _total;
             private readonly Queue _values;

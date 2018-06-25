@@ -1,4 +1,4 @@
-﻿namespace Improbable.Sandbox.Behaviour
+﻿namespace Improbable.Behaviour
 {
     public interface ITickBehaviour
     {

@@ -15,15 +15,14 @@
     <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
     <RootNamespace>Improbable</RootNamespace>
   </PropertyGroup>
+  <Import Project="../resources/BuildTargets.targets" />
   <PropertyGroup Condition="'$(Platform)' == 'x64' And ('$(Configuration)' == 'Debug')">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>build\bin\generated_code\x64\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Platform)' == 'x64' And ('$(Configuration)' == 'Release')">
-    <OutputPath>standard-library\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>

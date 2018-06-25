@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using Improbable.Sandbox.Environment;
+using Improbable.Environment;
 using Improbable.Worker;
 
-namespace Improbable.Sandbox
+namespace Improbable
 {
     [Flags]
     public enum ComponentMapEvent
@@ -26,7 +26,7 @@ namespace Improbable.Sandbox
         private bool _hasUpdated = true;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:Improbable.Sandbox.ComponentMap`1"/> class.
+        /// Initializes a new instance of the <see cref="T:Improbable.ComponentMap`1"/> class.
         /// </summary>
         /// <param name="dispatcher">Dispatcher.</param>
         /// <param name="disableEvents">
