@@ -20,7 +20,7 @@ namespace Improbable.Sandbox.Pathfinding
             _navGraphAlgorithm = new DefaultNavGraphPathingAlgorithm(_graph);
         }
 
-        public Task<PathResult> GetGraphPath(PathNode start, PathNode stop, Mobility mobility = null)
+        public Task<PathResult> GetGraphPath(PathNode start, PathNode stop)
         {
             return _navGraphAlgorithm.GetPath(start, stop);
         }
