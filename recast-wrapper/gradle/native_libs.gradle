@@ -19,7 +19,7 @@ task unixNativeLibs(type: Sync) {
 task windowsNativeLibs(type: Sync) {
     dependsOn configurations.nativeLib
     from configurations.nativeLib.filter { it.path.endsWith(".dll") }
-    into "${nativeLibDir}/windows-x86-64"
+    into "${nativeLibDir}/windows"
 }
 
 ext.nativeLibDir = nativeLibDir
