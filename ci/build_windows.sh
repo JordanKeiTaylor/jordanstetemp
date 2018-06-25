@@ -1,6 +1,6 @@
 #!/bin/sh
 
-ls "C:/Windows/Microsoft.Net/Framework/"
+ls "C:/Windows/Microsoft.Net/Framework/v4.0.30319"
 
 cd recast-wrapper
 export PATH="$PWD/cmake-3.12.0-rc1-win64-x64/bin;$PATH"
