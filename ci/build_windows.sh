@@ -17,7 +17,7 @@ wget -q https://github.com/Microsoft/vswhere/releases/download/2.5.2/vswhere.exe
 echo
 cd ..
 
-vswhere -latest -products * -requires Microsoft.Component.MSBuild -property installationPath
+vswhere.exe -latest -products * -requires Microsoft.Component.MSBuild -property installationPath
 which msbuild
 
 cmake --version
