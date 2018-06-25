@@ -1,13 +1,17 @@
 #!/bin/sh
 
 cd recast-wrapper
-export PATH="$PWD/cmake-3.12.0-rc1-win64-x64/bin;$PATH"
+export PATH="$PWD;$PWD/cmake-3.12.0-rc1-win64-x64/bin;$PATH"
 echo "PATH is: $PATH"
 echo
 
 echo "Fetching cmake 3.12"
 wget -q https://cmake.org/files/v3.12/cmake-3.12.0-rc1-win64-x64.zip
 unzip -q cmake-3.12.0-rc1-win64-x64.zip
+echo
+
+eco "Fetching vswhere"
+wget -q https://github.com/Microsoft/vswhere/releases/download/2.5.2/vswhere.exe
 echo
 
 cmake --version
