@@ -22,6 +22,7 @@ namespace Improbable.Environment
         void OnRemoveComponent<C>(Action<RemoveComponentOp> callback) where C : IComponentMetaclass;
         void OnRemoveEntity(Action<RemoveEntityOp> callback);
         void OnReserveEntityIdsResponse(Action<ReserveEntityIdsResponseOp> callback);
+        void Process(OpList opList);
         Dispatcher GetBaseDispatcher();
     }
 
@@ -125,6 +126,11 @@ namespace Improbable.Environment
             _dispatcher.OnReserveEntityIdsResponse(callback);
         }
 
+        public void Process(OpList opList)
+        {
+            _dispatcher.Process(opList);
+        }
+        
         public Dispatcher GetBaseDispatcher()
         {
             return _dispatcher;

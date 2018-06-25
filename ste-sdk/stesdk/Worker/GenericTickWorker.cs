@@ -13,8 +13,6 @@ namespace Improbable.Worker
     {
         private const string LoggerName = "GenericTickWorker.cs";
         private readonly Logger.NamedLogger _logger = Log.Logger.DefaultWithName(LoggerName);
-        
-        protected const int ErrorExitStatus = 1;
 
         private readonly double _tickTimeMs;
         private readonly string _workerId;
@@ -31,11 +29,11 @@ namespace Improbable.Worker
             _deploymentContext = new DeploymentContext(workerType, hostname, port, workerId);
         }
 
-        public abstract int Run(string hostname, ushort port, string workerId);
+        public abstract int Run();
 
         protected abstract Dictionary<string, ITickBehaviour> GetBehaviours();
         
-        protected void RunEventLoop()
+        protected StatusCode RunEventLoop()
         {
             var behaviours = GetBehaviours();
 
@@ -46,10 +44,7 @@ namespace Improbable.Worker
                 frameTimer.Restart();
 
                 // process messages
-                FetchAndProcessOps(
-                    GetContext().GetConnection(), 
-                    GetContext().GetDispatcher().GetBaseDispatcher(), 
-                    0);
+                FetchAndProcessOps(0);
 
                 // process behaviours
                 double offsetMs = frameTimer.ElapsedMilliseconds;
@@ -93,14 +88,16 @@ namespace Improbable.Worker
                     _logger.Warn("Worker fell behind by " + waitTimeMs + "ms.");
                 }
             }
+
+            return StatusCode.DispatcherDisconnected;
         }
 
-        protected void FetchAndProcessOps(IConnection conn, Dispatcher dispatch, double waitTimeMs)
+        protected void FetchAndProcessOps(double waitTime)
         {
-            dispatch.Process(conn.GetOpList((uint)waitTimeMs));
+            GetContext().GetDispatcher().Process(GetContext().GetConnection().GetOpList((uint)waitTime));
             while (GetContext().IsDispatcherInCritical)
             {
-                dispatch.Process(conn.GetOpList(0));
+                GetContext().GetDispatcher().Process(GetContext().GetConnection().GetOpList(0));
             }
         }
 

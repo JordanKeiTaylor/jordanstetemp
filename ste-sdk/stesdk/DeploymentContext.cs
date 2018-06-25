@@ -7,6 +7,12 @@ namespace Improbable
 {
     public class DeploymentContext
     {
+        public enum Status
+        {
+            ErrorExit = 1,
+            DispatcherDisconnected = 2
+        }
+        
         private const string LoggerName = "DeploymentContext.cs";
         private static readonly Logger.NamedLogger Logger = Log.Logger.DefaultWithName(LoggerName);
 
@@ -72,7 +78,7 @@ namespace Improbable
         /// Exit execution with a specified status. Disposes of connection and dispatcher.
         /// </summary>
         /// <param name="status"></param>
-        public void Exit(StatusCode status)
+        public void Exit(Status status)
         {
             _connection.Dispose();
             _dispatcher.Dispose();
@@ -129,7 +135,7 @@ namespace Improbable
                 if (op.Level == LogLevel.Fatal)
                 {
                     Console.Error.WriteLine("Fatal error: " + op.Message);
-                    Exit(StatusCode.InternalError);
+                    Exit(Status.ErrorExit);
                 }
             });
 
