@@ -1,5 +1,7 @@
 #!/bin/sh
 
+ls C:\Windows\Microsoft.Net\Framework\
+
 cd recast-wrapper
 export PATH="$PWD/cmake-3.12.0-rc1-win64-x64/bin;$PATH"
 echo "PATH is: $PATH"
@@ -17,9 +19,9 @@ wget -q https://github.com/Microsoft/vswhere/releases/download/2.5.2/vswhere.exe
 echo
 cd ..
 
-ls bin
-export VSPATH=`bin/vswhere.exe -latest -products * -requires Microsoft.Component.MSBuild -property installationPath`
-echo $VSPATH
+# ls bin
+# export VSPATH=`bin/vswhere.exe -latest -products * -requires Microsoft.Component.MSBuild -property installationPath`
+# echo $VSPATH
 
 cmake --version
 echo
