@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AssemblyName>Improbable.Recast</AssemblyName>
     <RootNamespace>Improbable.Recast</RootNamespace>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
