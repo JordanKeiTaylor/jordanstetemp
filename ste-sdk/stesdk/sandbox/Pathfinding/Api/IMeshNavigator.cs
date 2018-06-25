@@ -2,7 +2,7 @@
 
 namespace Improbable.Sandbox.Pathfinding.Api
 {
-    public class IMeshNavigator
+    public interface IMeshNavigator
     {
         Task<PathResult> GetMeshPath(PathNode start, PathNode stop, Mobility mobility = null);
     }
