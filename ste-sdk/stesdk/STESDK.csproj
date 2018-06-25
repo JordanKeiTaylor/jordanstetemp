@@ -31,17 +31,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Behaviour\ITickBehaviour.cs" />
-    <Compile Include="ComponentMap.cs" />
-    <Compile Include="Environment\Connection.cs" />
-    <Compile Include="Environment\Dispatcher.cs" />
-    <Compile Include="Environment\Environment.cs" />
-    <Compile Include="Log\ILogger.cs" />
-    <Compile Include="Log\Logger.cs" />
-    <Compile Include="Log\NamedLogger.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Sandbox\**\*.cs" />
-    <Compile Include="Worker\GenericTickWorker.cs" />
+    <Compile Include=".\**\*.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
