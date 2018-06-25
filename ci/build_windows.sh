@@ -1,7 +1,7 @@
 #!/bin/sh
 
 cd recast-wrapper
-export PATH="$PWD/vswhere;$PWD/cmake-3.12.0-rc1-win64-x64/bin;$PATH"
+export PATH="$PWD/cmake-3.12.0-rc1-win64-x64/bin;$PWD/vswhere;$PATH"
 echo "PATH is: $PATH"
 echo
 
