@@ -18,7 +18,7 @@ echo
 cd ..
 
 ls bin
-vswhere.exe -latest -products * -requires Microsoft.Component.MSBuild -property installationPath
+bin/vswhere.exe -latest -products * -requires Microsoft.Component.MSBuild -property installationPath
 which msbuild
 
 cmake --version
