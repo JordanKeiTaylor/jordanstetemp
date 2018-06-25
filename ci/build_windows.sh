@@ -1,7 +1,6 @@
 #!/bin/sh
 
 export MSBUILD_DIR="C:/Program Files (x86)/Microsoft Visual Studio/2017/BuildTools/MSBuild/15.0/Bin/"
-ls "$MSBUILD_DIR"
 
 cd recast-wrapper
 export PATH="$PWD/cmake-3.12.0-rc1-win64-x64/bin;$PATH"
