@@ -4,9 +4,11 @@ namespace Improbable.Sandbox.Pathfinding.Api
 {
     public class NoPathFoundException : Exception
     {
-        public NoPathFoundException(string message)
-            : base(message)
-        {
-        }
+        /// <summary>
+        /// Exception used by the Navigation framework API to signal that a valid path is not
+        /// possible.
+        /// </summary>
+        /// <param name="message">Message of the exception.</param>
+        public NoPathFoundException(string message) : base(message) { }
     }
 }
