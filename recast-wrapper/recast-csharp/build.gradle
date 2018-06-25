@@ -19,6 +19,9 @@ msbuild {
     msbuildDir = System.getenv('MSBUILD_DIR')
 }
 
+
+println(System.getenv('MSBUILD_DIR'))
+
 nunit {
     testAssemblies = [file("$buildDir/msbuild/bin/Release/Improbable.Recast.Tests.dll")]
 }
