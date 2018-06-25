@@ -8,7 +8,7 @@ using Improbable.Sandbox.Pathfinding;
 using Improbable.Sandbox.Pathfinding.Api;
 using NUnit.Framework;
 
-namespace Tests.Pathfinding
+namespace Tests.Navigation
 {
     [TestFixture]
     public class PathfindingTest
@@ -19,7 +19,7 @@ namespace Tests.Pathfinding
         
         private const string PointsCsv = "resources/graph/sanfran-micro.points.csv";
         private const string GraphCsv = "resources/graph/sanfran-micro.graph.csv";        
-        private IPathfinder _pathfinder;
+        private IGraphNavigator _navigator;
         private Dictionary<EntityId, PathNode> _nodes;
         private Dictionary<PathNode, List<PathEdge>> _outbounds;
         private PathNode[] _nodesArray;
@@ -29,7 +29,7 @@ namespace Tests.Pathfinding
         {
             _rand = new Random(RandSeed); // Re-seed Random generator before each test.
             
-            if (_pathfinder != null)
+            if (_navigator != null)
             {
                 return;
             }
@@ -51,7 +51,7 @@ namespace Tests.Pathfinding
                 _outbounds[edge.Source].Add(edge);
             }
 
-            _pathfinder = new DefaultPathfinder(_nodes, edges);
+            _navigator = new DefaultPathfinder(_nodes, edges);
         }
 
         [Test]
@@ -66,7 +66,7 @@ namespace Tests.Pathfinding
                 var tuple = GenerateValidStartStop();
                 
                 stopwatch.Start();
-                var pathTask = _pathfinder.GetNavGraphPath(tuple.Item1, tuple.Item2);
+                var pathTask = _navigator.GetGraphPath(tuple.Item1, tuple.Item2);
                 pathTask.Wait();
                 stopwatch.Stop();
 
@@ -102,7 +102,7 @@ namespace Tests.Pathfinding
                 var tuple = GenerateRandomStartStop();
                 
                 stopwatch.Start();
-                var pathTask = _pathfinder.GetNavGraphPath(tuple.Item1, tuple.Item2);
+                var pathTask = _navigator.GetGraphPath(tuple.Item1, tuple.Item2);
                 pathTask.Wait();
                 stopwatch.Stop();
                 

@@ -1,7 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace Improbable.Sandbox.Pathfinding.Api
 {
+    [Obsolete]
     public interface IPathfinder
     {
         Task<PathResult> GetNavGraphPath(PathNode start, PathNode stop, Mobility mobility = null);

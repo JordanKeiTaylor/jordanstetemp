@@ -5,7 +5,7 @@ using QuickGraph;
 
 namespace Improbable.Sandbox.Pathfinding
 {
-    public class DefaultPathfinder : IPathfinder
+    public class DefaultPathfinder : IGraphNavigator
     {
         private readonly List<PathEdge> _edges;
         private readonly Dictionary<EntityId, PathNode> _nodes;
@@ -20,14 +20,9 @@ namespace Improbable.Sandbox.Pathfinding
             _navGraphAlgorithm = new DefaultNavGraphPathingAlgorithm(_graph);
         }
 
-        public Task<PathResult> GetNavGraphPath(PathNode start, PathNode stop, Mobility mobility = null)
+        public Task<PathResult> GetGraphPath(PathNode start, PathNode stop, Mobility mobility = null)
         {
             return _navGraphAlgorithm.GetPath(start, stop);
-        }
-
-        public Task<PathResult> GetNavMeshPath(PathNode start, PathNode stop, Mobility mobility = null)
-        {
-            throw new System.NotImplementedException();
         }
 
         private AdjacencyGraph<PathNode, PathEdge> BuildRoutingGraph(
