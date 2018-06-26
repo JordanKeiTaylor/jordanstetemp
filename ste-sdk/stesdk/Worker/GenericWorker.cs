@@ -1,4 +1,5 @@
-﻿using Improbable.Log;
+﻿using Improbable.Environment;
+using Improbable.Log;
 
 namespace Improbable.Worker
 {
@@ -9,8 +10,8 @@ namespace Improbable.Worker
         
         private readonly string _workerId;
         private readonly string _workerType;
-        
-        public GenericWorker(string workerType, string workerId, string hostname, ushort port)
+
+        protected GenericWorker(string workerType, string workerId, string hostname, ushort port)
         {
             _workerId = workerId;
             _workerType = workerType;
@@ -18,6 +19,18 @@ namespace Improbable.Worker
             DeploymentContext.GetInstance().Init(workerType, workerId, hostname, port);
             
             _logger.Info("Initialized Deployment Context");
+        }
+
+        /// <summary>
+        /// Test Constructor
+        /// </summary>
+        /// <param name="connection">Mocked IConnection</param>
+        /// <param name="dispatcher">Mocked IDispatcher</param>
+        protected GenericWorker(IConnection connection, IDispatcher dispatcher)
+        {
+            DeploymentContext.GetInstance().TestInit(connection, dispatcher);
+            
+            _logger.Info("Initialized Test Deployment Context");
         }
         
         protected string GetWorkerId()

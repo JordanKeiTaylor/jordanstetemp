@@ -25,6 +25,18 @@ namespace Improbable.Worker
             _tickTimeRollingMetric = new TickTimeRollingMetric(30);
         }
 
+        /// <inheritdoc />
+        /// <summary>
+        /// Test Constructor
+        /// </summary>
+        /// <param name="connection">Mocked IConnection</param>
+        /// <param name="dispatcher">Mocked IDispatcher</param>
+        protected GenericTickWorker(IConnection connection, IDispatcher dispatcher)
+            : base(connection, dispatcher)
+        {
+            // Test Constructor
+        }
+
         public abstract int Run();
 
         protected abstract Dictionary<string, ITickBehaviour> GetBehaviours();

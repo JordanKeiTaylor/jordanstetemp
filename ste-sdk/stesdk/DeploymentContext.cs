@@ -60,6 +60,20 @@ namespace Improbable
 
             _initialized = true;
         }
+
+        public void TestInit(IConnection connection, IDispatcher dispatcher)
+        {
+            if (_initialized)
+            {
+                Logger.Warn("Attempt to reinitialize DeploymentContext has been cancelled.");
+                return;
+            }
+
+            _wrappedConnection = connection;
+            _wrappedDispatcher = dispatcher;
+            
+            _initialized = true;
+        }
         
         /// <summary>
         /// Returns an IConnection wrapper of the instantiated Worker SDK Connection
