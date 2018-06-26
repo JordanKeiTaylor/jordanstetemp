@@ -14,11 +14,11 @@ namespace Improbable.Worker
         private const string LoggerName = "GenericTickWorker.cs";
         private readonly NamedLogger _logger = Logger.DefaultWithName(LoggerName);
 
-        private readonly double _tickTimeMs;
+        private readonly int _tickTimeMs;
         
         private readonly TickTimeRollingMetric _tickTimeRollingMetric;
         
-        protected GenericTickWorker(double tickTimeMs, string workerType, string workerId, string host, ushort port)
+        protected GenericTickWorker(int tickTimeMs, string workerType, string workerId, string host, ushort port)
             : base(workerType, workerId, host, port)
         {
             _tickTimeMs = tickTimeMs;
@@ -100,6 +100,11 @@ namespace Improbable.Worker
         protected DeploymentContext GetContext()
         {
             return DeploymentContext.GetInstance();
+        }
+
+        protected int GetTickTimeMs()
+        {
+            return _tickTimeMs;
         }
 
         private class TickTimeRollingMetric {
