@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using Castle.Core.Internal;
 using Improbable;
@@ -17,8 +18,8 @@ namespace Tests.Navigation
         private const int RandSeed = 1928;
         private Random _rand;
         
-        private const string PointsCsv = "resources/graph/sanfran-micro.points.csv";
-        private const string GraphCsv = "resources/graph/sanfran-micro.graph.csv";        
+        private const string PointsCsv = "./../../resources/graph/sanfran-micro.points.csv";
+        private const string GraphCsv = "./../../resources/graph/sanfran-micro.graph.csv";        
         private IGraphNavigator _navigator;
         private Dictionary<EntityId, PathNode> _nodes;
         private Dictionary<PathNode, List<PathEdge>> _outbounds;
@@ -36,9 +37,10 @@ namespace Tests.Navigation
             
             _nodes = new Dictionary<EntityId, PathNode>();
             var edges = new List<PathEdge>();
-            
-            SnapshotParsingUtils.SetGraphNodes(PointsCsv, _nodes);
-            SnapshotParsingUtils.SetGraphEdges(GraphCsv, _nodes, edges);
+
+            var dir = AppDomain.CurrentDomain.BaseDirectory;
+            SnapshotParsingUtils.SetGraphNodes(Path.Combine(dir, PointsCsv), _nodes);
+            SnapshotParsingUtils.SetGraphEdges(Path.Combine(dir, GraphCsv), _nodes, edges);
 
             _nodesArray = _nodes.Values.ToArray();
             _outbounds = new Dictionary<PathNode, List<PathEdge>>();
