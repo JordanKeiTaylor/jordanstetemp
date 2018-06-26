@@ -17,8 +17,8 @@ namespace Improbable.Context
         private IDispatcher _wrappedDispatcher;
         private IConnection _wrappedConnection;
         
-        public bool IsDispatcherConnected { get; set; }
-        public bool IsDispatcherInCritical { get; set; }
+        public bool IsDispatcherConnected { get; private set; }
+        public bool IsDispatcherInCritical { get; private set; }
 
         private WorkerContext()
         {
