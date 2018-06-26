@@ -27,10 +27,10 @@ echo
 # Yuck. Can't get tests working from within gradle so this is what we're left with
 # Probably something to do with this: https://github.com/nunit/nunit-console/issues/370
 # which may be fixed with NUnit.Console 3.9.0
-mkdir nunit
-cd nunit
-wget -q https://www.myget.org/F/nunit/api/v2/package/NUnit.ConsoleRunner/3.9.0-dev-04009
-unzip -q 3.9.0-dev-04009
+# mkdir nunit
+# cd nunit
+wget -q https://github.com/nunit/nunit-console/releases/download/3.8/NUnit.Console-3.8.0.zip
+unzip -q NUnit.Console-3.8.0.zip
 cd ..
 ls ./recast-csharp/build/msbuild/bin/Release/Improbable.Recast.Tests.dll
-mono ./nunit/tools/nunit3-console.exe --shadowcopy --inprocess --teamcity --trace=Verbose ./recast-csharp/build/msbuild/bin/Release/Improbable.Recast.Tests.dll
+./nunit/nunit3-console.exe --inprocess --teamcity --trace=Verbose --labels=All ./recast-csharp/build/msbuild/bin/Release/Improbable.Recast.Tests.dll
