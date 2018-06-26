@@ -27,8 +27,7 @@ echo
 # Yuck. Can't get tests working from within gradle so this is what we're left with
 # Probably something to do with this: https://github.com/nunit/nunit-console/issues/370
 # which may be fixed with NUnit.Console 3.9.0
-# mkdir nunit
-# cd nunit
+mkdir nunit
 cd nunit
 wget -q https://github.com/nunit/nunit-console/releases/download/3.8/NUnit.Console-3.8.0.zip
 unzip -q NUnit.Console-3.8.0.zip
