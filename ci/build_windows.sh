@@ -31,4 +31,4 @@ cd nunit
 wget -q https://www.myget.org/F/nunit/api/v2/package/NUnit.ConsoleRunner/3.9.0-dev-04009
 unzip -q 3.9.0-dev-04009
 cd ..
-./nunit/tools/nunit3-console.exe --teamcity --inprocess --trace=Debug ./recast-csharp/build/msbuild/bin/Release/Improbable.Recast.Tests.dll
+./nunit/tools/nunit3-console.exe --teamcity --trace=Debug ./recast-csharp/build/msbuild/bin/Release/Improbable.Recast.Tests.dll
