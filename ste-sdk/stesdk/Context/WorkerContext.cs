@@ -40,7 +40,7 @@ namespace Improbable.Context
         }
 
         /// <summary>
-        /// Initializes the DeploymentContext to connect with SpatialOS.
+        /// Initializes the DeploymentContext to connect with SpatialOS given a hostname and port.
         /// </summary>
         /// <param name="workerType">Type of worker</param>
         /// <param name="workerId">ID of worker</param>
@@ -70,6 +70,19 @@ namespace Improbable.Context
 
             IsDispatcherConnected = connection.IsConnected;
 
+            _status = Status.Initialized;
+        }
+
+        /// <summary>
+        /// Initializes the DeploymentContext given an IConnection and IDispatcher.
+        /// </summary>
+        /// <param name="connection"></param>
+        /// <param name="dispatcher"></param>
+        public void Init(IConnection connection, IDispatcher dispatcher)
+        {
+            _wrappedConnection = connection;
+            _wrappedDispatcher = dispatcher;
+            
             _status = Status.Initialized;
         }
         
