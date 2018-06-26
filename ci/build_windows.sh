@@ -5,6 +5,7 @@ set -eux
 make --version
 gcc --version
 g++ --version
+mono --version
 
 export MSBUILD_DIR="C:/Program Files (x86)/Microsoft Visual Studio/2017/BuildTools/MSBuild/15.0/Bin/"
 export PATH="$PWD/cmake-3.12.0-rc1-win64-x64/bin;$PATH"
@@ -31,4 +32,4 @@ cd nunit
 wget -q https://www.myget.org/F/nunit/api/v2/package/NUnit.ConsoleRunner/3.9.0-dev-04009
 unzip -q 3.9.0-dev-04009
 cd ..
-./nunit/tools/nunit3-console.exe --inprocess --teamcity --trace=Verbose ./recast-csharp/build/msbuild/bin/Release/Improbable.Recast.Tests.dll
+mono ./nunit/tools/nunit3-console.exe --inprocess --teamcity --trace=Verbose ./recast-csharp/build/msbuild/bin/Release/Improbable.Recast.Tests.dll
