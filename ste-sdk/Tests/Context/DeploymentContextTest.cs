@@ -14,7 +14,7 @@ namespace Tests.Context
         {
             if (_context.GetStatus() != Status.Uninitialized)
             {
-                _context.Exit();
+                _context.Dispose();
             }
             
             Assert.AreEqual(Status.Uninitialized, _context.GetStatus());
