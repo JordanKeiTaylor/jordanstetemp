@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Improbable.Collections;
 using Improbable.Context;
-using Improbable.sandbox;
+using Improbable.Sandbox;
 using Improbable.Worker;
 
 namespace Improbable.Log

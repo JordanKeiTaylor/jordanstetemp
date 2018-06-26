@@ -1,4 +1,4 @@
-﻿namespace Improbable.sandbox.Projections
+﻿namespace Improbable.Sandbox.Projections
 {
     public class EquidistantProjection
     {

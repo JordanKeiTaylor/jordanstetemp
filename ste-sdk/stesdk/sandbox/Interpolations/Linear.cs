@@ -1,6 +1,6 @@
-﻿using Improbable.sandbox.Extensions;
+﻿using Improbable.Sandbox.Extensions;
 
-namespace Improbable.sandbox.Interpolations
+namespace Improbable.Sandbox.Interpolations
 {
     public class Linear : IInterpolate
     {

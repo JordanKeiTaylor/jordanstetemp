@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace Improbable.sandbox.Projections
+namespace Improbable.Sandbox.Projections
 {
     public interface IMapProjection
     {

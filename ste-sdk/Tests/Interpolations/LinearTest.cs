@@ -1,6 +1,6 @@
 ﻿using Improbable;
-using Improbable.sandbox.Extensions;
-using Improbable.sandbox.Interpolations;
+using Improbable.Sandbox.Extensions;
+using Improbable.Sandbox.Interpolations;
 using NUnit.Framework;
 
 namespace Tests.Interpolations

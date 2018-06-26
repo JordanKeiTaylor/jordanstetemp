@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Improbable.sandbox.Pathfinding.Api;
+using Improbable.Sandbox.Pathfinding.Api;
 using QuickGraph;
 
-namespace Improbable.sandbox.Pathfinding
+namespace Improbable.Sandbox.Pathfinding
 {
     public class DefaultPathfinder : IPathfinder
     {

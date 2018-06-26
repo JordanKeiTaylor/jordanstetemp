@@ -1,5 +1,5 @@
 ﻿using Improbable;
-using Improbable.sandbox.Interpolations;
+using Improbable.Sandbox.Interpolations;
 using NUnit.Framework;
 
 namespace Tests.Interpolations

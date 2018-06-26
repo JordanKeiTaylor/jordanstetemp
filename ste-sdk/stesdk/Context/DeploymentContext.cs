@@ -10,6 +10,7 @@ namespace Improbable.Context
         private readonly NamedLogger _logger = Logger.DefaultWithName(LoggerName);
 
         private static DeploymentContext _context;
+        private static Status _status;
         
         private string _workerType;
         private Connection _connection;
@@ -20,11 +21,9 @@ namespace Improbable.Context
         public bool IsDispatcherConnected { get; set; }
         public bool IsDispatcherInCritical { get; set; }
 
-        private bool _initialized;
-
         private DeploymentContext()
         {
-            _initialized = false;
+            _status = Status.Uninitialized;
         }
         
         /// <summary>
@@ -45,7 +44,7 @@ namespace Improbable.Context
         /// <param name="port">Port to connect</param>
         public void Init(string workerType, string workerId, string hostname, ushort port)
         {
-            if (_initialized)
+            if (_status != Status.Uninitialized)
             {
                 _logger.Warn("Attempt to reinitialize DeploymentContext has been cancelled.");
                 return;
@@ -68,7 +67,7 @@ namespace Improbable.Context
 
             IsDispatcherConnected = _connection.IsConnected;
 
-            _initialized = true;
+            _status = Status.Initialized;
         }
 
         /// <summary>
@@ -79,7 +78,7 @@ namespace Improbable.Context
         /// <param name="dispatcher"></param>
         public void TestInit(IConnection connection, IDispatcher dispatcher)
         {
-            if (_initialized)
+            if (_status != Status.Uninitialized)
             {
                 _logger.Warn("Attempt to reinitialize DeploymentContext has been cancelled.");
                 return;
@@ -87,8 +86,6 @@ namespace Improbable.Context
 
             _wrappedConnection = connection;
             _wrappedDispatcher = dispatcher;
-            
-            _initialized = true;
         }
         
         /// <summary>
@@ -97,6 +94,10 @@ namespace Improbable.Context
         /// <returns>IConnection</returns>
         public IConnection GetConnection()
         {
+            if (_status == Status.Uninitialized)
+            {
+                throw new ContextUninitialized("The context has not been initialized.");
+            }
             return _wrappedConnection;
         }
 
@@ -106,20 +107,24 @@ namespace Improbable.Context
         /// <returns>IDispatcher</returns>
         public IDispatcher GetDispatcher()
         {
+            if (_status == Status.Uninitialized)
+            {
+                throw new ContextUninitialized("The context has not been initialized.");
+            }
             return _wrappedDispatcher;
         }
         
         /// <summary>
         /// Exit execution with a specified status. Disposes of connection and dispatcher.
         /// </summary>
-        /// <param name="status"></param>
-        public void Exit(ContextStatus status)
+        public void Exit()
         {
             _connection.Dispose();
             _dispatcher.Dispose();
             _wrappedConnection.Dispose();
             _wrappedDispatcher.Dispose();
-            _logger.Warn("Exiting: " + status);
+            _logger.Warn("Disposing of Connection and Dispatcher");
+            _status = Status.Uninitialized;
         }
 
         /// <summary>
@@ -174,7 +179,7 @@ namespace Improbable.Context
                 if (op.Level == LogLevel.Fatal)
                 {
                     Console.Error.WriteLine("Fatal error: " + op.Message);
-                    Exit(ContextStatus.ErrorExit);
+                    Exit();
                 }
             });
 

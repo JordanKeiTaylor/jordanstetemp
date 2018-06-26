@@ -1,5 +1,5 @@
 ﻿using System;
-using Improbable.sandbox;
+using Improbable.Sandbox;
 using NUnit.Framework;
 
 namespace Tests

@@ -4,8 +4,8 @@ using System.Diagnostics;
 using System.Linq;
 using Castle.Core.Internal;
 using Improbable;
-using Improbable.sandbox.Pathfinding;
-using Improbable.sandbox.Pathfinding.Api;
+using Improbable.Sandbox.Pathfinding;
+using Improbable.Sandbox.Pathfinding.Api;
 using NUnit.Framework;
 
 namespace Tests.Pathfinding

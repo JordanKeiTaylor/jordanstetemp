@@ -1,4 +1,4 @@
-﻿namespace Improbable.sandbox.Pathfinding.Api
+﻿namespace Improbable.Sandbox.Pathfinding.Api
 {
     public class Mobility
     {

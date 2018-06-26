@@ -1,4 +1,4 @@
-﻿using Improbable.sandbox.Projections;
+﻿using Improbable.Sandbox.Projections;
 using NUnit.Framework;
 
 namespace Tests.Projections

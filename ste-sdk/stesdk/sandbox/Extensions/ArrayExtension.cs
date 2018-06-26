@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Improbable.sandbox.Extensions
+namespace Improbable.Sandbox.Extensions
 {
     public static class ArrayExtension
     {

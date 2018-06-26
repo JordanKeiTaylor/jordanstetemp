@@ -29,7 +29,7 @@ namespace Improbable.Worker
 
         protected abstract Dictionary<string, ITickBehaviour> GetBehaviours();
         
-        protected ContextStatus RunEventLoop()
+        protected int RunEventLoop()
         {
             var behaviours = GetBehaviours();
 
@@ -85,7 +85,7 @@ namespace Improbable.Worker
                 }
             }
 
-            return ContextStatus.DispatcherDisconnected;
+            return 1;
         }
 
         protected void FetchAndProcessOps(double waitTime)
