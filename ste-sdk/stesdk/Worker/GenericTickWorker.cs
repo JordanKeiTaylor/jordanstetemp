@@ -9,24 +9,20 @@ using Improbable.Log;
 
 namespace Improbable.Worker
 {
-    public abstract class GenericTickWorker
+    public abstract class GenericTickWorker : GenericWorker
     {
         private const string LoggerName = "GenericTickWorker.cs";
         private readonly Logger.NamedLogger _logger = Log.Logger.DefaultWithName(LoggerName);
 
         private readonly double _tickTimeMs;
-        private readonly string _workerId;
-        private readonly string _workerType;
-        private readonly TickTimeRollingMetric _tickTimeRollingMetric;
-        private readonly DeploymentContext _deploymentContext;
         
-        protected GenericTickWorker(double tickTimeMs, string workerType, string workerId, string hostname, ushort port)
+        private readonly TickTimeRollingMetric _tickTimeRollingMetric;
+        
+        protected GenericTickWorker(double tickTimeMs, string workerType, string workerId, string host, ushort port)
+            : base(workerType, workerId, host, port)
         {
             _tickTimeMs = tickTimeMs;
-            _workerType = workerType;
-            _workerId = workerId;
             _tickTimeRollingMetric = new TickTimeRollingMetric(30);
-            _deploymentContext = new DeploymentContext(workerType, hostname, port, workerId);
         }
 
         public abstract int Run();
@@ -103,7 +99,7 @@ namespace Improbable.Worker
 
         protected DeploymentContext GetContext()
         {
-            return _deploymentContext;
+            return DeploymentContext.GetInstance();
         }
 
         private class TickTimeRollingMetric {

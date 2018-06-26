@@ -4,7 +4,7 @@ namespace Improbable
 {
     public class ContextStatus
     {
-        public static readonly ContextStatus ExitError = new ContextStatus("ExitError", 1);
+        public static readonly ContextStatus ErrorExit = new ContextStatus("ExitError", 1);
         public static readonly ContextStatus DispatcherDisconnected = new ContextStatus("DispatcherDisconnected", 2);
 
         private static readonly Map<int, ContextStatus> _codeMap;
@@ -13,7 +13,7 @@ namespace Improbable
         {
             _codeMap = new Map<int, ContextStatus>
             {
-                {1, ExitError}, 
+                {1, ErrorExit}, 
                 {2, DispatcherDisconnected}
             };
         }
