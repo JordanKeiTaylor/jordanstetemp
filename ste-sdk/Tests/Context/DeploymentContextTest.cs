@@ -7,7 +7,7 @@ namespace Tests.Context
 {
     public class DeploymentContextTest
     {
-        private readonly DeploymentContext _context = DeploymentContext.GetInstance();
+        private readonly WorkerContext _context = WorkerContext.GetInstance();
 
         [SetUp]
         public void Setup()
