@@ -1,7 +1,8 @@
 #!/bin/sh
-# set -eux
+set -eux
 
 # Preflight checks
+pacman -Ss mingw64/mingw-w64-x86_64-gcc
 make --version
 gcc --version
 g++ --version
