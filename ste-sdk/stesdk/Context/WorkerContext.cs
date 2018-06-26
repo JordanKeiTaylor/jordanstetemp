@@ -5,12 +5,12 @@ using Improbable.Worker;
 
 namespace Improbable.Context
 {
-    public class DeploymentContext : IDisposable
+    public class WorkerContext : IDisposable
     {   
         private const string LoggerName = "DeploymentContext.cs";
         private readonly NamedLogger _logger = Logger.DefaultWithName(LoggerName);
 
-        private static DeploymentContext _context;
+        private static WorkerContext _context;
         private static Status _status;
         
         private string _workerType;
@@ -20,7 +20,7 @@ namespace Improbable.Context
         public bool IsDispatcherConnected { get; set; }
         public bool IsDispatcherInCritical { get; set; }
 
-        private DeploymentContext()
+        private WorkerContext()
         {
             _status = Status.Uninitialized;
         }
@@ -29,9 +29,9 @@ namespace Improbable.Context
         /// Returns the initialized DeploymentContext.
         /// </summary>
         /// <returns>DeploymentContext</returns>
-        public static DeploymentContext GetInstance()
+        public static WorkerContext GetInstance()
         {
-            return _context ?? (_context = new DeploymentContext());
+            return _context ?? (_context = new WorkerContext());
         }
 
         public Status GetStatus()

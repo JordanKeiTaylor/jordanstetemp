@@ -97,11 +97,6 @@ namespace Improbable.Worker
             }
         }
 
-        protected DeploymentContext GetContext()
-        {
-            return DeploymentContext.GetInstance();
-        }
-
         protected int GetTickTimeMs()
         {
             return _tickTimeMs;

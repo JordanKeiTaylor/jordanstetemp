@@ -16,7 +16,7 @@ namespace Improbable.Worker
             _workerId = workerId;
             _workerType = workerType;
             
-            DeploymentContext.GetInstance().Init(workerType, workerId, hostname, port);
+            WorkerContext.GetInstance().Init(workerType, workerId, hostname, port);
             
             _logger.Info("Initialized Deployment Context");
         }
@@ -37,6 +37,11 @@ namespace Improbable.Worker
         protected string GetWorkerType()
         {
             return _workerType;
+        }
+        
+        protected WorkerContext GetContext()
+        {
+            return WorkerContext.GetInstance();
         }
     }
 }
