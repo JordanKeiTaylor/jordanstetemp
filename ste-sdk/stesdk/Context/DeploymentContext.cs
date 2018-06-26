@@ -36,6 +36,11 @@ namespace Improbable.Context
             return _context ?? (_context = new DeploymentContext());
         }
 
+        public Status GetStatus()
+        {
+            return _status;
+        }
+
         /// <summary>
         /// Initializes the DeploymentContext to connect with SpatialOS.
         /// </summary>
@@ -119,10 +124,10 @@ namespace Improbable.Context
         /// </summary>
         public void Exit()
         {
-            _connection.Dispose();
-            _dispatcher.Dispose();
-            _wrappedConnection.Dispose();
-            _wrappedDispatcher.Dispose();
+            _connection?.Dispose();
+            _dispatcher?.Dispose();
+            _wrappedConnection?.Dispose();
+            _wrappedDispatcher?.Dispose();
             _logger.Warn("Disposing of Connection and Dispatcher");
             _status = Status.Uninitialized;
         }
