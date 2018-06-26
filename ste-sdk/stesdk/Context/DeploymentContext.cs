@@ -5,7 +5,7 @@ using Improbable.Worker;
 
 namespace Improbable.Context
 {
-    public class DeploymentContext
+    public class DeploymentContext : IDisposable
     {   
         private const string LoggerName = "DeploymentContext.cs";
         private readonly NamedLogger _logger = Logger.DefaultWithName(LoggerName);
@@ -122,14 +122,14 @@ namespace Improbable.Context
         }
         
         /// <summary>
-        /// Exit execution with a specified status. Disposes of connection and dispatcher.
+        /// Disposes of connection and dispatcher.
         /// </summary>
-        public void Exit()
+        public void Dispose()
         {
             _connection?.Dispose();
             _dispatcher?.Dispose();
-            _wrappedConnection?.Dispose();
             _wrappedDispatcher?.Dispose();
+            _wrappedConnection?.Dispose();
             _logger.Warn("Disposing of Connection and Dispatcher");
             _status = Status.Uninitialized;
         }
@@ -186,7 +186,7 @@ namespace Improbable.Context
                 if (op.Level == LogLevel.Fatal)
                 {
                     Console.Error.WriteLine("Fatal error: " + op.Message);
-                    Exit();
+                    Dispose();
                 }
             });
 
