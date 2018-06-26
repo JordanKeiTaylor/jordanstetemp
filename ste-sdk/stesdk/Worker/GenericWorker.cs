@@ -24,13 +24,9 @@ namespace Improbable.Worker
         /// <summary>
         /// Test Constructor
         /// </summary>
-        /// <param name="connection">Mocked IConnection</param>
-        /// <param name="dispatcher">Mocked IDispatcher</param>
-        protected GenericWorker(IConnection connection, IDispatcher dispatcher)
+        protected GenericWorker()
         {
-            DeploymentContext.GetInstance().TestInit(connection, dispatcher);
-            
-            _logger.Info("Initialized Test Deployment Context");
+            // Test Constructor
         }
         
         protected string GetWorkerId()

@@ -3,7 +3,6 @@
     public enum Status
     {
         Initialized = 1,
-        TestInitialized = 2,
-        Uninitialized = 3
+        Uninitialized = 2
     }
 }

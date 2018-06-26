@@ -14,8 +14,6 @@ namespace Improbable.Context
         private static Status _status;
         
         private string _workerType;
-        private Connection _connection;
-        private Dispatcher _dispatcher;
         private IDispatcher _wrappedDispatcher;
         private IConnection _wrappedConnection;
         
@@ -57,42 +55,22 @@ namespace Improbable.Context
             }
             
             _workerType = workerType;
-            _connection = CreateConnection(hostname, port, workerId);
-            _dispatcher = CreateDispatcher(_connection);
+            var connection = CreateConnection(hostname, port, workerId);
+            var dispatcher = CreateDispatcher(connection);
 
-            if (_connection == null || !_connection.IsConnected)
+            if (connection == null || !connection.IsConnected)
             {
                 throw new ContextInitializationFailedException("Failed to connect to SpatialOS");
             }
 
-            _wrappedConnection = new ConnectionWrapper(_connection);
-            _wrappedDispatcher = new DispatcherWrapper(_dispatcher);
+            _wrappedConnection = new ConnectionWrapper(connection);
+            _wrappedDispatcher = new DispatcherWrapper(dispatcher);
 
             Logger.DefaultLogger.AttachConnection(_wrappedConnection);
 
-            IsDispatcherConnected = _connection.IsConnected;
+            IsDispatcherConnected = connection.IsConnected;
 
             _status = Status.Initialized;
-        }
-
-        /// <summary>
-        /// Initializes the DeploymentContext in an unchecked state.
-        /// This is only intended to be used for testing.
-        /// </summary>
-        /// <param name="connection"></param>
-        /// <param name="dispatcher"></param>
-        public void TestInit(IConnection connection, IDispatcher dispatcher)
-        {
-            if (_status != Status.Uninitialized)
-            {
-                _logger.Warn("Attempt to reinitialize DeploymentContext has been cancelled.");
-                return;
-            }
-
-            _wrappedConnection = connection;
-            _wrappedDispatcher = dispatcher;
-
-            _status = Status.TestInitialized;
         }
         
         /// <summary>
@@ -126,8 +104,6 @@ namespace Improbable.Context
         /// </summary>
         public void Dispose()
         {
-            _connection?.Dispose();
-            _dispatcher?.Dispose();
             _wrappedDispatcher?.Dispose();
             _wrappedConnection?.Dispose();
             _logger.Warn("Disposing of Connection and Dispatcher");
