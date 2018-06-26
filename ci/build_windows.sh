@@ -22,3 +22,11 @@ cmake --version
 echo
 
 ./gradlew :recast-csharp:assemble
+
+# Yuck. Can't get tests working from within gradle so this is what we're left with
+mkdir nunit
+cd nunit
+wget -q https://github.com/nunit/nunit-console/releases/download/3.8/NUnit.Console-3.8.0.zip
+unzip - q NUnit.Console-3.8.0.zip
+cd ..
+./nunit/nunit3-console.exe ./recast-csharp/build/msbuild/bin/Release/Improbable.Recast.Tests.dll
