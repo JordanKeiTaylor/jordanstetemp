@@ -38,6 +38,9 @@
     <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc">
       <HintPath>..\packages\Castle.Core.4.2.1\lib\net45\Castle.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Improbable.Recast, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\recast-wrapper\recast-csharp\build\msbuild\bin\Release\Improbable.Recast.dll</HintPath>
+    </Reference>
     <Reference Include="Improbable.WorkerSdkCsharp, Version=12.2.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\packages\worker-sdk\Improbable.WorkerSdkCsharp.dll</HintPath>
     </Reference>

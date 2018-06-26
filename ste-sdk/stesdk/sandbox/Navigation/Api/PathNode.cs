@@ -1,9 +1,13 @@
 ﻿namespace Improbable.sandbox.Navigation.Api
 {
-    public class PathNode
+    public class PathNode<T>
     {
-        public EntityId EntityId { get; set; }
+        public long Id { get; set; }
 
         public Coordinates Coords { get; set; }
+        
+        public T Node { get; set; }
     }
+    
+    public class PathNode: PathNode<object> { }
 }

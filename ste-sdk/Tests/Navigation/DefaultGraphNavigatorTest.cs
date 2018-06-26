@@ -53,7 +53,7 @@ namespace Tests.Navigation
                 _outbounds[edge.Source].Add(edge);
             }
 
-            _navigator = new DefaultPathfinder(_nodes, edges);
+            _navigator = new DefaultGraphNavigator(_nodes, edges);
         }
 
         [Test]
@@ -75,11 +75,11 @@ namespace Tests.Navigation
                 if (pathTask.IsCanceled || pathTask.IsFaulted)
                 {
                     throw new Exception("Pathfinder failed to find path for valid start and stop node pair" +
-                                        $"({tuple.Item1.EntityId.Id}, {tuple.Item2.EntityId.Id})");
+                                        $"({tuple.Item1.Id}, {tuple.Item2.Id})");
                 }
 
-                Assert.True(pathTask.Result != null && pathTask.Result.GetPath().Count > 0);
-                averageLength += pathTask.Result.GetPath().Count;
+                Assert.True(pathTask.Result != null && pathTask.Result.Path.Count > 0);
+                averageLength += pathTask.Result.Path.Count;
                 averageCompleteionTime += stopwatch.ElapsedMilliseconds;
                 stopwatch.Reset();
             }
@@ -111,10 +111,10 @@ namespace Tests.Navigation
                 if (pathTask.IsCanceled || pathTask.IsFaulted)
                 {
                     throw new Exception("Pathfinder failed to find path for random start and stop node pair" +
-                                        $"({tuple.Item1.EntityId.Id}, {tuple.Item2.EntityId.Id})");
+                                        $"({tuple.Item1.Id}, {tuple.Item2.Id})");
                 }
 
-                if (pathTask.Result == null || pathTask.Result.GetPath().Count == 0)
+                if (pathTask.Result == null || pathTask.Result.Path.Count == 0)
                 {
                     Assert.False(PathIsValid(tuple.Item1, tuple.Item2));
                     averageFailedPathfindTime += stopwatch.ElapsedMilliseconds;

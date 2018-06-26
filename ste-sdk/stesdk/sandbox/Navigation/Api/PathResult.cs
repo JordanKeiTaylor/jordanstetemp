@@ -1,38 +1,42 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Improbable.sandbox.Navigation.Api
 {
     public class PathResult
     {
+        private PathStatus _status;
         private List<PathEdge> _path;
+        private string _msg;
 
-        private Exception _exception; //TODO: Caller should handle exception
-
-        public PathResult(List<PathEdge> path = null, Exception exception = null)
+        public PathResult(PathStatus status = PathStatus.NotFound)
         {
-            _path = path ?? new List<PathEdge>();
-            _exception = exception;
+            _status = status;
+            _path = new List<PathEdge>();
         }
 
-        public List<PathEdge> GetPath()
+        public List<PathEdge> Path
         {
-            return _path;
+            get => _path;
+            internal set => _path = value;
         }
 
-        internal void SetPath(List<PathEdge> path)
+        public PathStatus Status
         {
-            _path = path;
+            get => _status;
+            internal set => _status = value;
         }
 
-        public Exception GetException()
+        public string Message
         {
-            return _exception;
+            get => _msg;
+            internal set => _msg = value;
         }
+    }
 
-        internal void SetException(Exception ex)
-        {
-            _exception = ex;
-        }
+    public enum PathStatus
+    {
+        Success,
+        Error,
+        NotFound
     }
 }

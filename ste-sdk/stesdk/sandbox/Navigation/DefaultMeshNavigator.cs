@@ -11,12 +11,12 @@ namespace Improbable.sandbox.Navigation
     public class DefaultMeshNavigator : IMeshNavigator
     {
         const uint DT_SUCCESS = 1u << 30;
-        
-        NavMesh _navMesh;
-        NavMeshQuery _navMeshQuery;
-        RecastContext _ctx;
 
-        float[] _halfExtents = { 10.0f, 10.0f, 10.0f };
+        readonly NavMesh _navMesh;
+        readonly NavMeshQuery _navMeshQuery;
+        readonly RecastContext _ctx;
+
+        readonly float[] _halfExtents = { 10.0f, 10.0f, 10.0f };
 
         public DefaultMeshNavigator(string navMeshFile)
         {
@@ -33,49 +33,47 @@ namespace Improbable.sandbox.Navigation
         
         public Task<PathResult> GetMeshPath(PathNode start, PathNode stop)
         {
-            return Task.Factory.StartNew(() =>
-            {
-                var result = new PathResult();
-                try
-                {
-                    var paths = CalculatePath(start, stop);
-                    result.SetPath(ToPathEdges(paths));
-                }
-                catch (Exception ex)
-                {
-                    result.SetException(ex);
-                }
-                return result;
-            });
+            return Task.Factory.StartNew(() => CalculatePath(start, stop));
         }
 
-        float[] CalculatePath(PathNode start, PathNode stop)
+        PathResult CalculatePath(PathNode start, PathNode stop)
         {
+            var result = new PathResult();
             var startPoint = _ctx.FindNearestPoly(_navMeshQuery, start.Coords.ToFloat(), _halfExtents);
             if (HasFailed(startPoint.status))
             {
-                throw new Exception("Failed to find nearest poly for start node");
+                result.Status = PathStatus.Error;
+                result.Message = "Failed to find nearest poly for start node";
+                return result;
             }
             
             var stopPoint = _ctx.FindNearestPoly(_navMeshQuery, stop.Coords.ToFloat(), _halfExtents);
             if (HasFailed(stopPoint.status))
             {
-                throw new Exception("Failed to find nearest poly for stop node");
+                result.Status = PathStatus.Error;
+                result.Message = "Failed to find nearest poly for stop node";
+                return result;
             }
             
             var polyPath = _ctx.FindPath(_navMeshQuery, startPoint, stopPoint);
             if (HasFailed(polyPath.status))
             {
-                throw new NoPathFoundException("Failed to find path between start and stop nodes");
+                result.Status = PathStatus.NotFound;
+                result.Message = "Failed to find path between start and stop nodes";
+                return result;
             }
             
             var smoothPath = _ctx.FindSmoothPath(_navMeshQuery, _navMesh, polyPath, startPoint, stopPoint);
             if (smoothPath.pathCount <= 0)
             {
-                throw new NoPathFoundException("Failed to find smooth path between start and stop nodes");
+                result.Status = PathStatus.NotFound;
+                result.Message = "Failed to find smooth path between start and stop nodes";
+                return result;
             }
-            
-            return smoothPath.path;
+
+            result.Status = PathStatus.Success;
+            result.Path = ToPathEdges(smoothPath.path);
+            return result;
         }
 
         List<PathEdge> ToPathEdges(float[] paths)

@@ -25,7 +25,7 @@ namespace Improbable.sandbox.Navigation
                         new EntityId(long.Parse(row[0])),
                         new PathNode
                         {
-                            EntityId = new EntityId(long.Parse(row[0])),
+                            Id = long.Parse(row[0]),
                             Coords = new Coordinates(double.Parse(row[2]), double.Parse(row[3]), double.Parse(row[4])),
                         });
                 }
