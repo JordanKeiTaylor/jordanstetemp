@@ -84,6 +84,7 @@ namespace Improbable.Recast.Tests
         }
 
         [Test]
+        [Category("NotOnWindows")]
         public void be_fast_from_obj()
         {
             using (var ctx = new RecastContext())
@@ -95,6 +96,7 @@ namespace Improbable.Recast.Tests
         }
 
         [Test]
+        [Category("NotOnWindows")]
         public void be_fast_from_bin()
         {
             using (var ctx = new RecastContext())
