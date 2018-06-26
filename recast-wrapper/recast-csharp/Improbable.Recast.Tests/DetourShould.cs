@@ -5,6 +5,7 @@ using NUnit.Framework;
 
 namespace Improbable.Recast.Tests
 {
+    [Category("NotOnWindows")]
     public class DetourShould
     {
         [Test]
@@ -84,7 +85,6 @@ namespace Improbable.Recast.Tests
         }
 
         [Test]
-        [Category("NotOnWindows")]
         public void be_fast_from_obj()
         {
             using (var ctx = new RecastContext())
