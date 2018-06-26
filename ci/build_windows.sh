@@ -32,4 +32,5 @@ cd nunit
 wget -q https://www.myget.org/F/nunit/api/v2/package/NUnit.ConsoleRunner/3.9.0-dev-04009
 unzip -q 3.9.0-dev-04009
 cd ..
+ls ./recast-csharp/build/msbuild/bin/Release/Improbable.Recast.Tests.dll
 mono ./nunit/tools/nunit3-console.exe --shadowcopy --inprocess --teamcity --trace=Verbose ./recast-csharp/build/msbuild/bin/Release/Improbable.Recast.Tests.dll
