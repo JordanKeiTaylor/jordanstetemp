@@ -5,7 +5,7 @@ using NUnit.Framework;
 
 namespace Tests.Context
 {
-    public class DeploymentContextTest
+    public class WorkerContextTest
     {
         private readonly WorkerContext _context = WorkerContext.GetInstance();
 
