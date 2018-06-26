@@ -1,4 +1,5 @@
 ﻿using System;
+using Improbable.Context.Exception;
 using Improbable.Log;
 using Improbable.Worker;
 
@@ -56,8 +57,7 @@ namespace Improbable.Context
 
             if (_connection == null || !_connection.IsConnected)
             {
-                _logger.Fatal("Failed to connect to SpatialOS");
-                return;
+                throw new ContextInitializationFailedException("Failed to connect to SpatialOS");
             }
 
             _wrappedConnection = new ConnectionWrapper(_connection);
@@ -96,7 +96,7 @@ namespace Improbable.Context
         {
             if (_status == Status.Uninitialized)
             {
-                throw new ContextUninitialized("The context has not been initialized.");
+                throw new ContextUninitializedException("The context has not been initialized.");
             }
             return _wrappedConnection;
         }
@@ -109,7 +109,7 @@ namespace Improbable.Context
         {
             if (_status == Status.Uninitialized)
             {
-                throw new ContextUninitialized("The context has not been initialized.");
+                throw new ContextUninitializedException("The context has not been initialized.");
             }
             return _wrappedDispatcher;
         }
