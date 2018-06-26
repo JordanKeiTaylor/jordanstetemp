@@ -1,5 +1,5 @@
 #!/bin/sh
-set -eux
+# set -eux
 
 # Preflight checks
 make --version
