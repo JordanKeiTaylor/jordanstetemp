@@ -5,8 +5,8 @@ tc_progress() {
     echo "##teamcity[progressMessage '$1']"
 }
 
-tc_progress "building OBJ-Tools"
-cd OBJ-Tools
+tc_progress "building obj-tools"
+cd obj-tools
 ./gradlew check
 cd ..
 
