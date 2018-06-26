@@ -1,4 +1,4 @@
-﻿namespace Improbable.Sandbox.Interpolations
+﻿namespace Improbable.sandbox.Interpolations
 {
     /// <summary>
     /// Interface for interpolating.

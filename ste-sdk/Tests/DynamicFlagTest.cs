@@ -1,6 +1,6 @@
 ﻿using System;
-using Improbable.Environment;
-using Improbable.Sandbox;
+using Improbable.Context;
+using Improbable.sandbox;
 using Improbable.Worker;
 using Moq;
 using NUnit.Framework;

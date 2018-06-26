@@ -1,5 +1,5 @@
 ﻿using Improbable;
-using Improbable.Sandbox.Projections;
+using Improbable.sandbox.Projections;
 using NUnit.Framework;
 
 namespace Tests.Projections

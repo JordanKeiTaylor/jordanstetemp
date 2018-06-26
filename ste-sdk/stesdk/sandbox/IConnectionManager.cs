@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using Improbable.Environment;
+using Improbable.Context;
 
-namespace Improbable.Sandbox
+namespace Improbable.sandbox
 {
     /// <summary>
     /// A connection manager is a class that handles connections (for example the SpatialOS thread in the UDPClient).

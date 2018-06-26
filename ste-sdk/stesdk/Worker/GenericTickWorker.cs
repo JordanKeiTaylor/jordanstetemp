@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using Improbable.Behaviour;
-using Improbable.Environment;
+using Improbable.Context;
 using Improbable.Log;
 
 namespace Improbable.Worker
@@ -12,7 +12,7 @@ namespace Improbable.Worker
     public abstract class GenericTickWorker : GenericWorker
     {
         private const string LoggerName = "GenericTickWorker.cs";
-        private readonly Logger.NamedLogger _logger = Log.Logger.DefaultWithName(LoggerName);
+        private readonly NamedLogger _logger = Logger.DefaultWithName(LoggerName);
 
         private readonly double _tickTimeMs;
         
@@ -23,18 +23,6 @@ namespace Improbable.Worker
         {
             _tickTimeMs = tickTimeMs;
             _tickTimeRollingMetric = new TickTimeRollingMetric(30);
-        }
-
-        /// <inheritdoc />
-        /// <summary>
-        /// Test Constructor
-        /// </summary>
-        /// <param name="connection">Mocked IConnection</param>
-        /// <param name="dispatcher">Mocked IDispatcher</param>
-        protected GenericTickWorker(IConnection connection, IDispatcher dispatcher)
-            : base(connection, dispatcher)
-        {
-            // Test Constructor
         }
 
         public abstract int Run();

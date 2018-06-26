@@ -1,17 +1,17 @@
 ﻿using Improbable.Collections;
 
-namespace Improbable
+namespace Improbable.Context
 {
     public class ContextStatus
     {
         public static readonly ContextStatus ErrorExit = new ContextStatus("ExitError", 1);
         public static readonly ContextStatus DispatcherDisconnected = new ContextStatus("DispatcherDisconnected", 2);
 
-        private static readonly Map<int, ContextStatus> _codeMap;
+        private static readonly Map<int, ContextStatus> CodeMap;
 
         static ContextStatus()
         {
-            _codeMap = new Map<int, ContextStatus>
+            CodeMap = new Map<int, ContextStatus>
             {
                 {1, ErrorExit}, 
                 {2, DispatcherDisconnected}
@@ -20,11 +20,11 @@ namespace Improbable
 
         public static ContextStatus FromCode(int code)
         {
-            return _codeMap[code];
+            return CodeMap[code];
         }
         
-        private string _name;
-        private int _code;
+        private readonly string _name;
+        private readonly int _code;
 
         private ContextStatus(string name, int code)
         {

@@ -1,4 +1,4 @@
-﻿using Improbable.Environment;
+﻿using Improbable.Context;
 using Improbable.Log;
 
 namespace Improbable.Worker
@@ -6,7 +6,7 @@ namespace Improbable.Worker
     public class GenericWorker
     {
         private const string LoggerName = "GenericWorker.cs";
-        private readonly Logger.NamedLogger _logger = Log.Logger.DefaultWithName(LoggerName);
+        private readonly NamedLogger _logger = Logger.DefaultWithName(LoggerName);
         
         private readonly string _workerId;
         private readonly string _workerType;

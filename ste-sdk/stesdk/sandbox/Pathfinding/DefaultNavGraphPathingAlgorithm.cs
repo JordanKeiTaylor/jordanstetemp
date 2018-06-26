@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Improbable.Sandbox.Extensions;
-using Improbable.Sandbox.Pathfinding.Api;
+using Improbable.sandbox.Extensions;
+using Improbable.sandbox.Pathfinding.Api;
 using QuickGraph;
 using QuickGraph.Algorithms.Observers;
 using QuickGraph.Algorithms.ShortestPath;
 
-namespace Improbable.Sandbox.Pathfinding
+namespace Improbable.sandbox.Pathfinding
 {
     public class DefaultNavGraphPathingAlgorithm
     {

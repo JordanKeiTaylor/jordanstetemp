@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using Improbable.Environment;
+using Improbable.Context;
 using Improbable.Worker;
 
 namespace Improbable
@@ -28,7 +28,7 @@ namespace Improbable
         /// <summary>
         /// Initializes a new instance of the <see cref="T:Improbable.ComponentMap`1"/> class.
         /// </summary>
-        /// <param name="dispatcher">Dispatcher.</param>
+        /// <param name="dispatcher">Dispatcher</param>
         /// <param name="disableEvents">
         /// Events to disable.
         /// Note: Can pass in multiple flags using bitwise OR. For example, AddComponent | UpdateComponent.
@@ -102,12 +102,16 @@ namespace Improbable
         {
             var e = _authority.GetEnumerator();
             var index = Rand.Next(_authority.Count);
-            for (int i = 0; i < index; i++)
+            for (var i = 0; i < index; i++)
             {
                 e.MoveNext();
             }
 
-            return e.Current;
+            var entityId = e.Current;
+            
+            e.Dispose();
+            
+            return entityId;
         }
 
         IEnumerator IEnumerable.GetEnumerator()

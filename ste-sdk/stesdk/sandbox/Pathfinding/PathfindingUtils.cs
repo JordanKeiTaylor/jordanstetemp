@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Improbable.Sandbox.Extensions;
+using Improbable.sandbox.Extensions;
 using QuickGraph;
 
-namespace Improbable.Sandbox.Pathfinding
+namespace Improbable.sandbox.Pathfinding
 {
     public static class PathfindingUtils<TVertex, TEdge>
         where TEdge : IEdge<TVertex>

@@ -1,4 +1,4 @@
-﻿namespace Improbable.Sandbox.Projections
+﻿namespace Improbable.sandbox.Projections
 {
     public static class CoordinateOffset
     {

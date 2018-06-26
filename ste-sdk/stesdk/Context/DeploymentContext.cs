@@ -1,14 +1,13 @@
 ﻿using System;
-using Improbable.Environment;
 using Improbable.Log;
 using Improbable.Worker;
 
-namespace Improbable
+namespace Improbable.Context
 {
     public class DeploymentContext
     {   
         private const string LoggerName = "DeploymentContext.cs";
-        private static readonly Logger.NamedLogger Logger = Log.Logger.DefaultWithName(LoggerName);
+        private readonly NamedLogger _logger = Logger.DefaultWithName(LoggerName);
 
         private static DeploymentContext _context;
         
@@ -23,21 +22,32 @@ namespace Improbable
 
         private bool _initialized;
 
-        public static DeploymentContext GetInstance()
-        {
-            return _context ?? (_context = new DeploymentContext());
-        }
-        
         private DeploymentContext()
         {
             _initialized = false;
         }
+        
+        /// <summary>
+        /// Returns the initialized DeploymentContext.
+        /// </summary>
+        /// <returns>DeploymentContext</returns>
+        public static DeploymentContext GetInstance()
+        {
+            return _context ?? (_context = new DeploymentContext());
+        }
 
+        /// <summary>
+        /// Initializes the DeploymentContext to connect with SpatialOS.
+        /// </summary>
+        /// <param name="workerType">Type of worker</param>
+        /// <param name="workerId">ID of worker</param>
+        /// <param name="hostname">Hostname to connect</param>
+        /// <param name="port">Port to connect</param>
         public void Init(string workerType, string workerId, string hostname, ushort port)
         {
             if (_initialized)
             {
-                Logger.Warn("Attempt to reinitialize DeploymentContext has been cancelled.");
+                _logger.Warn("Attempt to reinitialize DeploymentContext has been cancelled.");
                 return;
             }
             
@@ -47,25 +57,31 @@ namespace Improbable
 
             if (_connection == null || !_connection.IsConnected)
             {
-                Logger.Fatal("Failed to connect to SpatialOS");
+                _logger.Fatal("Failed to connect to SpatialOS");
                 return;
             }
 
             _wrappedConnection = new ConnectionWrapper(_connection);
             _wrappedDispatcher = new DispatcherWrapper(_dispatcher);
 
-            Log.Logger.DefaultLogger.AttachConnection(_wrappedConnection);
+            Logger.DefaultLogger.AttachConnection(_wrappedConnection);
 
             IsDispatcherConnected = _connection.IsConnected;
 
             _initialized = true;
         }
 
+        /// <summary>
+        /// Initializes the DeploymentContext in an unchecked state.
+        /// This is only intended to be used for testing.
+        /// </summary>
+        /// <param name="connection"></param>
+        /// <param name="dispatcher"></param>
         public void TestInit(IConnection connection, IDispatcher dispatcher)
         {
             if (_initialized)
             {
-                Logger.Warn("Attempt to reinitialize DeploymentContext has been cancelled.");
+                _logger.Warn("Attempt to reinitialize DeploymentContext has been cancelled.");
                 return;
             }
 
@@ -76,7 +92,7 @@ namespace Improbable
         }
         
         /// <summary>
-        /// Returns an IConnection wrapper of the instantiated Worker SDK Connection
+        /// Returns an IConnection wrapper of the instantiated Worker SDK Connection.
         /// </summary>
         /// <returns>IConnection</returns>
         public IConnection GetConnection()
@@ -85,7 +101,7 @@ namespace Improbable
         }
 
         /// <summary>
-        /// Returns an IDispatcher wrapper of the instantiated Worker SDK Dispatcher
+        /// Returns an IDispatcher wrapper of the instantiated Worker SDK Dispatcher.
         /// </summary>
         /// <returns>IDispatcher</returns>
         public IDispatcher GetDispatcher()
@@ -103,9 +119,13 @@ namespace Improbable
             _dispatcher.Dispose();
             _wrappedConnection.Dispose();
             _wrappedDispatcher.Dispose();
-            Logger.Warn("Exiting: " + status);
+            _logger.Warn("Exiting: " + status);
         }
 
+        /// <summary>
+        /// Type of the worker controlling the context to SpatialOS.
+        /// </summary>
+        /// <returns>Worker Type</returns>
         public string GetWorkerType()
         {
             return _workerType;
@@ -133,7 +153,7 @@ namespace Improbable
                 conn = future.Get();
             }
 
-            Logger.Info("Successfully connected using the Receptionist");
+            _logger.Info("Successfully connected using the Receptionist");
 
             return conn;
         }

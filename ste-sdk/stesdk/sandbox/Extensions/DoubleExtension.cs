@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Improbable.Sandbox.Extensions
+namespace Improbable.sandbox.Extensions
 {
     public static class DoubleExtension
     {

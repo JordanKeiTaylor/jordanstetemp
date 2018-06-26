@@ -1,6 +1,6 @@
 ﻿using Improbable.Collections;
 
-namespace Improbable.Sandbox.MetricsRecorder
+namespace Improbable.sandbox.MetricsRecorder
 {
     internal interface IBaseMetric
     {

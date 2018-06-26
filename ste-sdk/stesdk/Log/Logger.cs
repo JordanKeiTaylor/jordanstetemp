@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Improbable.Collections;
-using Improbable.Environment;
-using Improbable.Sandbox;
+using Improbable.Context;
+using Improbable.sandbox;
 using Improbable.Worker;
 
 namespace Improbable.Log
@@ -10,7 +10,7 @@ namespace Improbable.Log
     public class Logger : IConnectionReceiver
     {
         public static readonly Logger DefaultLogger = new Logger();
-        public static LogLevel AlwaysConsoleLogAtLogLevel = LogLevel.Error;
+        public const LogLevel AlwaysConsoleLogAtLogLevel = LogLevel.Error;
         private readonly ISet<IConnection> _connections = new HashSet<IConnection>();
 
         public void AttachConnection(IConnection c)
@@ -27,7 +27,6 @@ namespace Improbable.Log
         {
             return new NamedLogger(name, this);
         }
-
 
         public NamedLogger CreateWithNameAndConsole(string name)
         {
@@ -68,70 +67,5 @@ namespace Improbable.Log
                 }
             }
         }
-
-        public interface ILogger
-        {
-            void Fatal(string message, Option<EntityId> entityId = default(Option<EntityId>));
-            void Fatal(string message, Exception e, Option<EntityId> entityId = default(Option<EntityId>));
-
-            void Error(string message, Option<EntityId> entityId = default(Option<EntityId>));
-            void Error(string message, Exception e, Option<EntityId> entityId = default(Option<EntityId>));
-
-            void Warn(string message, Option<EntityId> entityId = default(Option<EntityId>));
-
-            void Info(string message, Option<EntityId> entityId = default(Option<EntityId>));
-
-            void Debug(string message, Option<EntityId> entityId = default(Option<EntityId>));
-        }
-
-        public class NamedLogger : ILogger
-        {
-            private readonly string _name;
-            private readonly Logger _parent;
-            private readonly bool _alwaysConsole;
-
-            public NamedLogger(string name, Logger parent, bool alwaysConsole = false)
-            {
-                _name = name;
-                _parent = parent;
-                _alwaysConsole = alwaysConsole;
-            }
-
-            public void Fatal(string message, Option<EntityId> entityId = default(Option<EntityId>))
-            {
-                _parent.Log(LogLevel.Fatal, _name, message, entityId, _alwaysConsole);
-            }
-
-            public void Fatal(string message, Exception e, Option<EntityId> entityId = default(Option<EntityId>))
-            {
-                _parent.Log(LogLevel.Fatal, _name, message + "\n" + e, entityId, _alwaysConsole);
-            }
-
-            public void Error(string message, Exception e, Option<EntityId> entityId = default(Option<EntityId>))
-            {
-                _parent.Log(LogLevel.Error, _name, message + "\n" + e, entityId, _alwaysConsole);
-            }
-
-            public void Error(string message, Option<EntityId> entityId = default(Option<EntityId>))
-            {
-                _parent.Log(LogLevel.Error, _name, message, entityId, _alwaysConsole);
-            }
-
-            public void Warn(string message, Option<EntityId> entityId = default(Option<EntityId>))
-            {
-                _parent.Log(LogLevel.Warn, _name, message, entityId, _alwaysConsole);
-            }
-
-            public void Info(string message, Option<EntityId> entityId = default(Option<EntityId>))
-            {
-                _parent.Log(LogLevel.Info, _name, message, entityId, _alwaysConsole);
-            }
-
-            public void Debug(string message, Option<EntityId> entityId = default(Option<EntityId>))
-            {
-                _parent.Log(LogLevel.Debug, _name, message, entityId, _alwaysConsole);
-            }
-        }
-
     }
 }

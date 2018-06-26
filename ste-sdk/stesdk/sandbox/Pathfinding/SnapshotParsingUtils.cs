@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using Improbable.Sandbox.Extensions;
-using Improbable.Sandbox.Pathfinding.Api;
+using Improbable.sandbox.Extensions;
+using Improbable.sandbox.Pathfinding.Api;
 
-namespace Improbable.Sandbox.Pathfinding
+namespace Improbable.sandbox.Pathfinding
 {
     public static class SnapshotParsingUtils
     {

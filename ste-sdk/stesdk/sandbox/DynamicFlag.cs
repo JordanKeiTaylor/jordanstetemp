@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Improbable.Environment;
+using Improbable.Context;
 using Improbable.Log;
 using Improbable.Worker;
 
-namespace Improbable.Sandbox
+namespace Improbable.sandbox
 {
     /// <summary>
     /// A dynamic flag that is able to recompute itself as a function of some number of underlying worker flags. 
@@ -13,7 +13,7 @@ namespace Improbable.Sandbox
     /// </summary>
     public class DynamicFlag<T> : IConnectionReceiver
     {
-        private readonly Logger.NamedLogger _logger;
+        private readonly NamedLogger _logger;
         private readonly SortedSet<string> _names;
         private Dictionary<string, string> _values;
         private T _value;
@@ -61,7 +61,7 @@ namespace Improbable.Sandbox
         {
         }
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:Improbable.Sandbox.DynamicFlag`1"/> class from a single worker flag.
+        /// Initializes a new instance of the <see cref="T:Improbable.sandbox.DynamicFlag`1"/> class from a single worker flag.
         /// </summary>
         /// <param name="connection">Connection.</param>
         /// <param name="dispatcher">Dispatcher.</param>
@@ -74,7 +74,7 @@ namespace Improbable.Sandbox
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:Improbable.Sandbox.DynamicFlag`1"/> class dependent on two worker flags.
+        /// Initializes a new instance of the <see cref="T:Improbable.sandbox.DynamicFlag`1"/> class dependent on two worker flags.
         /// </summary>
         /// <param name="connection">Connection.</param>
         /// <param name="dispatcher">Dispatcher.</param>

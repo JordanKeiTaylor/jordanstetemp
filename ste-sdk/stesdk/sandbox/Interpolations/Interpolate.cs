@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Improbable.Sandbox.Interpolations
+namespace Improbable.sandbox.Interpolations
 {
     public static class Interpolate
     {
