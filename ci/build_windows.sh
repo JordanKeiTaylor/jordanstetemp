@@ -15,8 +15,4 @@ echo
 cmake --version
 echo
 
-echo "Installing gcc, make"
-pacman -S --noconfirm gcc make
-echo
-
-./gradlew :recast-csharp:build
+./gradlew :recast-csharp:assemble
