@@ -91,6 +91,8 @@ namespace Improbable.Context
 
             _wrappedConnection = connection;
             _wrappedDispatcher = dispatcher;
+
+            _status = Status.TestInitialized;
         }
         
         /// <summary>

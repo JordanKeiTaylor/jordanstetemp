@@ -17,15 +17,7 @@ namespace Tests.Context
                 _context.Exit();
             }
             
-            Assert.AreEqual(Status.Uninitialized, _context);
-        }
-
-        [Test]
-        public void InitFailureTest()
-        {
             Assert.AreEqual(Status.Uninitialized, _context.GetStatus());
-            
-            Assert.Throws<ContextInitializationFailedException>(() => _context.Init("TEST", "TEST", "TEST", 0));
         }
         
         [Test]
