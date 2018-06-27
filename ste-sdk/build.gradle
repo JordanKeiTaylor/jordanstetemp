@@ -1,0 +1,82 @@
+plugins {
+    id 'com.ullink.msbuild' version '2.18'
+    id 'com.ullink.nuget' version '2.12'
+    id 'com.ullink.nunit' version '1.12'
+}
+
+msbuild {
+    solutionFile = file('STESDK.sln')
+    projectName = 'STESDK'
+    inputs.file(project.buildFile)
+    intermediateDir = 'build/msbuild/obj'
+    msbuildDir = System.getenv('MSBUILD_DIR')
+    executable = "msbuild"
+}
+
+nuget {
+    version = '4.4.1'
+}
+
+version = "0.0.1"
+
+def nuspecMetadata = [
+    id: 'Improbable.STESDK',
+    version: version,
+    title: 'Improbable STESDK',
+    authors: 'Improbable',
+    owners: 'Improbable',
+    projectUrl: 'https://github.com/improbable/ste/ste-sdk',
+    requireLicenseAcceptance: false,
+    dependencies: []
+]
+
+def recastDir = "${projectDir}/../recast-wrapper/recast-csharp"
+def nugetFiles = [
+    [
+        src: "${buildDir}/msbuild/obj/Improbable.STESDK.dll", 
+        target: 'lib/net45'
+    ],
+    [
+        src: "${recastDir}/build/msbuild/bin/Release/Improbable.Recast.dll", 
+        target: 'lib/net45'
+    ],
+     [
+        src: "${projectDir}/Improbable.STESDK.targets",
+        target: 'lib/net45'
+    ]
+]
+
+def macOsLib = "${recastDir}/build/native_libs/darwin/librecastwrapper.dylib"
+
+if (file(macOsLib).exists()) {
+    nugetFiles.add([
+        src: macOsLib,
+        target: "runtimes/osx/native"
+    ])
+}
+
+def linuxLib = "${recastDir}/build/native_libs/linux/librecastwrapper.so"
+
+if (file(linuxLib).exists()) {
+    nugetFiles.add([
+        src: linuxLib,
+        target: "runtimes/linux/native"
+    ])
+}
+
+nugetSpec { spec ->
+    nuspec = [
+        metadata: nuspecMetadata,
+        files: nugetFiles.collect { f ->
+             { it -> file (src: f.src, target: f.target) }
+        },
+    ]
+}
+
+nugetPush {
+    serverUrl = "file://${System.getProperty("user.home")}/.nuget/packages"
+    nupkgFile = nugetPack.packageFile
+}
+
+assemble.dependsOn(msbuild)
+nugetPack.dependsOn msbuild
