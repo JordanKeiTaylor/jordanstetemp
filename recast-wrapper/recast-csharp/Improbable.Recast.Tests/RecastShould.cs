@@ -3,8 +3,6 @@ using NUnit.Framework;
 
 namespace Improbable.Recast.Tests
 {
-    
-    [Category("NotOnWindows")]
     class RecastShould
     {
         [Test]

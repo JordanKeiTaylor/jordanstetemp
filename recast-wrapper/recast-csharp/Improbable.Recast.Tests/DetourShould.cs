@@ -5,7 +5,6 @@ using NUnit.Framework;
 
 namespace Improbable.Recast.Tests
 {
-    [Category("NotOnWindows")]
     public class DetourShould
     {
         [Test]

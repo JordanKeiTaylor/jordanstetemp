@@ -6,7 +6,6 @@ namespace Improbable.Recast.Tests
     public class LibraryShould
     {
         [Test]
-        [Category("NotOnWindows")]
         public void use_64bit_polyref()
         {
             Assert.IsTrue(RecastContext.IsUsing64BitPolyRefs());
