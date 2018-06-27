@@ -2,7 +2,6 @@
 set -eux
 
 # Preflight checks
-pacman -Qi mingw-w64-x86_64-gcc
 make --version
 gcc --version
 g++ --version
