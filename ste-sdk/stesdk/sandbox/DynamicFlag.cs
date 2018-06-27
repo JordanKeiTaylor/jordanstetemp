@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Improbable.Environment;
+using Improbable.Context;
 using Improbable.Log;
 using Improbable.Worker;
 
@@ -13,7 +13,7 @@ namespace Improbable.Sandbox
     /// </summary>
     public class DynamicFlag<T> : IConnectionReceiver
     {
-        private readonly Logger.NamedLogger _logger;
+        private readonly NamedLogger _logger;
         private readonly SortedSet<string> _names;
         private Dictionary<string, string> _values;
         private T _value;
