@@ -35,7 +35,7 @@ namespace Improbable.Worker
 
             // run loop
             var frameTimer = new Stopwatch();
-            while (GetContext().IsDispatcherConnected)
+            while (GetContext().IsConnected)
             {
                 frameTimer.Restart();
 
