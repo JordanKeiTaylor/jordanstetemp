@@ -5,13 +5,13 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Link>librecastwrapper.x86.dll</Link>
       <Visible>false</Visible>
-    </Content>
-    <Content Include="$(MSBuildThisFileDirectory)..\..\runtimes\win\native\librecastwrapper.x64.dll">
+    </Content> -->
+    <Content Include="$(MSBuildThisFileDirectory)..\..\runtimes\win\native\librecastwrapper.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Link>librecastwrapper.x64.dll</Link>
+      <Link>librecastwrapper.dll</Link>
       <Visible>false</Visible>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)..\..\runtimes\linux\native\liblibrecastwrapper.x86.so">
+    <!-- <Content Include="$(MSBuildThisFileDirectory)..\..\runtimes\linux\native\liblibrecastwrapper.x86.so">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Link>liblibrecastwrapper.x86.so</Link>
       <Visible>false</Visible>

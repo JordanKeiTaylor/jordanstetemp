@@ -46,23 +46,41 @@ def nugetFiles = [
     ]
 ]
 
-def macOsLib = "${recastDir}/build/native_libs/darwin/librecastwrapper.dylib"
+def tryBundleLib(paths, target) {
+    def lib = paths.findResult { path ->
+        if (file(path).exists()) {
+            return [
+                src: path,
+                target: target,
+            ]
+        }
+    }
 
-if (file(macOsLib).exists()) {
-    nugetFiles.add([
-        src: macOsLib,
-        target: "runtimes/osx/native"
-    ])
+    if (lib) {
+        println("Bundling ${lib.src}")
+        return [lib]
+    }
+
+    return []
 }
 
-def linuxLib = "${recastDir}/build/native_libs/linux/librecastwrapper.so"
+def macOsLibs = [
+    "${recastDir}/build/native_libs/darwin/librecastwrapper.dylib",
+    "${project.rootDir}/native_libs/darwin/librecastwrapper.dylib",
+]
+nugetFiles += tryBundleLib(macOsLibs, "runtime/osx/native")
 
-if (file(linuxLib).exists()) {
-    nugetFiles.add([
-        src: linuxLib,
-        target: "runtimes/linux/native"
-    ])
-}
+def linuxLibs = [
+    "${recastDir}/build/native_libs/linux/librecastwrapper.so",
+    "${project.rootDir}/native_libs/linux/librecastwrapper.so",
+]
+nugetFiles += tryBundleLib(linuxLibs, "runtime/linux/native")
+
+def windowsLibs = [
+    "${recastDir}/build/native_libs/windows/recastwrapper.dll",
+    "${project.rootDir}/native_libs/windows/recastwrapper.dll",
+]
+nugetFiles += tryBundleLib(windowsLibs, "runtime/win/native")
 
 nugetSpec { spec ->
     nuspec = [
