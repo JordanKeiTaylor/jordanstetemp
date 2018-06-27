@@ -12,9 +12,9 @@ namespace Improbable.Log
 
         public NamedLogger(string name, Logger parent, bool alwaysConsole = false)
         {
-            this._name = name;
-            this._parent = parent;
-            this._alwaysConsole = alwaysConsole;
+            _name = name;
+            _parent = parent;
+            _alwaysConsole = alwaysConsole;
         }
 
         public void Log(LogLevel level, string message, Option<EntityId> entityId = default(Option<EntityId>))
