@@ -10,7 +10,7 @@ namespace Improbable.Recast
     // See: https://stackoverflow.com/questions/30363629/marshalling-of-c-struct-as-return-value-of-c-sharp-delegate
     internal static class RecastLibrary
     {
-        const string Library = "librecastwrapper";
+        const string Library = "recastwrapper";
 
         [DllImport(Library, CallingConvention = CallingConvention.Cdecl)]
         public static extern void rcConfig_calc_grid_size(ref RcConfig config, IntPtr geom);
