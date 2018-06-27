@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using Improbable;
 using Improbable.Recast;
 using Improbable.Recast.Types;
-using Improbable.sandbox.Navigation;
-using Improbable.sandbox.Navigation.Api;
+using Improbable.Sandbox.Navigation;
+using Improbable.Sandbox.Navigation.Api;
 using NUnit.Framework;
 
 namespace Tests.Navigation

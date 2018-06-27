@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Improbable.sandbox.Navigation.Api
+namespace Improbable.Sandbox.Navigation.Api
 {
     public class NoPathFoundException : Exception
     {

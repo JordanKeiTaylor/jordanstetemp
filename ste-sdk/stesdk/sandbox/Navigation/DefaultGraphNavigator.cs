@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Improbable.sandbox.Navigation.Api;
 using Improbable.Sandbox.Extensions;
+using Improbable.Sandbox.Navigation.Api;
 using QuickGraph;
 using QuickGraph.Algorithms.Observers;
 using QuickGraph.Algorithms.ShortestPath;
 
-namespace Improbable.sandbox.Navigation
+namespace Improbable.Sandbox.Navigation
 {
     public class DefaultGraphNavigator : IGraphNavigator
     {

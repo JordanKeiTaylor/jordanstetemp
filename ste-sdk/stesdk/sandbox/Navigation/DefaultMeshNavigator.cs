@@ -3,10 +3,10 @@ using System.Threading.Tasks;
 using Improbable.Collections;
 using Improbable.Recast;
 using Improbable.Recast.Types;
-using Improbable.sandbox.Navigation.Api;
 using Improbable.Sandbox.Extensions;
+using Improbable.Sandbox.Navigation.Api;
 
-namespace Improbable.sandbox.Navigation
+namespace Improbable.Sandbox.Navigation
 {
     public class DefaultMeshNavigator : IMeshNavigator
     {
