@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using Improbable.Environment;
+using Improbable.Context;
 using Improbable.Worker;
 
 namespace Improbable
@@ -21,6 +21,7 @@ namespace Improbable
         private static readonly Random Rand = new Random();
 
         private readonly HashSet<EntityId> _authority;
+        private readonly HashSet<EntityId> _authorityLossImminent;
         private readonly Dictionary<EntityId, IComponentData<T>> _components;
 
         private bool _hasUpdated = true;
@@ -28,7 +29,7 @@ namespace Improbable
         /// <summary>
         /// Initializes a new instance of the <see cref="T:Improbable.ComponentMap`1"/> class.
         /// </summary>
-        /// <param name="dispatcher">Dispatcher.</param>
+        /// <param name="dispatcher">Dispatcher</param>
         /// <param name="disableEvents">
         /// Events to disable.
         /// Note: Can pass in multiple flags using bitwise OR. For example, AddComponent | UpdateComponent.
@@ -36,6 +37,7 @@ namespace Improbable
         public ComponentMap(IDispatcher dispatcher, ComponentMapEvent? disableEvents = null)
         {
             _authority = new HashSet<EntityId>();
+            _authorityLossImminent = new HashSet<EntityId>();
             _components = new Dictionary<EntityId, IComponentData<T>>();
 
             if (!HasFlag(disableEvents, ComponentMapEvent.AddComponent))
@@ -83,6 +85,11 @@ namespace Improbable
             return _authority.Contains(id);
         }
 
+        public bool HasAuthorityLossImminent(EntityId id)
+        {
+            return _authorityLossImminent.Contains(id);
+        }
+        
         public IEnumerator<KeyValuePair<EntityId, IComponentData<T>>> GetEnumerator()
         {
             return _components.GetEnumerator();
@@ -102,12 +109,16 @@ namespace Improbable
         {
             var e = _authority.GetEnumerator();
             var index = Rand.Next(_authority.Count);
-            for (int i = 0; i < index; i++)
+            for (var i = 0; i < index; i++)
             {
                 e.MoveNext();
             }
 
-            return e.Current;
+            var entityId = e.Current;
+            
+            e.Dispose();
+            
+            return entityId;
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -117,13 +128,20 @@ namespace Improbable
 
         private void SetAuthority(AuthorityChangeOp authorityChange)
         {
-            if (authorityChange.Authority == Authority.Authoritative)
+            switch (authorityChange.Authority)
             {
-                _authority.Add(authorityChange.EntityId);
-            }
-            else
-            {
-                _authority.Remove(authorityChange.EntityId);
+                case Authority.Authoritative:
+                    _authority.Add(authorityChange.EntityId);
+                    _authorityLossImminent.Remove(authorityChange.EntityId);
+                    break;
+                case Authority.NotAuthoritative:
+                    _authority.Remove(authorityChange.EntityId);
+                    _authorityLossImminent.Remove(authorityChange.EntityId);
+                    break;
+                case Authority.AuthorityLossImminent:
+                    _authorityLossImminent.Add(authorityChange.EntityId);
+                    _authority.Remove(authorityChange.EntityId);
+                    break;
             }
         }
 
