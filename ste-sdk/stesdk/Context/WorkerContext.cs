@@ -17,7 +17,6 @@ namespace Improbable.Context
         private IDispatcher _wrappedDispatcher;
         private IConnection _wrappedConnection;
         
-        public bool IsDispatcherConnected { get; private set; }
         public bool IsDispatcherInCritical { get; private set; }
 
         private WorkerContext()
@@ -68,8 +67,6 @@ namespace Improbable.Context
 
             Logger.DefaultLogger.AttachConnection(_wrappedConnection);
 
-            IsDispatcherConnected = connection.IsConnected;
-
             _status = Status.Initialized;
         }
 
@@ -85,6 +82,11 @@ namespace Improbable.Context
             
             _status = Status.Initialized;
         }
+        
+        /// <summary>
+        /// Is this environment connected to a SpatialOS instance?
+        /// </summary>
+        public bool IsConnected => _wrappedConnection.IsConnected;
         
         /// <summary>
         /// Returns an IConnection wrapper of the instantiated Worker SDK Connection.
@@ -166,7 +168,6 @@ namespace Improbable.Context
             dispatch.OnDisconnect(op =>
             {
                 Console.Error.WriteLine("[disconnect] " + op.Reason);
-                IsDispatcherConnected = false;
             });
 
             dispatch.OnLogMessage(op =>
