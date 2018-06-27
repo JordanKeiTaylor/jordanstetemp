@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AssemblyName>Improbable.Recast</AssemblyName>
     <RootNamespace>Improbable.Recast</RootNamespace>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -52,9 +52,9 @@
     <Compile Include="Types\SmoothPathResult.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ContentWithTargetPath Include="../build/native_libs/windows/librecastwrapper.dll" Condition=" '$(OS)' == 'Windows_NT' ">
+    <ContentWithTargetPath Include="../build/native_libs/windows/recastwrapper.dll" Condition=" '$(OS)' == 'Windows_NT' ">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <TargetPath>librecastwrapper.dll</TargetPath>
+      <TargetPath>recastwrapper.dll</TargetPath>
     </ContentWithTargetPath>
     <ContentWithTargetPath Include="../build/native_libs/linux-x86-64/librecastwrapper.so" Condition=" '$(OS)' == 'Unix' and ! $([System.IO.File]::Exists('/usr/lib/libc.dylib')) ">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

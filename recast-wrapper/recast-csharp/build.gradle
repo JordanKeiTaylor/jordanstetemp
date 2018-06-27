@@ -1,5 +1,5 @@
 plugins {
-    id 'com.ullink.msbuild' version '2.15'
+    id 'com.ullink.msbuild' version '2.18'
     id 'com.ullink.nunit' version '1.12'
     id 'com.ullink.nuget' version '2.12'
 }
@@ -16,10 +16,12 @@ msbuild {
     projectName = 'Improbable.Recast'
     inputs.file(project.buildFile)
     intermediateDir = 'build/msbuild/obj'
+    msbuildDir = System.getenv('MSBUILD_DIR')
 }
 
 nunit {
     testAssemblies = [file("$buildDir/msbuild/bin/Release/Improbable.Recast.Tests.dll")]
+    nunitVersion = '3.8.0'
 }
 
 msbuild.dependsOn(nugetRestore)
@@ -75,7 +77,8 @@ nugetPush {
 
 nugetPack.dependsOn msbuild
 
-tasks.matching { it.name != 'darwinNativeLibs' && it.name != 'unixNativeLibs' && it.name != 'clean' && it.name != 'cleanMsbuild' }.all { task ->
+tasks.matching { it.name != 'darwinNativeLibs' && it.name != 'unixNativeLibs' && it.name != 'windowsNativeLibs' && it.name != 'clean' && it.name != 'cleanMsbuild' }.all { task ->
     task.dependsOn(darwinNativeLibs)
     task.dependsOn(unixNativeLibs)
+    task.dependsOn(windowsNativeLibs)
 }

@@ -136,7 +136,7 @@ namespace Improbable.Recast.Tests
 
         private InputGeom GetInputGeom(RecastContext ctx)
         {
-            var mesh = ctx.LoadInputGeom("./Resources/Tile_+007_+006_L21.obj", true);
+            var mesh = ctx.LoadInputGeom(TestUtils.ResolveResource("./Resources/Tile_+007_+006_L21.obj"), true);
             ctx.CalcGridSize(ref _config, mesh);
             return mesh;
         }

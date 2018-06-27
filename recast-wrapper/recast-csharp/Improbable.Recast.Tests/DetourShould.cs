@@ -35,6 +35,7 @@ namespace Improbable.Recast.Tests
         {
             using (var ctx = new RecastContext()) {
                 var navMesh = CreateNavMesh(ctx);
+                
                 var navMeshQuery = ctx.CreateNavMeshQuery(navMesh);
 
                 var point = new float[] { -575f, -69.1874f, 54f };
@@ -132,7 +133,8 @@ namespace Improbable.Recast.Tests
         
         private NavMesh CreateNavMesh(RecastContext ctx)
         {
-            var mesh = ctx.LoadInputGeom("./Resources/Tile_+007_+006_L21.obj", true);
+            var mesh = ctx.LoadInputGeom(TestUtils.ResolveResource("Resources/Tile_+007_+006_L21.obj"), true);
+            Assert.IsNotNull(mesh);
             ctx.CalcGridSize(ref _config, mesh);
             var chf = ctx.CreateCompactHeightfield(_config, mesh);
             var polyMesh = ctx.CreatePolyMesh(_config, chf);
@@ -209,7 +211,8 @@ namespace Improbable.Recast.Tests
 
         private NavMesh LoadNavMeshBinFile(RecastContext ctx)
         {
-            var navMesh = ctx.LoadTiledNavMeshBinFile("./Resources/Tile_+007_+006_L21.obj.tiled.bin64");
+            var navMesh =
+                ctx.LoadTiledNavMeshBinFile(TestUtils.ResolveResource("./Resources/Tile_+007_+006_L21.obj.tiled.bin64"));
             Assert.IsNotNull(navMesh);
             return navMesh;
         }
