@@ -2,7 +2,7 @@
 set -eux
 
 # Preflight checks
-pacman -Ss mingw-w64-x86_64-gcc
+pacman -Qi mingw-w64-x86_64-gcc
 make --version
 gcc --version
 g++ --version
@@ -24,14 +24,3 @@ cmake --version
 echo
 
 ./gradlew :recast-csharp:assemble
-
-# Yuck. Can't get tests working from within gradle so this is what we're left with
-# Probably something to do with this: https://github.com/nunit/nunit-console/issues/370
-# which may be fixed with NUnit.Console 3.9.0
-mkdir nunit
-cd nunit
-wget -q https://github.com/nunit/nunit-console/releases/download/3.8/NUnit.Console-3.8.0.zip
-unzip -q NUnit.Console-3.8.0.zip
-cd ..
-ls ./recast-csharp/build/msbuild/bin/Release/Improbable.Recast.Tests.dll
-./nunit/nunit3-console.exe --inprocess --teamcity --trace=Verbose --where "cat != NotOnWindows" --labels=All ./recast-csharp/build/msbuild/bin/Release/Improbable.Recast.Tests.dll
