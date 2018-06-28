@@ -1,7 +1,7 @@
 ﻿namespace Improbable.Behaviour
 {
     /// <summary>
-    /// Primary behaviour of <see cref="Improbable.Worker.GenericTickWorker"/>.
+    /// Base tick behaviour interface. Tick behaviours implement logic periodically with each <code>Tick()</code>
     /// </summary>
     public interface ITickBehaviour
     {
