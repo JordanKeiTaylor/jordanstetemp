@@ -5,8 +5,8 @@ using System.IO;
 using System.Linq;
 using Castle.Core.Internal;
 using Improbable;
-using Improbable.sandbox.Navigation;
-using Improbable.sandbox.Navigation.Api;
+using Improbable.Sandbox.Navigation;
+using Improbable.Sandbox.Navigation.Api;
 using NUnit.Framework;
 
 namespace Tests.Navigation

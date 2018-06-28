@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Improbable.sandbox.Navigation.Api
+namespace Improbable.Sandbox.Navigation.Api
 {
     public interface IGraphNavigator
     {

@@ -3,7 +3,7 @@ using System.Linq;
 using Improbable.Sandbox.Extensions;
 using QuickGraph;
 
-namespace Improbable.sandbox.Navigation
+namespace Improbable.Sandbox.Navigation
 {
     public static class PathfindingUtils<TVertex, TEdge>
         where TEdge : IEdge<TVertex>
