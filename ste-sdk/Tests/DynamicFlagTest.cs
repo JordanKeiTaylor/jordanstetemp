@@ -1,4 +1,5 @@
 ﻿using System;
+using Improbable;
 using Improbable.Context;
 using Improbable.Worker;
 using Moq;

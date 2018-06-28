@@ -1,7 +1,7 @@
 ﻿using Improbable.Context;
 using Improbable.Log;
 
-namespace Improbable.Worker
+namespace Improbable
 {
     /// <summary>
     /// Basic Worker that attempts to initialize a connection to SpatialOS.

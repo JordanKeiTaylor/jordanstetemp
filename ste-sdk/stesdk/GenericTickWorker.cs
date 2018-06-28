@@ -4,10 +4,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using Improbable.Behaviour;
-using Improbable.Context;
 using Improbable.Log;
 
-namespace Improbable.Worker
+namespace Improbable
 {
     /// <summary>
     /// A basic worker that periodically executes <see cref="ITickBehaviour"/> objects.

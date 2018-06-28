@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Improbable.Context;
 using Improbable.Worker;
 
-namespace Improbable.Collections
+namespace Improbable
 {
     /// <summary>
     /// Events that a <see cref="ComponentMap{T}"/> can react to.

@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Threading;
 
-namespace Improbable.Worker
+namespace Improbable
 {
     public class ExponentialBackoff
     {
