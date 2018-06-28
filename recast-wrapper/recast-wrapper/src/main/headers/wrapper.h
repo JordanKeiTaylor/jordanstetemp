@@ -4,12 +4,15 @@
 #include <DetourNavMesh.h>
 #include <DetourNavMeshBuilder.h>
 #include <DetourNavMeshQuery.h>
+#include <DetourStatus.h>
 
 #include "Common.h"
 #include "MeshLoaderObj.h"
 #include "InputGeom.h"
 #include "NavMeshTesterTool_subset.h"
 #include "Sample_subset.h"
+
+const float IMPOSSIBLE_POINT[3] = {-1000000.0f, -1000000.0f, -1000000.0f};
 
 class IoRcContext : public rcContext {
     public:
