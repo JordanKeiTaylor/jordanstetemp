@@ -1,4 +1,4 @@
-﻿namespace Improbable.sandbox.Navigation.Api
+﻿namespace Improbable.Sandbox.Navigation.Api
 {
     public enum PathStatus
     {

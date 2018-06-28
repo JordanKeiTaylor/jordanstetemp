@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Improbable.Sandbox.Navigation.Api;
 
 namespace Improbable.Sandbox.Navigation.Api
 {
