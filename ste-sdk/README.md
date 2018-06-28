@@ -12,13 +12,18 @@ nuget source add -name local -source ~/.nuget/packages/
 ```
 
 ## Publish
+To publish a `nuget` package locally, run:
+
 ```
-nuget pack stesdk/STESDK.csproj -Prop Configuration=Release
-nuget add Improbable.STESDK.*.nupkg -source ~/.nuget/packages/
-```
-Or you can use the release script, which packages and publishes the project to the local NuGet source. This removes the currently published package if it exists.
-```
-./scripts/release_local.sh
+./gradlew nugetPush
 ```
 
+By default this will package native code from the `recast-wrapper` subproject. If you want to include additional native libraries from other platforms, place them in the following paths:
 
+```
+native_libs/darwin/librecastwrapper.dylib # mac
+native_libs/linux/librecastwrapper.so # linux
+native_libs/windows/recastwrapper.dll # windows
+```
+
+These paths will take preference over anything built in the `recast-wrapper` subprtoject.

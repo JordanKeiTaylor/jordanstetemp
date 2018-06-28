@@ -65,20 +65,20 @@ def tryBundleLib(paths, target) {
 }
 
 def macOsLibs = [
-    "${recastDir}/build/native_libs/darwin/librecastwrapper.dylib",
     "${project.rootDir}/native_libs/darwin/librecastwrapper.dylib",
+    "${recastDir}/build/native_libs/darwin/librecastwrapper.dylib",
 ]
 nugetFiles += tryBundleLib(macOsLibs, "runtimes/osx/native")
 
 def linuxLibs = [
-    "${recastDir}/build/native_libs/linux/librecastwrapper.so",
     "${project.rootDir}/native_libs/linux/librecastwrapper.so",
+    "${recastDir}/build/native_libs/linux/librecastwrapper.so",
 ]
 nugetFiles += tryBundleLib(linuxLibs, "runtimes/linux/native")
 
 def windowsLibs = [
-    "${recastDir}/build/native_libs/windows/recastwrapper.dll",
     "${project.rootDir}/native_libs/windows/recastwrapper.dll",
+    "${recastDir}/build/native_libs/windows/recastwrapper.dll",
 ]
 nugetFiles += tryBundleLib(windowsLibs, "runtimes/win/native")
 
