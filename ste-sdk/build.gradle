@@ -18,16 +18,7 @@ nuget {
     version = '4.4.1'
 }
 
-def details = versionDetails()
-
-if (details.isCleanTag) {
-    version = "${details.lastTag}"
-} else if (details.commitDistance == 0) {
-    version = "${details.lastTag}-${details.gitHash}.dirty"
-} else {
-    version = "${details.lastTag}-${details.gitHash}"
-}
-println("Version: ${version}")
+version = gitVersion()
 
 def nuspecMetadata = [
     id: 'Improbable.STESDK',
