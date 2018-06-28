@@ -17,9 +17,7 @@ namespace Tests.Navigation
         private const int PathsToTest = 1000;
         private const int RandSeed = 1928;
         private Random _rand;
-        
-        private const string PointsCsv = "./../../resources/graph/sanfran-micro.points.csv";
-        private const string GraphCsv = "./../../resources/graph/sanfran-micro.graph.csv";        
+             
         private IGraphNavigator _navigator;
         private Dictionary<EntityId, PathNode> _nodes;
         private Dictionary<PathNode, List<PathEdge>> _outbounds;
@@ -39,8 +37,8 @@ namespace Tests.Navigation
             var edges = new List<PathEdge>();
 
             var dir = AppDomain.CurrentDomain.BaseDirectory;
-            SnapshotParsingUtils.SetGraphNodes(Path.Combine(dir, PointsCsv), _nodes);
-            SnapshotParsingUtils.SetGraphEdges(Path.Combine(dir, GraphCsv), _nodes, edges);
+            SnapshotParsingUtils.SetGraphNodes(Path.Combine(dir, Resources.SanfranMicroPointsCsv), _nodes);
+            SnapshotParsingUtils.SetGraphEdges(Path.Combine(dir, Resources.SanfranMicroGraphCsv), _nodes, edges);
 
             _nodesArray = _nodes.Values.ToArray();
             _outbounds = new Dictionary<PathNode, List<PathEdge>>();
