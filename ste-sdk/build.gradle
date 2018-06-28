@@ -18,12 +18,12 @@ nuget {
     version = '4.4.1'
 }
 
-version = gitVersion()
 def sout = new StringBuilder(), serr = new StringBuilder()
 def proc = 'git status'.execute()
 proc.consumeProcessOutput(sout, serr)
 proc.waitForOrKill(1000)
 println "out> $sout err> $serr"
+version = gitVersion()
 
 def nuspecMetadata = [
     id: 'Improbable.STESDK',
