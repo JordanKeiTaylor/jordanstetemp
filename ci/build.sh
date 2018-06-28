@@ -17,7 +17,7 @@ cd ..
 
 tc_progress "building recast-wrapper"
 cd recast-wrapper
-./gradlew check
+./gradlew build
 cd ..
 
 tc_progress "building ste-sdk"
