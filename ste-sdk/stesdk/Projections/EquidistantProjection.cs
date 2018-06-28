@@ -9,18 +9,16 @@
 
         public EquidistantProjection(double lat, double lon)
         {
-            this._center.Lat = Globe.DegreesToRadians(lat);
-            this._center.Lon = Globe.DegreesToRadians(lon);
-            this._offset.X = 0;
-            this._offset.Y = 0;
-
-            // idea here is to be able switch projection types
-            this._projection = new AzimuthalEquidistant(lat, lon);
+            _center.Lat = Globe.DegreesToRadians(lat);
+            _center.Lon = Globe.DegreesToRadians(lon);
+            _offset.X = 0;
+            _offset.Y = 0;
+            _projection = new AzimuthalEquidistant(lat, lon);
         }
 
         public SimulationPoint Convert(WorldPoint input)
         {
-            var p = this._projection.ToPlane(input.Lat, input.Lon);
+            var p = _projection.ToPlane(input.Lat, input.Lon);
             return new SimulationPoint
             {
                 X = _offset.X + p.X,
@@ -32,7 +30,7 @@
         {
             var x = input.X - _offset.X;
             var y = input.Y - _offset.Y;
-            var p = this._projection.ToSphere(x, y);
+            var p = _projection.ToSphere(x, y);
 
             return new WorldPoint
             {
@@ -43,11 +41,11 @@
 
         internal void ReSetCenter(WorldPoint world, SimulationPoint sim)
         {
-            this._center.Lat = Globe.DegreesToRadians(world.Lat);
-            this._center.Lon = Globe.DegreesToRadians(world.Lon);
-            this._offset.X = sim.X;
-            this._offset.Y = sim.Y;
-            this._projection = new AzimuthalEquidistant(this._center.Lat, this._center.Lon);
+            _center.Lat = Globe.DegreesToRadians(world.Lat);
+            _center.Lon = Globe.DegreesToRadians(world.Lon);
+            _offset.X = sim.X;
+            _offset.Y = sim.Y;
+            _projection = new AzimuthalEquidistant(_center.Lat, _center.Lon);
         }
 
         public struct SimulationPoint

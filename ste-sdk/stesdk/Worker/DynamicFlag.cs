@@ -35,30 +35,31 @@ namespace Improbable.Worker
             }
         }
 
-        private DynamicFlag(IDispatcher dispatcher, IEnumerable<string> names, Delegate parser, T defaultValue) :
-            this(null, dispatcher, names, parser, defaultValue)
+        private DynamicFlag(IDispatcher dispatcher, IEnumerable<string> names, Delegate parser, T defaultValue) 
+            : this(null, dispatcher, names, parser, defaultValue)
         {
         }
 
-        public DynamicFlag(IConnection connection, IDispatcher dispatcher, string name, Func<string, T> parser, T defaultValue) :
-           this(connection, dispatcher, new string[] { name }, parser, defaultValue)
+        public DynamicFlag(IConnection connection, IDispatcher dispatcher, string name, Func<string, T> parser, T defaultValue) 
+            : this(connection, dispatcher, new string[] { name }, parser, defaultValue)
         {
         }
 
-        public DynamicFlag(IConnection connection, IDispatcher dispatcher, string name1, string name2, Func<string, string, T> parser, T defaultValue) :
-            this(connection, dispatcher, new string[] { name1, name2 }, parser, defaultValue)
+        public DynamicFlag(IConnection connection, IDispatcher dispatcher, string name1, string name2, Func<string, string, T> parser, T defaultValue) 
+            : this(connection, dispatcher, new string[] { name1, name2 }, parser, defaultValue)
         {
         }
 
-        public DynamicFlag(IDispatcher dispatcher, string name, Func<string, T> parser, T defaultValue) :
-           this(null, dispatcher, new string[] { name }, parser, defaultValue)
+        public DynamicFlag(IDispatcher dispatcher, string name, Func<string, T> parser, T defaultValue) 
+            : this(null, dispatcher, new string[] { name }, parser, defaultValue)
         {
         }
 
-        public DynamicFlag(IDispatcher dispatcher, string name1, string name2, Func<string, string, T> parser, T defaultValue) :
-            this(null, dispatcher, new string[] { name1, name2 }, parser, defaultValue)
+        public DynamicFlag(IDispatcher dispatcher, string name1, string name2, Func<string, string, T> parser, T defaultValue) 
+            : this(null, dispatcher, new string[] { name1, name2 }, parser, defaultValue)
         {
         }
+        
         /// <summary>
         /// Initializes a new instance of the <see cref="T:Improbable.Worker.DynamicFlag`1"/> class from a single worker flag.
         /// </summary>
@@ -67,8 +68,8 @@ namespace Improbable.Worker
         /// <param name="name">Worker flag name.</param>
         /// <param name="parser">Worker flag parser.</param>
         /// <param name="defaultValue">Default value.</param>
-        public DynamicFlag(IConnection connection, Dispatcher dispatcher, string name, Func<string, T> parser, T defaultValue) :
-            this(connection, new DispatcherWrapper(dispatcher), new string[] { name }, parser, defaultValue)
+        public DynamicFlag(IConnection connection, Dispatcher dispatcher, string name, Func<string, T> parser, T defaultValue) 
+            : this(connection, new DispatcherWrapper(dispatcher), new string[] { name }, parser, defaultValue)
         {
         }
 

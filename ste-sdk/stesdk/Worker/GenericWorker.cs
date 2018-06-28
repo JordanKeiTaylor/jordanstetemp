@@ -3,6 +3,9 @@ using Improbable.Log;
 
 namespace Improbable.Worker
 {
+    /// <summary>
+    /// Basic Worker that attempts to initialize a connection to SpatialOS.
+    /// </summary>
     public class GenericWorker
     {
         private const string LoggerName = "GenericWorker.cs";
@@ -11,6 +14,13 @@ namespace Improbable.Worker
         private readonly string _workerId;
         private readonly string _workerType;
 
+        /// <summary>
+        /// Constructs a GenericWorker. Initializes a <see cref="WorkerContext"/> given the parameters.
+        /// </summary>
+        /// <param name="workerType">Type of worker</param>
+        /// <param name="workerId">Unique ID of worker</param>
+        /// <param name="hostname">SpatialOS deployment hostname</param>
+        /// <param name="port">SpatialOS deployment port</param>
         protected GenericWorker(string workerType, string workerId, string hostname, ushort port)
         {
             _workerId = workerId;

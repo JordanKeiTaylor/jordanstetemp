@@ -9,6 +9,10 @@ using Improbable.Log;
 
 namespace Improbable.Worker
 {
+    /// <summary>
+    /// A basic worker that periodically executes <see cref="ITickBehaviour"/> objects.
+    /// </summary>
+    /// <seealso cref="GenericWorker"/>
     public abstract class GenericTickWorker : GenericWorker
     {
         private const string LoggerName = "GenericTickWorker.cs";
@@ -18,13 +22,27 @@ namespace Improbable.Worker
         
         private readonly TickTimeRollingMetric _tickTimeRollingMetric;
         
-        protected GenericTickWorker(int tickTimeMs, string workerType, string workerId, string host, ushort port)
-            : base(workerType, workerId, host, port)
+        /// <inheritdoc />
+        /// <summary>
+        /// Initializes a GenericTickWorker. Once in <see cref="GenericTickWorker.Run"/>, the worker will attempt to
+        /// periodically execute all contained <see cref="ITickBehaviour"/> classes once every tickTimeMs. 
+        /// </summary>
+        /// <param name="tickTimeMs">Time in milliseconds between ticks</param>
+        /// <param name="workerType">Type of worker</param>
+        /// <param name="workerId">Unique ID of worker</param>
+        /// <param name="hostname">SpatialOS deployment hostname</param>
+        /// <param name="port">SpatialOS deployment port</param>
+        protected GenericTickWorker(int tickTimeMs, string workerType, string workerId, string hostname, ushort port)
+            : base(workerType, workerId, hostname, port)
         {
             _tickTimeMs = tickTimeMs;
             _tickTimeRollingMetric = new TickTimeRollingMetric(30);
         }
 
+        /// <summary>
+        /// Implement this method to return all behaviours the worker will execute. 
+        /// </summary>
+        /// <returns>Dictionary of <see cref="ITickBehaviour"/></returns>
         protected abstract Dictionary<string, ITickBehaviour> GetBehaviours();
         
         public int Run()
@@ -41,7 +59,6 @@ namespace Improbable.Worker
                 FetchAndProcessOps(0);
 
                 // process behaviours
-                double offsetMs = frameTimer.ElapsedMilliseconds;
                 foreach (var behaviour in behaviours)
                 {
                     try
