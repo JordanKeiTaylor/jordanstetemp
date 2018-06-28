@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Improbable.Sandbox.Navigation.Api;
 
 namespace Improbable.Sandbox.Navigation.Api
 {
@@ -31,12 +32,5 @@ namespace Improbable.Sandbox.Navigation.Api
             get => _msg;
             internal set => _msg = value;
         }
-    }
-
-    public enum PathStatus
-    {
-        Success,
-        Error,
-        NotFound
     }
 }

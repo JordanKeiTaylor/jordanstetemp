@@ -2,6 +2,7 @@
 
 ## Build
 ```
+./recast-wrapper/gradlew build -p recast-wrapper
 msbuild /p:Configuration=Release
 ```
 
