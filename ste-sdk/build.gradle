@@ -18,8 +18,9 @@ nuget {
     version = '4.4.1'
 }
 
-def details = versionDetails()
-version = "${details.description()}"
+// Don't use the full version string as the .dirty suffix seems to get added erroneously
+// See: https://github.com/palantir/gradle-git-version/issues/28
+version = "${versionDetails().description()}"
 
 def nuspecMetadata = [
     id: 'Improbable.STESDK',
