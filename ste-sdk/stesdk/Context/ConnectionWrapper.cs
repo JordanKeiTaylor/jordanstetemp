@@ -4,6 +4,10 @@ using Improbable.Worker.Query;
 
 namespace Improbable.Context
 {
+    /// <summary>
+    /// Default wrapper implementation of <see cref="IConnection"/>.
+    /// </summary>
+    /// <seealso cref="Improbable.Worker.Connection"/>
     public class ConnectionWrapper : IConnection
     {
         private readonly Connection _connection;

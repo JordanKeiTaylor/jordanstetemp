@@ -39,7 +39,7 @@ namespace Improbable.Interpolations
         private static double ChangeAngle(double theta, double deltaTheta)
         {
             // Add delta and map to 0 -> 2pi.
-            double newAngle = ((2.0 * Math.PI) + theta + deltaTheta) % (2 * Math.PI);
+            var newAngle = ((2.0 * Math.PI) + theta + deltaTheta) % (2 * Math.PI);
 
             // Convert back to -pi to +pi
             if (newAngle > Math.PI)

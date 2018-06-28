@@ -43,7 +43,7 @@ namespace Improbable.Interpolations
             _p2 = point2;
             _cp1 = controlPoint;
             _curve = Curve.Quadratic;
-            this._tolerance = tolerance;
+            _tolerance = tolerance;
             Sample(smaples);
         }
 
@@ -54,7 +54,7 @@ namespace Improbable.Interpolations
         /// <param name="point2">End point.</param>
         /// <param name="controlPoint1">Control point1.</param>
         /// <param name="controlPoint2">Control point2.</param>
-        /// <param name="smaples">Number of samples along bezier curve.</param>
+        /// <param name="samples">Number of samples along bezier curve.</param>
         /// <param name="tolerance">Tolerance.</param>
         public Bezier(
             Vector3d point1,
@@ -69,7 +69,7 @@ namespace Improbable.Interpolations
             _cp1 = controlPoint1;
             _cp2 = controlPoint2;
             _curve = Curve.Cubic;
-            this._tolerance = tolerance;
+            _tolerance = tolerance;
             Sample(samples);
         }
 

@@ -3,6 +3,10 @@ using Improbable.Worker;
 
 namespace Improbable.Context
 {
+    /// <summary>
+    /// Default wrapper implementation of <see cref="IDispatcher"/>.
+    /// </summary>
+    /// <seealso cref="Improbable.Worker.Dispatcher"/>
     public class DispatcherWrapper : IDispatcher
     {
         private readonly Dispatcher _dispatcher;

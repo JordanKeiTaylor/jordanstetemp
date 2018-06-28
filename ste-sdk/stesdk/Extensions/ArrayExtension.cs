@@ -16,10 +16,7 @@ namespace Improbable.Extensions
         /// <param name="array">Array to search.</param>
         /// <param name="value">Value to find.</param>
         /// <param name="tolerance">Tolerance in double comparisons.</param>
-        public static int BinarySearch(
-            this double[] array,
-            double value,
-            double tolerance = 0.0001)
+        public static int BinarySearch(this double[] array, double value, double tolerance = 0.0001)
         {
             if (array.Length == 0 ||
                 value.Less(array[0], tolerance) ||

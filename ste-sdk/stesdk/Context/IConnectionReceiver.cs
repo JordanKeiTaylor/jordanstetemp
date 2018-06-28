@@ -15,6 +15,5 @@
         /// Called when a connection is lost.
         /// </summary>
         void DetachConnection(IConnection c);
-
     }
 }

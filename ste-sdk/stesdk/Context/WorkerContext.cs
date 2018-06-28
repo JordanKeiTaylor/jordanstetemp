@@ -5,6 +5,12 @@ using Improbable.Worker;
 
 namespace Improbable.Context
 {
+    /// <summary>
+    /// Maintains the connection and dispatcher to SpatialOS. To initialize the context, see
+    /// <see cref="WorkerContext.Init(string, string, string, ushort)"/>.
+    /// </summary>
+    /// <seealso cref="ConnectionWrapper"/>
+    /// <seealso cref="DispatcherWrapper"/>
     public class WorkerContext : IDisposable
     {   
         private const string LoggerName = "DeploymentContext.cs";
@@ -31,11 +37,6 @@ namespace Improbable.Context
         public static WorkerContext GetInstance()
         {
             return _context ?? (_context = new WorkerContext());
-        }
-
-        public Status GetStatus()
-        {
-            return _status;
         }
 
         /// <summary>
@@ -132,6 +133,15 @@ namespace Improbable.Context
         public string GetWorkerType()
         {
             return _workerType;
+        }
+        
+        /// <summary>
+        /// Returns the context's current status.
+        /// </summary>
+        /// <returns><see cref="Improbable.Context.Status"/></returns>
+        public Status GetStatus()
+        {
+            return _status;
         }
         
         private Connection CreateConnection(string hostname, ushort port, string workerId)
