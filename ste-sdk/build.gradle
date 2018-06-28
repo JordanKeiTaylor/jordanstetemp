@@ -27,7 +27,7 @@ def nuspecMetadata = [
     owners: 'Improbable',
     projectUrl: 'https://github.com/improbable/ste/ste-sdk',
     requireLicenseAcceptance: false,
-    dependencies: []
+    dependencies: [],
 ]
 
 def recastDir = "${projectDir}/../recast-wrapper/recast-csharp"
@@ -42,7 +42,7 @@ def nugetFiles = [
     ],
      [
         src: "${projectDir}/Improbable.STESDK.targets",
-        target: 'lib/net45'
+        target: 'build/net45'
     ]
 ]
 
@@ -68,19 +68,19 @@ def macOsLibs = [
     "${recastDir}/build/native_libs/darwin/librecastwrapper.dylib",
     "${project.rootDir}/native_libs/darwin/librecastwrapper.dylib",
 ]
-nugetFiles += tryBundleLib(macOsLibs, "runtime/osx/native")
+nugetFiles += tryBundleLib(macOsLibs, "runtimes/osx/native")
 
 def linuxLibs = [
     "${recastDir}/build/native_libs/linux/librecastwrapper.so",
     "${project.rootDir}/native_libs/linux/librecastwrapper.so",
 ]
-nugetFiles += tryBundleLib(linuxLibs, "runtime/linux/native")
+nugetFiles += tryBundleLib(linuxLibs, "runtimes/linux/native")
 
 def windowsLibs = [
     "${recastDir}/build/native_libs/windows/recastwrapper.dll",
     "${project.rootDir}/native_libs/windows/recastwrapper.dll",
 ]
-nugetFiles += tryBundleLib(windowsLibs, "runtime/win/native")
+nugetFiles += tryBundleLib(windowsLibs, "runtimes/win/native")
 
 nugetSpec { spec ->
     nuspec = [

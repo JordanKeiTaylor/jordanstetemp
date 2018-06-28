@@ -6,9 +6,9 @@
       <Link>librecastwrapper.x86.dll</Link>
       <Visible>false</Visible>
     </Content> -->
-    <Content Include="$(MSBuildThisFileDirectory)..\..\runtimes\win\native\librecastwrapper.dll">
+    <Content Include="$(MSBuildThisFileDirectory)..\..\runtimes\win\native\recastwrapper.dll" Condition="Exists('$(MSBuildThisFileDirectory)..\..\runtimes\win\native\recastwrapper.dll')">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Link>librecastwrapper.dll</Link>
+      <Link>recastwrapper.dll</Link>
       <Visible>false</Visible>
     </Content>
     <!-- <Content Include="$(MSBuildThisFileDirectory)..\..\runtimes\linux\native\liblibrecastwrapper.x86.so">
@@ -16,12 +16,12 @@
       <Link>liblibrecastwrapper.x86.so</Link>
       <Visible>false</Visible>
     </Content> -->
-    <Content Include="$(MSBuildThisFileDirectory)..\..\runtimes\linux\native\liblibrecastwrapper.so">
+    <Content Include="$(MSBuildThisFileDirectory)..\..\runtimes\linux\native\librecastwrapper.so" Condition="Exists('$(MSBuildThisFileDirectory)..\..\runtimes\linux\native\librecastwrapper.so')">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Link>liblibrecastwrapper.so</Link>
+      <Link>librecastwrapper.so</Link>
       <Visible>false</Visible>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)..\..\runtimes\osx\native\librecastwrapper.dylib">
+    <Content Include="$(MSBuildThisFileDirectory)..\..\runtimes\osx\native\librecastwrapper.dylib" Condition="Exists('$(MSBuildThisFileDirectory)..\..\runtimes\osx\native\librecastwrapper.dylib')">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Link>librecastwrapper.dylib</Link>
       <Visible>false</Visible>
