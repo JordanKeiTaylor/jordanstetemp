@@ -37,7 +37,7 @@ namespace Tests.Navigation
             task.Wait();
             var result = task.Result;
             
-            Assert.AreEqual(4095, result.Path.Count);
+            Assert.AreEqual(234, result.Path.Count);
             Assert.AreEqual(PathStatus.Success, result.Status);
         }
         

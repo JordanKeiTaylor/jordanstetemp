@@ -32,11 +32,4 @@ namespace Improbable.sandbox.Navigation.Api
             internal set => _msg = value;
         }
     }
-
-    public enum PathStatus
-    {
-        Success,
-        Error,
-        NotFound
-    }
 }

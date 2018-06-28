@@ -16,9 +16,12 @@ namespace Improbable.sandbox.Navigation
         readonly NavMeshQuery _navMeshQuery;
         readonly RecastContext _ctx;
 
-        readonly float[] _halfExtents = { 10.0f, 10.0f, 10.0f };
+        readonly float[] _halfExtents;
+        
+        public DefaultMeshNavigator(string navMeshFile) : 
+            this(navMeshFile, new[] { 10.0f, 10.0f, 10.0f }) { }
 
-        public DefaultMeshNavigator(string navMeshFile)
+        public DefaultMeshNavigator(string navMeshFile, float[] halfExtents)
         {
             _ctx = new RecastContext();
             _navMesh = _ctx.LoadTiledNavMeshBinFile(navMeshFile);
@@ -29,6 +32,7 @@ namespace Improbable.sandbox.Navigation
             }
 
             _navMeshQuery = _ctx.CreateNavMeshQuery(_navMesh);
+            _halfExtents = halfExtents;
         }
         
         public Task<PathResult> GetMeshPath(PathNode start, PathNode stop)
@@ -40,7 +44,7 @@ namespace Improbable.sandbox.Navigation
         {
             var result = new PathResult();
             var startPoint = _ctx.FindNearestPoly(_navMeshQuery, start.Coords.ToFloat(), _halfExtents);
-            if (HasFailed(startPoint.status))
+            if (!HasSucceed(startPoint.status))
             {
                 result.Status = PathStatus.Error;
                 result.Message = "Failed to find nearest poly for start node";
@@ -48,7 +52,7 @@ namespace Improbable.sandbox.Navigation
             }
             
             var stopPoint = _ctx.FindNearestPoly(_navMeshQuery, stop.Coords.ToFloat(), _halfExtents);
-            if (HasFailed(stopPoint.status))
+            if (!HasSucceed(stopPoint.status))
             {
                 result.Status = PathStatus.Error;
                 result.Message = "Failed to find nearest poly for stop node";
@@ -56,7 +60,7 @@ namespace Improbable.sandbox.Navigation
             }
             
             var polyPath = _ctx.FindPath(_navMeshQuery, startPoint, stopPoint);
-            if (HasFailed(polyPath.status))
+            if (!HasSucceed(polyPath.status))
             {
                 result.Status = PathStatus.NotFound;
                 result.Message = "Failed to find path between start and stop nodes";
@@ -72,15 +76,15 @@ namespace Improbable.sandbox.Navigation
             }
 
             result.Status = PathStatus.Success;
-            result.Path = ToPathEdges(smoothPath.path);
+            result.Path = ToPathEdges(smoothPath.path, smoothPath.pathCount);
             return result;
         }
 
-        List<PathEdge> ToPathEdges(float[] paths)
+        List<PathEdge> ToPathEdges(float[] paths, int size)
         {
             var prev = new PathNode {Coords = ToCoord(paths, 0)};
             var edges = new List<PathEdge>();
-            for (var i = 3; i < paths.Length; i += 3)
+            for (var i = 3; i < size; i += 3)
             {
                 var node = new PathNode {Coords = ToCoord(paths, i)};
                 edges.Add(new PathEdge {Source = prev, Target = node});
@@ -94,9 +98,9 @@ namespace Improbable.sandbox.Navigation
             return new Coordinates(point[offset], point[offset + 1], point[offset + 2]);
         }
         
-        bool HasFailed(uint status) 
+        bool HasSucceed(uint status) 
         {
-            return (status & DT_SUCCESS) == 0;
+            return (status & DT_SUCCESS) != 0;
         }
     }
 }

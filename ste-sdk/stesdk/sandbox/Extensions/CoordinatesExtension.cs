@@ -9,7 +9,7 @@ namespace Improbable.Sandbox.Extensions
         /// </summary>
         /// <returns>Vector.</returns>
         /// <param name="coord">Coordinate.</param>
-        /// <returns></returns>
+        /// <returns>Vector.</returns>
         public static Vector3d ToVector3d(this Coordinates coord)
         {
             return new Vector3d(coord.x, coord.y, coord.z);
@@ -19,7 +19,7 @@ namespace Improbable.Sandbox.Extensions
         /// Converts this coordinate to a float array.
         /// </summary>
         /// <param name="coord">Coordinate</param>
-        /// <returns>Float array</returns>
+        /// <returns>float[3]</returns>
         public static float[] ToFloat(this Coordinates coord)
         {
             return new[] {(float) coord.x, (float) coord.y, (float) coord.z};
