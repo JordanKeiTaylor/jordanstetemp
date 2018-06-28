@@ -2,6 +2,7 @@ plugins {
     id 'com.ullink.msbuild' version '2.18'
     id 'com.ullink.nuget' version '2.12'
     id 'com.ullink.nunit' version '1.12'
+    id 'com.palantir.git-version' version '0.12.0-rc2'
 }
 
 msbuild {
@@ -17,7 +18,16 @@ nuget {
     version = '4.4.1'
 }
 
-version = "0.0.1"
+def details = versionDetails()
+
+if (details.isCleanTag) {
+    version = "${details.lastTag}"
+} else if (details.commitDistance == 0) {
+    version = "${details.lastTag}-${details.gitHash}.dirty"
+} else {
+    version = "${details.lastTag}-${details.gitHash}"
+}
+println("Version: ${version}")
 
 def nuspecMetadata = [
     id: 'Improbable.STESDK',
