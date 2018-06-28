@@ -447,7 +447,12 @@ void navmesh_query_delete(dtNavMeshQuery* navQuery) {
 PolyPointResult* navmesh_query_find_nearest_poly(dtNavMeshQuery* navQuery, float* point, float* half_extents) {
 	dtQueryFilter filter;
 	PolyPointResult *result = new PolyPointResult();
+	memcpy(result->point, IMPOSSIBLE_POINT, sizeof(IMPOSSIBLE_POINT));
 	result->status = navQuery->findNearestPoly(point, half_extents, &filter, &result->polyRef, result->point);
+	if (0 == memcmp(result->point, IMPOSSIBLE_POINT, sizeof(IMPOSSIBLE_POINT))) {
+		memset(result, 0, sizeof(PolyPointResult));  // reset everything back to 0 to avoid the caller seeing an IMPOSSIBLE POINT
+		result->status = DT_FAILURE | DT_INVALID_PARAM;
+	}
 	return result;
 }
 
