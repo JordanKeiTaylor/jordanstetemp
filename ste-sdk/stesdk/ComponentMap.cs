@@ -34,12 +34,14 @@ namespace Improbable
         /// Events to disable.
         /// Note: Can pass in multiple flags using bitwise OR. For example, AddComponent | UpdateComponent.
         /// </param>
-        public ComponentMap(IDispatcher dispatcher, ComponentMapEvent? disableEvents = null)
+        public ComponentMap(IDispatcher dispatcher = null, ComponentMapEvent? disableEvents = null)
         {
             _authority = new HashSet<EntityId>();
             _authorityLossImminent = new HashSet<EntityId>();
             _components = new Dictionary<EntityId, IComponentData<T>>();
 
+            dispatcher = dispatcher ?? WorkerContext.GetInstance().GetDispatcher();
+            
             if (!HasFlag(disableEvents, ComponentMapEvent.AddComponent))
             {
                 dispatcher.OnAddComponent<T>(AddComponent);
