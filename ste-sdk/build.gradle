@@ -74,8 +74,8 @@ def macOsLibs = [
 nugetFiles += tryBundleLib(macOsLibs, "runtimes/osx/native")
 
 def linuxLibs = [
-    "${project.rootDir}/native_libs/linux/librecastwrapper.so",
-    "${recastDir}/build/native_libs/linux/librecastwrapper.so",
+    "${project.rootDir}/native_libs/linux-x86-64/librecastwrapper.so",
+    "${recastDir}/build/native_libs/linux-x86-64/librecastwrapper.so",
 ]
 nugetFiles += tryBundleLib(linuxLibs, "runtimes/linux/native")
 
