@@ -25,11 +25,9 @@ namespace Improbable.Worker
             _tickTimeRollingMetric = new TickTimeRollingMetric(30);
         }
 
-        public abstract int Run();
-
         protected abstract Dictionary<string, ITickBehaviour> GetBehaviours();
         
-        protected int RunEventLoop()
+        public int Run()
         {
             var behaviours = GetBehaviours();
 
