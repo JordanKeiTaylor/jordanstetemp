@@ -1,6 +1,5 @@
 ﻿using Improbable.Context;
 using Improbable.Context.Exception;
-using Moq;
 using NUnit.Framework;
 
 namespace Tests.Context
