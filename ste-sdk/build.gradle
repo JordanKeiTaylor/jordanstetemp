@@ -20,7 +20,7 @@ nuget {
 
 // Don't use the full version string as the .dirty suffix seems to get added erroneously
 // See: https://github.com/palantir/gradle-git-version/issues/28
-version = "${versionDetails().description()}"
+version = versionDetails().description() ?: "unknown"
 
 // See https://stackoverflow.com/questions/40104838/automatic-native-and-managed-dlls-extracting-from-nuget-package/40652794#40652794
 // and https://stackoverflow.com/questions/10198428/where-to-place-dlls-for-unmanaged-libraries
