@@ -1,0 +1,108 @@
+plugins {
+    id 'com.ullink.msbuild' version '2.18'
+    id 'com.ullink.nuget' version '2.12'
+    id 'com.ullink.nunit' version '1.12'
+    id 'com.palantir.git-version' version '0.11.0'
+}
+
+msbuild {
+    solutionFile = file('STESDK.sln')
+    projectName = 'STESDK'
+    inputs.file(project.buildFile)
+    intermediateDir = 'build/msbuild/obj'
+    msbuildDir = System.getenv('MSBUILD_DIR')
+    executable = "msbuild"
+}
+
+nuget {
+    version = '4.4.1'
+}
+
+// Don't use the full version string as the .dirty suffix seems to get added erroneously
+// See: https://github.com/palantir/gradle-git-version/issues/28
+// This seems to return null in CI
+version = versionDetails().description() ?: "0.0.0"
+
+// See https://stackoverflow.com/questions/40104838/automatic-native-and-managed-dlls-extracting-from-nuget-package/40652794#40652794
+// and https://stackoverflow.com/questions/10198428/where-to-place-dlls-for-unmanaged-libraries
+// and https://www.nuget.org/packages/Grpc.Core/1.12.0
+// for how to package native libraries.
+def nuspecMetadata = [
+    id: 'Improbable.STESDK',
+    version: version,
+    title: 'Improbable STESDK',
+    authors: 'Improbable',
+    owners: 'Improbable',
+    projectUrl: 'https://github.com/improbable/ste/ste-sdk',
+    requireLicenseAcceptance: false,
+    dependencies: [],
+]
+
+def recastDir = "${projectDir}/../recast-wrapper/recast-csharp"
+def nugetFiles = [
+    [
+        src: "${buildDir}/msbuild/obj/Improbable.STESDK.dll", 
+        target: 'lib/net45'
+    ],
+    [
+        src: "${recastDir}/build/msbuild/bin/Release/Improbable.Recast.dll", 
+        target: 'lib/net45'
+    ],
+    [
+        src: "${projectDir}/Improbable.STESDK.targets",
+        target: 'build/net45'
+    ]
+]
+
+def tryBundleLib(paths, target) {
+    def lib = paths.findResult { path ->
+        if (file(path).exists()) {
+            return [
+                src: path,
+                target: target,
+            ]
+        }
+    }
+
+    if (lib) {
+        println("Bundling ${lib.src}")
+        return [lib]
+    }
+
+    return []
+}
+
+def macOsLibs = [
+    "${project.rootDir}/native_libs/darwin/librecastwrapper.dylib",
+    "${recastDir}/build/native_libs/darwin/librecastwrapper.dylib",
+]
+nugetFiles += tryBundleLib(macOsLibs, "runtimes/osx/native")
+
+def linuxLibs = [
+    "${project.rootDir}/native_libs/linux-x86-64/librecastwrapper.so",
+    "${recastDir}/build/native_libs/linux-x86-64/librecastwrapper.so",
+]
+nugetFiles += tryBundleLib(linuxLibs, "runtimes/linux/native")
+
+def windowsLibs = [
+    "${project.rootDir}/native_libs/windows/recastwrapper.dll",
+    "${recastDir}/build/native_libs/windows/recastwrapper.dll",
+]
+nugetFiles += tryBundleLib(windowsLibs, "runtimes/win/native")
+
+nugetSpec { spec ->
+    nuspec = [
+        metadata: nuspecMetadata,
+        files: nugetFiles.collect { f ->
+             { it -> file (src: f.src, target: f.target) }
+        },
+    ]
+}
+
+nugetPush {
+    serverUrl = "file://${System.getProperty("user.home")}/.nuget/packages"
+    nupkgFile = nugetPack.packageFile
+}
+
+assemble.dependsOn(msbuild)
+nugetPack.dependsOn msbuild
