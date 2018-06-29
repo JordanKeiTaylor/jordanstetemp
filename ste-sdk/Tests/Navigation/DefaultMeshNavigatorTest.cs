@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
 using Improbable;
-using Improbable.Recast;
-using Improbable.Recast.Types;
 using Improbable.Sandbox.Navigation;
 using Improbable.Sandbox.Navigation.Api;
 using NUnit.Framework;
@@ -20,14 +15,12 @@ namespace Tests.Navigation
         [SetUp]
         public void Setup()
         {
-            var relPath = "./../../resources/L19.obj.bin64";
-            var fullPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, relPath);
-            _navigator = new DefaultMeshNavigator(fullPath);
+            _navigator = new DefaultMeshNavigator(Resources.L19ObjBin64);
         }
 
         [Test]
         public void PathFromAToB_Success()
-        {
+        {   
             var a = new Coordinates(-534.29, 93.625, -744.29);
             var b = new Coordinates(-283.60, 100.49, -174.30);
             var aPath = new PathNode {Coords = a};

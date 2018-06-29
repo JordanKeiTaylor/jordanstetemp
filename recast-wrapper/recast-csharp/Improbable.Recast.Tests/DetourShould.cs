@@ -44,6 +44,26 @@ namespace Improbable.Recast.Tests
                 Assert.AreEqual(result.polyRef, 281474976711211L);
             }
         }
+
+        [Test]
+        public void find_nearest_poly_fail()
+        {
+            using (var ctx = new RecastContext())
+            {
+                var navMesh = CreateNavMesh(ctx);
+                var navMeshQuery = ctx.CreateNavMeshQuery(navMesh);
+
+                var point = new float[] { -5750.0f, -6900.1874f, 5400.0f };
+                var halfExtents = new float[] { 10.0f, 10.0f, 10.0f };
+                var result = ctx.FindNearestPoly(navMeshQuery, point, halfExtents);
+
+                Assert.IsFalse(Success(result.status));
+                Assert.AreEqual(result.polyRef, 0);
+                Assert.AreEqual(result.point[0], 0);
+                Assert.AreEqual(result.point[1], 0);
+                Assert.AreEqual(result.point[2], 0);
+            }
+        }
         
         [Test]
         public void find_path()

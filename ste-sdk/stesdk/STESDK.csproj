@@ -60,7 +60,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <TargetPath>librecastwrapper.dll</TargetPath>
     </ContentWithTargetPath>
-    <ContentWithTargetPath Include="../../recast-wrapper/recast-csharp/build/native_libs/unix/librecastwrapper.so" Condition=" '$(OS)' == 'Unix' and ! $([System.IO.File]::Exists('/usr/lib/libc.dylib')) ">
+    <ContentWithTargetPath Include="../../recast-wrapper/recast-csharp/build/native_libs/linux-x86-64/librecastwrapper.so" Condition=" '$(OS)' == 'Unix' and ! $([System.IO.File]::Exists('/usr/lib/libc.dylib')) ">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <TargetPath>librecastwrapper.so</TargetPath>
     </ContentWithTargetPath>
