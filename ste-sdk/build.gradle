@@ -47,7 +47,7 @@ def nugetFiles = [
         src: "${recastDir}/build/msbuild/bin/Release/Improbable.Recast.dll", 
         target: 'lib/net45'
     ],
-     [
+    [
         src: "${projectDir}/Improbable.STESDK.targets",
         target: 'build/net45'
     ]
