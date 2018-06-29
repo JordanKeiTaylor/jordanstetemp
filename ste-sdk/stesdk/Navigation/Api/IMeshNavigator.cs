@@ -5,8 +5,8 @@ namespace Improbable.Navigation.Api
     public interface IMeshNavigator
     {
         /// <summary>
-        /// Retrieve a <see cref="PathResult"/> between <see cref="PathNode"/> start and stop
-        /// if one exists.
+        /// Executes a Task that asynchronously retrieves a <see cref="PathResult"/> between <see cref="PathNode"/>
+        /// start and stop if one exists.
         /// </summary>
         /// <param name="start">Start node</param>
         /// <param name="stop">Destination node</param>

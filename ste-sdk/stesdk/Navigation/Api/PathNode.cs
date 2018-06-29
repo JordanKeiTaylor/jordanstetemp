@@ -9,5 +9,5 @@
         public T Node { get; set; }
     }
     
-    public class PathNode: PathNode<object> { }
+    public class PathNode : PathNode<object> { }
 }

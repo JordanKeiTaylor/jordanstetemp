@@ -7,6 +7,16 @@ namespace Improbable.Navigation
 {
     public static class SnapshotParsingUtils
     {
+        /// <summary>
+        /// Parse a pointsCSV file into a dictionary of nodes.
+        /// 
+        /// This file is expected to have a header.
+        /// 
+        /// Expected CSV Structure:
+        /// id,entityType,x,y,z
+        /// </summary>
+        /// <param name="pointsCsv">Filepath to pointsCSV file</param>
+        /// <param name="nodes">Nodes are written to this dictionary</param>
         public static void SetGraphNodes(string pointsCsv, Dictionary<EntityId, PathNode> nodes)
         {
             using (var stream = new FileStream(pointsCsv, FileMode.Open))
@@ -32,6 +42,17 @@ namespace Improbable.Navigation
             }
         }
 
+        /// <summary>
+        /// Parse a graphCSV file into a list of edges.
+        /// 
+        /// This files is expected to not contain a header.
+        /// 
+        /// Expected CSV Structure:
+        /// id (source id),id (target id)
+        /// </summary>
+        /// <param name="graphCsv"></param>
+        /// <param name="nodes"></param>
+        /// <param name="edges"></param>
         public static void SetGraphEdges(string graphCsv, Dictionary<EntityId, PathNode> nodes, List<PathEdge> edges)
         {
             using (var stream = new FileStream(graphCsv, FileMode.Open))

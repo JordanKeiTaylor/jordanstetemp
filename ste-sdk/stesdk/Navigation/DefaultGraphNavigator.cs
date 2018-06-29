@@ -9,10 +9,19 @@ using QuickGraph.Algorithms.ShortestPath;
 
 namespace Improbable.Navigation
 {
+    /// <summary>
+    /// Default implementation of Graph navigation. This graph navigator must be provided the list of graph nodes and
+    /// edges at initialization. 
+    /// </summary>
     public class DefaultGraphNavigator : IGraphNavigator
     {
         private readonly AdjacencyGraph<PathNode, PathEdge> _graph;
 
+        /// <summary>
+        /// Initialize a new DefaultGraphNavigator which constructs a graph given the provided nodes and edges. 
+        /// </summary>
+        /// <param name="nodes">Graph nodes</param>
+        /// <param name="edges">Graph edges</param>
         public DefaultGraphNavigator(Dictionary<EntityId, PathNode> nodes, List<PathEdge> edges)
         {
             _graph = BuildRoutingGraph(nodes.Values, edges);
@@ -25,8 +34,8 @@ namespace Improbable.Navigation
 
         private AdjacencyGraph<PathNode, PathEdge> BuildRoutingGraph(
             IEnumerable<PathNode> nodes,
-            IEnumerable<PathEdge> edges
-        ) {
+            IEnumerable<PathEdge> edges) 
+        {
             var graph = new AdjacencyGraph<PathNode, PathEdge>();
             foreach (var node in nodes)
             {

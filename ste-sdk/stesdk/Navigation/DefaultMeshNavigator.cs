@@ -8,19 +8,34 @@ using Improbable.Recast.Types;
 
 namespace Improbable.Navigation
 {
+    /// <summary>
+    /// Default implementation of Mesh navigation. This navigator must be provided the complete mesh file at
+    /// initialization.
+    /// </summary>
     public class DefaultMeshNavigator : IMeshNavigator
     {
-        const uint DT_SUCCESS = 1u << 30;
+        private const uint DtSuccess = 1u << 30;
 
-        readonly NavMesh _navMesh;
-        readonly NavMeshQuery _navMeshQuery;
-        readonly RecastContext _ctx;
+        private readonly NavMesh _navMesh;
+        private readonly NavMeshQuery _navMeshQuery;
+        private readonly RecastContext _ctx;
 
-        readonly float[] _halfExtents;
+        private readonly float[] _halfExtents;
         
+        /// <inheritdoc />
+        /// <summary>
+        /// Initialize a new DefaultMeshNavigator given a mesh file.
+        /// </summary>
+        /// <param name="navMeshFile">Mesh file</param>
         public DefaultMeshNavigator(string navMeshFile) : 
             this(navMeshFile, new[] { 10.0f, 10.0f, 10.0f }) { }
 
+        /// <summary>
+        /// Initialize a new DefaultMeshNavigator given a mesh file and halfExtents parameters.
+        /// </summary>
+        /// <param name="navMeshFile">Mesh file</param>
+        /// <param name="halfExtents">Half extents</param>
+        /// <exception cref="Exception">Throws an exception if the mesh file cannot be loaded.</exception>
         public DefaultMeshNavigator(string navMeshFile, float[] halfExtents)
         {
             _ctx = new RecastContext();
@@ -40,7 +55,7 @@ namespace Improbable.Navigation
             return Task.Factory.StartNew(() => CalculatePath(start, stop));
         }
 
-        PathResult CalculatePath(PathNode start, PathNode stop)
+        private PathResult CalculatePath(PathNode start, PathNode stop)
         {
             var result = new PathResult();
             var startPoint = _ctx.FindNearestPoly(_navMeshQuery, start.Coords.ToFloat(), _halfExtents);
@@ -80,7 +95,7 @@ namespace Improbable.Navigation
             return result;
         }
 
-        List<PathEdge> ToPathEdges(float[] paths, int size)
+        private List<PathEdge> ToPathEdges(float[] paths, int size)
         {
             var prev = new PathNode {Coords = ToCoord(paths, 0)};
             var edges = new List<PathEdge>();
@@ -92,15 +107,15 @@ namespace Improbable.Navigation
             }
             return edges;
         }
-        
-        Coordinates ToCoord(float[] point, int offset) 
+
+        private Coordinates ToCoord(float[] point, int offset) 
         {
             return new Coordinates(point[offset], point[offset + 1], point[offset + 2]);
         }
-        
-        bool HasSucceed(uint status) 
+
+        private bool HasSucceed(uint status) 
         {
-            return (status & DT_SUCCESS) != 0;
+            return (status & DtSuccess) != 0;
         }
     }
 }
