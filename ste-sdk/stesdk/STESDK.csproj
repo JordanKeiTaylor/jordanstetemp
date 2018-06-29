@@ -38,6 +38,9 @@
     <AdditionalFiles Include="stylecop.json" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Improbable.Recast, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\recast-wrapper\recast-csharp\build\msbuild\bin\Release\Improbable.Recast.dll</HintPath>
+    </Reference>
     <Reference Include="Improbable.WorkerSdkCsharp, Version=12.2.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\packages\worker-sdk\Improbable.WorkerSdkCsharp.dll</HintPath>
     </Reference>
@@ -50,6 +53,20 @@
     <Reference Include="System" />
     <Reference Include="System.Windows" />
     <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <ContentWithTargetPath Include="../../recast-wrapper/recast-csharp/build/native_libs/windows/librecastwrapper.dll" Condition=" '$(OS)' == 'Windows_NT' ">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>librecastwrapper.dll</TargetPath>
+    </ContentWithTargetPath>
+    <ContentWithTargetPath Include="../../recast-wrapper/recast-csharp/build/native_libs/linux-x86-64/librecastwrapper.so" Condition=" '$(OS)' == 'Unix' and ! $([System.IO.File]::Exists('/usr/lib/libc.dylib')) ">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>librecastwrapper.so</TargetPath>
+    </ContentWithTargetPath>
+    <ContentWithTargetPath Include="../../recast-wrapper/recast-csharp/build/native_libs/darwin/librecastwrapper.dylib" Condition=" '$(OS)' == 'Unix' and $([System.IO.File]::Exists('/usr/lib/libc.dylib')) ">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>librecastwrapper.dylib</TargetPath>
+    </ContentWithTargetPath>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\worker-sdk\Improbable.StandardLibraryCsharp.csproj">
