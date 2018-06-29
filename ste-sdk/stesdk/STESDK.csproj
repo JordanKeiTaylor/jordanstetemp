@@ -59,14 +59,17 @@
     <ContentWithTargetPath Include="../../recast-wrapper/recast-csharp/build/native_libs/windows/librecastwrapper.dll" Condition=" '$(OS)' == 'Windows_NT' ">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <TargetPath>librecastwrapper.dll</TargetPath>
+      <Visible>false</Visible>
     </ContentWithTargetPath>
     <ContentWithTargetPath Include="../../recast-wrapper/recast-csharp/build/native_libs/linux-x86-64/librecastwrapper.so" Condition=" '$(OS)' == 'Unix' and ! $([System.IO.File]::Exists('/usr/lib/libc.dylib')) ">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <TargetPath>librecastwrapper.so</TargetPath>
+      <Visible>false</Visible>
     </ContentWithTargetPath>
     <ContentWithTargetPath Include="../../recast-wrapper/recast-csharp/build/native_libs/darwin/librecastwrapper.dylib" Condition=" '$(OS)' == 'Unix' and $([System.IO.File]::Exists('/usr/lib/libc.dylib')) ">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <TargetPath>librecastwrapper.dylib</TargetPath>
+      <Visible>false</Visible>
     </ContentWithTargetPath>
   </ItemGroup>
   <ItemGroup>

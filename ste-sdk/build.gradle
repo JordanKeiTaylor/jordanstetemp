@@ -99,8 +99,9 @@ nugetSpec { spec ->
     ]
 }
 
+def publishDir = System.getenv("STE_PUBLISH_DIR") ?: "${System.getProperty("user.home")}/.nuget/packages"
 nugetPush {
-    serverUrl = "file://${System.getProperty("user.home")}/.nuget/packages"
+    serverUrl = "file://$publishDir"
     nupkgFile = nugetPack.packageFile
 }
 
