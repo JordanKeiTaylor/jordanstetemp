@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
 using Improbable;
-using Improbable.Sandbox.Navigation;
-using Improbable.Sandbox.Navigation.Api;
+using Improbable.Navigation;
+using Improbable.Navigation.Api;
 using NUnit.Framework;
 
 namespace Tests.Navigation
@@ -47,7 +47,7 @@ namespace Tests.Navigation
             var result = task.Result;
             
             Assert.AreEqual(0, result.Path.Count);
-            Assert.AreEqual(PathStatus.NotFound, result.Status);
+            Assert.AreEqual(PathStatus.Error, result.Status);
         }
         
         [Test]
@@ -63,8 +63,7 @@ namespace Tests.Navigation
             var result = task.Result;
             
             Assert.AreEqual(0, result.Path.Count);
-            Assert.AreEqual(PathStatus.NotFound, result.Status);
+            Assert.AreEqual(PathStatus.Error, result.Status);
         }
-        
     }
 }

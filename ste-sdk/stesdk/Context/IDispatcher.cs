@@ -3,6 +3,9 @@ using Improbable.Worker;
 
 namespace Improbable.Context
 {
+    /// <summary>
+    /// Wrapper implementation for <see cref="Improbable.Worker.Dispatcher"/>
+    /// </summary>
     public interface IDispatcher : IDisposable
     {
         void OnAddComponent<C>(Action<AddComponentOp<C>> callback) where C : IComponentMetaclass;

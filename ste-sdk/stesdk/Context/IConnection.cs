@@ -5,6 +5,9 @@ using Improbable.Worker.Query;
 
 namespace Improbable.Context
 {
+    /// <summary>
+    /// Wrapper interface for <see cref="Improbable.Worker.Connection"/>
+    /// </summary>
     public interface IConnection : IDisposable
     {
         bool IsConnected { get; }

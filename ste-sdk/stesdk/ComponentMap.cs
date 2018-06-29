@@ -6,6 +6,15 @@ using Improbable.Worker;
 
 namespace Improbable
 {
+    /// <summary>
+    /// Events that a <see cref="ComponentMap{T}"/> can react to.
+    /// <list type="bullet">
+    /// <item>AddComponent</item>
+    /// <item>UpdateComponent</item>
+    /// <item>RemoveEntity</item>
+    /// <item>AuthorityChange</item>
+    /// </list>
+    /// </summary>
     [Flags]
     public enum ComponentMapEvent
     {
@@ -15,6 +24,11 @@ namespace Improbable
         AuthorityChange = 8,
     }
 
+    /// <summary>
+    /// ComponentMap uses the active dispatcher to expose components in the SpatialOS world. The map will only receive
+    /// updates for components the current worker can see or has authority over.
+    /// </summary>
+    /// <typeparam name="T">Component type of the map, must extend <see cref="IComponentMetaclass"/></typeparam>
     public class ComponentMap<T> : IEnumerable<KeyValuePair<EntityId, IComponentData<T>>>
         where T : IComponentMetaclass
     {
@@ -23,16 +37,21 @@ namespace Improbable
         private readonly HashSet<EntityId> _authority;
         private readonly HashSet<EntityId> _authorityLossImminent;
         private readonly Dictionary<EntityId, IComponentData<T>> _components;
-
+        public Dictionary<EntityId, IComponentData<T>>.KeyCollection Keys => _components.Keys;
+        public Dictionary<EntityId, IComponentData<T>>.ValueCollection Values => _components.Values;
+        
         private bool _hasUpdated = true;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:Improbable.ComponentMap`1"/> class.
+        /// Initializes a new instance of <see cref="ComponentMap{T}"/>.
         /// </summary>
-        /// <param name="dispatcher">Dispatcher</param>
+        /// <param name="dispatcher">
+        /// Optional. Dispatcher for the ComponentMap to use. If left null, the map will attempt to use the dispatcher
+        /// from the current <see cref="WorkerContext"/>. 
+        /// </param>
         /// <param name="disableEvents">
-        /// Events to disable.
-        /// Note: Can pass in multiple flags using bitwise OR. For example, AddComponent | UpdateComponent.
+        /// Optional. Events to disable. Can pass in multiple flags using bitwise OR. For example,
+        /// AddComponent | UpdateComponent.
         /// </param>
         public ComponentMap(IDispatcher dispatcher = null, ComponentMapEvent? disableEvents = null)
         {
@@ -62,10 +81,6 @@ namespace Improbable
                 dispatcher.OnAuthorityChange<T>(SetAuthority);
             }
         }
-
-        public Dictionary<EntityId, IComponentData<T>>.KeyCollection Keys => _components.Keys;
-
-        public Dictionary<EntityId, IComponentData<T>>.ValueCollection Values => _components.Values;
 
         public bool ContainsKey(EntityId id)
         {
@@ -97,16 +112,28 @@ namespace Improbable
             return _components.GetEnumerator();
         }
 
+        /// <summary>
+        /// Check if the ComponentMap has been updated since the last ACK of updates. Component Adds, Removes, and
+        /// Updates cause this to return true. To acknowledge all updates, see <see cref="ComponentMap{T}.AckUpdated"/> 
+        /// </summary>
+        /// <returns>Returns true if the map has been updated since the last ACK of updates</returns>
         public bool HasUpdated()
         {
             return _hasUpdated;
         }
 
+        /// <summary>
+        /// Acknowledge that the map has been updated.
+        /// </summary>
         public void AckUpdated()
         {
             _hasUpdated = false;
         }
 
+        /// <summary>
+        /// Randomly select an EntityId that this map is authoratative over. 
+        /// </summary>
+        /// <returns>EntityId with write authoriy.</returns>
         public EntityId GetRandomAuthorativeId()
         {
             var e = _authority.GetEnumerator();
