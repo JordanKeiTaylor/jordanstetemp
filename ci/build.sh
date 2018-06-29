@@ -23,6 +23,7 @@ cd ..
 tc_progress "building ste-sdk"
 cd ste-sdk
 msbuild
+./gradlew nugetPack
 cd ..
 
 tc_progress "checking deploy"
