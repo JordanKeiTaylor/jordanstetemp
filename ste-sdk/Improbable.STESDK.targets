@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <!-- <Content Include="$(MSBuildThisFileDirectory)..\..\runtimes\win\native\librecastwrapper.x86.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>librecastwrapper.x86.dll</Link>
+      <Visible>false</Visible>
+    </Content> -->
+    <Content Include="$(MSBuildThisFileDirectory)..\..\runtimes\win\native\recastwrapper.dll" Condition="Exists('$(MSBuildThisFileDirectory)..\..\runtimes\win\native\recastwrapper.dll')">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>recastwrapper.dll</Link>
+      <Visible>false</Visible>
+    </Content>
+    <!-- <Content Include="$(MSBuildThisFileDirectory)..\..\runtimes\linux\native\liblibrecastwrapper.x86.so">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>liblibrecastwrapper.x86.so</Link>
+      <Visible>false</Visible>
+    </Content> -->
+    <Content Include="$(MSBuildThisFileDirectory)..\..\runtimes\linux\native\librecastwrapper.so" Condition="Exists('$(MSBuildThisFileDirectory)..\..\runtimes\linux\native\librecastwrapper.so')">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>librecastwrapper.so</Link>
+      <Visible>false</Visible>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)..\..\runtimes\osx\native\librecastwrapper.dylib" Condition="Exists('$(MSBuildThisFileDirectory)..\..\runtimes\osx\native\librecastwrapper.dylib')">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>librecastwrapper.dylib</Link>
+      <Visible>false</Visible>
+    </Content>
+    <!-- <Content Include="$(MSBuildThisFileDirectory)..\..\runtimes\osx\native\liblibrecastwrapper.x64.dylib">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>liblibrecastwrapper.x64.dylib</Link>
+      <Visible>false</Visible>
+    </Content> -->
+  </ItemGroup>
+</Project>
