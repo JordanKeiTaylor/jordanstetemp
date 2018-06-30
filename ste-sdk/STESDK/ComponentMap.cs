@@ -40,7 +40,7 @@ namespace Improbable
         public Dictionary<EntityId, IComponentData<T>>.KeyCollection Keys => _components.Keys;
         public Dictionary<EntityId, IComponentData<T>>.ValueCollection Values => _components.Values;
         
-        private bool _hasUpdated = true;
+        private bool _hasUpdated;
 
         /// <summary>
         /// Initializes a new instance of <see cref="ComponentMap{T}"/>.
@@ -155,7 +155,7 @@ namespace Improbable
             return GetEnumerator();
         }
 
-        private void SetAuthority(AuthorityChangeOp authorityChange)
+        protected void SetAuthority(AuthorityChangeOp authorityChange)
         {
             switch (authorityChange.Authority)
             {
@@ -174,7 +174,7 @@ namespace Improbable
             }
         }
 
-        private void UpdateComponent(ComponentUpdateOp<T> update)
+        protected void UpdateComponent(ComponentUpdateOp<T> update)
         {
             if (!HasAuthority(update.EntityId) && _components.ContainsKey(update.EntityId))
             {
@@ -183,17 +183,19 @@ namespace Improbable
             }
         }
 
-        private void AddComponent(AddComponentOp<T> add)
+        protected void AddComponent(AddComponentOp<T> add)
         {
             _components[add.EntityId] = add.Data;
             _hasUpdated = true;
         }
 
-        private void RemoveEntity(RemoveEntityOp removeEntityOp)
+        protected void RemoveEntity(RemoveEntityOp removeEntityOp)
         {
             if (_components.ContainsKey(removeEntityOp.EntityId))
             {
                 _components.Remove(removeEntityOp.EntityId);
+                _authority.Remove(removeEntityOp.EntityId);
+                _authorityLossImminent.Remove(removeEntityOp.EntityId);
                 _hasUpdated = true;
             }
         }
