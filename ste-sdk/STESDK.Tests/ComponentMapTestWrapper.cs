@@ -14,22 +14,22 @@ namespace Tests
                 ComponentMapEvent.RemoveEntity | 
                 ComponentMapEvent.UpdateComponent) { }
         
-        public void SetAuthority(AuthorityChangeOp authorityChange)
+        public new void SetAuthority(AuthorityChangeOp authorityChange)
         {
             base.SetAuthority(authorityChange);
         }
 
-        public void UpdateComponent(ComponentUpdateOp<T> update)
+        public new void UpdateComponent(ComponentUpdateOp<T> update)
         {
             base.UpdateComponent(update);
         }
 
-        public void AddComponent(AddComponentOp<T> add)
+        public new void AddComponent(AddComponentOp<T> add)
         {
             base.AddComponent(add);
         }
 
-        public void RemoveEntity(RemoveEntityOp removeEntityOp)
+        public new void RemoveEntity(RemoveEntityOp removeEntityOp)
         {
             base.RemoveEntity(removeEntityOp);
         }
