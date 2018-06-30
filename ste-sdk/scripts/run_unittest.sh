@@ -19,7 +19,7 @@ fi
 # Build so that we can run against test dlls
 if [ "$1" != "nobuild" ]; then
     echo ">> Building Test code"
-    msbuild "$DIR/../Tests/Tests.csproj" /p:Configuration=$RELEASE /p:Platform=x64 /verbosity:quiet
+    msbuild "$DIR/../STESDK.Tests/STESDK.Tests.csproj" /p:Configuration=$RELEASE /p:Platform=x64 /verbosity:quiet
 fi
 
 echo $RELEASE
