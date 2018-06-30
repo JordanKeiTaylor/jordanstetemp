@@ -1,4 +1,5 @@
-﻿using Improbable;
+﻿using System;
+using Improbable;
 using Improbable.Context;
 using Improbable.Worker;
 using Moq;
@@ -8,12 +9,26 @@ namespace Tests
 {
     public class ComponentMapTest
     {
-        private ComponentMapTestWrapper<Position> _componentMap;
+        private ComponentMap<Position> _componentMap;
+        private Action<AddComponentOp<Position>> _addComponentCallback;
+        private Action<AuthorityChangeOp> _setAuthorityCallback;
+        private Action<ComponentUpdateOp<Position>> _updateComponentCallback;
+        private Action<RemoveEntityOp> _removeEntityCallback;
 
         [SetUp]
         public void Setup()
         {
-            _componentMap = new ComponentMapTestWrapper<Position>(new Mock<IDispatcher>().Object);
+            var mockDispatcher = new Mock<IDispatcher>();
+            mockDispatcher.Setup(_ => _.OnAddComponent(It.IsAny<Action<AddComponentOp<Position>>>()))
+                .Callback<Action<AddComponentOp<Position>>>(callback => _addComponentCallback = callback);
+            mockDispatcher.Setup(_ => _.OnAuthorityChange<Position>(It.IsAny<Action<AuthorityChangeOp>>()))
+                .Callback<Action<AuthorityChangeOp>>(callback => _setAuthorityCallback = callback);
+            mockDispatcher.Setup(_ => _.OnComponentUpdate(It.IsAny<Action<ComponentUpdateOp<Position>>>()))
+                .Callback<Action<ComponentUpdateOp<Position>>>(callback => _updateComponentCallback = callback);
+            mockDispatcher.Setup(_ => _.OnRemoveEntity(It.IsAny<Action<RemoveEntityOp>>()))
+                .Callback<Action<RemoveEntityOp>>(callback => _removeEntityCallback = callback);
+            
+            _componentMap = new ComponentMap<Position>(mockDispatcher.Object);
         }
 
         [Test]
@@ -278,8 +293,8 @@ namespace Tests
                 EntityId = entityId, 
                 Data = data
             };
-            
-            _componentMap.AddComponent(addComponentOp);
+
+            _addComponentCallback(addComponentOp);
         }
 
         private void SetAuthority(EntityId entityId, Authority authority)
@@ -289,8 +304,8 @@ namespace Tests
                 EntityId = entityId,
                 Authority = authority
             };
-            
-            _componentMap.SetAuthority(authorityChangeOp);
+
+            _setAuthorityCallback(authorityChangeOp);
         }
 
         private void UpdateComponent(EntityId entityId, Position.Update update)
@@ -301,14 +316,14 @@ namespace Tests
                 Update = update
             };
 
-            _componentMap.UpdateComponent(componentUpdateOps);
+            _updateComponentCallback(componentUpdateOps);
         }
 
         private void RemoveEntity(EntityId entityId)
         {
             var removeEntityOp = new RemoveEntityOp { EntityId = entityId };
 
-            _componentMap.RemoveEntity(removeEntityOp);
+            _removeEntityCallback(removeEntityOp);
         }
     }
 }
