@@ -25,7 +25,7 @@ fi
 echo $RELEASE
 
 NUNIT_CMD="mono ${MONO_ARGS} $DIR/../packages/NUnit.ConsoleRunner.3.7.0/tools/nunit3-console.exe"
-TESTS="$DIR/../build/Tests/bin/**/$RELEASE/*Tests.dll"
+TESTS="$DIR/../build/STESDK.Tests/bin/**/$RELEASE/*Tests.dll"
 
 echo ">> Running Unit Tests found in $TESTS"
 $NUNIT_CMD $TESTS

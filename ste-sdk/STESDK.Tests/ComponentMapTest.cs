@@ -143,7 +143,13 @@ namespace Tests
 
             UpdateComponent(entityId, positionUpdate);
             
-            Assert.AreNotEqual(data.Value.coords, positionUpdate.coords);
+            var expectedCoords = new Coordinates(data.Value.coords.x, data.Value.coords.y, data.Value.coords.z);
+            var actualCoords = new Coordinates(
+                _componentMap.Get(entityId).Get().Value.coords.x,
+                _componentMap.Get(entityId).Get().Value.coords.y,
+                _componentMap.Get(entityId).Get().Value.coords.z);
+            
+            Assert.AreEqual(expectedCoords, actualCoords);
         }
 
         [Test]
@@ -152,13 +158,24 @@ namespace Tests
             var entityId = new EntityId(1);
             var data = new Position.Data(new Coordinates(1, 2, 3));    
             AddComponentOp(entityId, data);
-            SetAuthority(entityId, Authority.Authoritative);
+            
+            // A worker should only receive updates for components it is not authoritative over
+            SetAuthority(entityId, Authority.NotAuthoritative);
             
             var positionUpdate = new Position.Update { coords = new Coordinates(4, 5, 6) };
 
             UpdateComponent(entityId, positionUpdate);
             
-            Assert.AreEqual(data.Value.coords, positionUpdate.coords);
+            var expectedCoords = new Coordinates(
+                positionUpdate.coords.Value.x,
+                positionUpdate.coords.Value.y,
+                positionUpdate.coords.Value.z);
+            var actualCoords = new Coordinates(
+                _componentMap.Get(entityId).Get().Value.coords.x,
+                _componentMap.Get(entityId).Get().Value.coords.y,
+                _componentMap.Get(entityId).Get().Value.coords.z);
+            
+            Assert.AreEqual(expectedCoords, actualCoords);
         }
 
         [Test]
@@ -241,7 +258,9 @@ namespace Tests
             var entityId = new EntityId(1);
             var data = new Position.Data(new Coordinates(1, 2, 3));    
             AddComponentOp(entityId, data);
-            SetAuthority(entityId, Authority.Authoritative);
+            
+            // A worker should only receive updates for components it is not authoritative over
+            SetAuthority(entityId, Authority.NotAuthoritative);
             
             var positionUpdate = new Position.Update { coords = new Coordinates(4, 5, 6) };
             
