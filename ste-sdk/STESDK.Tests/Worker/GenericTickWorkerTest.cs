@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using Improbable;
@@ -31,7 +31,7 @@ namespace Tests.Worker
             {
                 base.Run();
             }
-            
+
             protected override Dictionary<string, ITickBehaviour> GetBehaviours()
             {
                 return new Dictionary<string, ITickBehaviour>
