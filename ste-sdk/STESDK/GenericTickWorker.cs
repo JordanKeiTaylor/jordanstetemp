@@ -61,7 +61,7 @@ namespace Improbable
                 frameTimer.Restart();
 
                 // process messages
-                GetContext().FetchAndProcessOps();
+                FetchAndProcessOps(0);
 
                 // process behaviours
                 foreach (var behaviour in behaviours)
@@ -106,6 +106,15 @@ namespace Improbable
             }
 
             return 1;
+        }
+
+        protected void FetchAndProcessOps(double waitTime)
+        {
+            GetContext().GetDispatcher().Process(GetContext().GetConnection().GetOpList((uint)waitTime));
+            while (GetContext().IsDispatcherInCritical)
+            {
+                GetContext().GetDispatcher().Process(GetContext().GetConnection().GetOpList(0));
+            }
         }
 
         protected int GetTickTimeMs()

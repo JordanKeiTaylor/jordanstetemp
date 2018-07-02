@@ -116,20 +116,6 @@ namespace Improbable.Context
         }
         
         /// <summary>
-        /// Fetch and Process all operations currently on the Dispatcher. Will continue to run while the Dispatcher is
-        /// in a critical section.
-        /// </summary>
-        /// <param name="waitTime">Optional, wait time to start processing</param>
-        public void FetchAndProcessOps(double waitTime = 0)
-        {
-            GetDispatcher().Process(GetConnection().GetOpList((uint)waitTime));
-            while (IsDispatcherInCritical)
-            {
-                GetDispatcher().Process(GetConnection().GetOpList(0));
-            }
-        }
-        
-        /// <summary>
         /// Disposes of connection and dispatcher.
         /// </summary>
         public void Dispose()
