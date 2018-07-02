@@ -38,6 +38,12 @@ namespace Improbable
             _tickTimeRollingMetric = new TickTimeRollingMetric(30);
         }
 
+        /// <inheritdoc />
+        /// <summary>
+        /// Test Constructor
+        /// </summary>
+        protected GenericTickWorker() { }
+
         /// <summary>
         /// Implement this method to return all behaviours the worker will execute. 
         /// </summary>
