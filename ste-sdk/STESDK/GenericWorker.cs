@@ -34,9 +34,9 @@ namespace Improbable
         /// <summary>
         /// Test Constructor
         /// </summary>
-        protected GenericWorker()
+        protected GenericWorker(IConnection connection, IDispatcher dispatcher)
         {
-            // Test Constructor
+            WorkerContext.GetInstance().Init(connection, dispatcher);
         }
         
         protected string GetWorkerId()
