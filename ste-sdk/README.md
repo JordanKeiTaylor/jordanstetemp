@@ -1,9 +1,22 @@
 # STESDK
 
-## Build
+## Pre-Build
+To build the STESDK, please ensure that the `recast-wrapper` is built first:
 ```
-./recast-wrapper/gradlew build -p recast-wrapper
-msbuild /p:Configuration=Release
+cd ../recast-wrapper/
+./gradlew build
+```
+
+## Build
+To build the STESDK:
+```
+./gradlew build
+```
+
+## Test
+To test the STESDK:
+```
+./gradlew nunit
 ```
 
 ## NuGet Configuration

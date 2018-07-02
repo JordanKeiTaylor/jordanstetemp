@@ -90,6 +90,19 @@ namespace Improbable.Context
         public bool IsConnected => _wrappedConnection.IsConnected;
         
         /// <summary>
+        /// Fetch and Process this worker's OpList from SpatialOS
+        /// </summary>
+        /// <param name="waitTimeMs">Wait time in milliseconds to retrieve the OpList</param>
+        public void FetchAndProcessOps(double waitTimeMs)
+        {
+            GetDispatcher().Process(GetConnection().GetOpList((uint) waitTimeMs));
+            while (IsDispatcherInCritical)
+            {
+                GetDispatcher().Process(GetConnection().GetOpList(0));
+            }
+        }
+        
+        /// <summary>
         /// Returns an IConnection wrapper of the instantiated Worker SDK Connection.
         /// </summary>
         /// <returns>IConnection</returns>

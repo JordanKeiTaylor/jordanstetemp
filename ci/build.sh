@@ -23,7 +23,8 @@ cd ..
 tc_progress "building ste-sdk"
 cd ste-sdk
 ./gradlew printVersion
-msbuild
+./gradlew build
+./gradlew nunit
 ./gradlew nugetPack
 cd ..
 

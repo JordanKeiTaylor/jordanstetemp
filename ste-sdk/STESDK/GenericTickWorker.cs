@@ -38,6 +38,16 @@ namespace Improbable
             _tickTimeRollingMetric = new TickTimeRollingMetric(30);
         }
 
+        /// <inheritdoc />
+        /// <summary>
+        /// Test Constructor
+        /// </summary>
+        protected GenericTickWorker(int tickTimeMs)
+        {
+            _tickTimeMs = tickTimeMs;
+            _tickTimeRollingMetric = new TickTimeRollingMetric(30);
+        }
+
         /// <summary>
         /// Implement this method to return all behaviours the worker will execute. 
         /// </summary>
@@ -55,7 +65,7 @@ namespace Improbable
                 frameTimer.Restart();
 
                 // process messages
-                FetchAndProcessOps(0);
+                GetContext().FetchAndProcessOps(0);
 
                 // process behaviours
                 foreach (var behaviour in behaviours)
@@ -100,15 +110,6 @@ namespace Improbable
             }
 
             return 1;
-        }
-
-        protected void FetchAndProcessOps(double waitTime)
-        {
-            GetContext().GetDispatcher().Process(GetContext().GetConnection().GetOpList((uint)waitTime));
-            while (GetContext().IsDispatcherInCritical)
-            {
-                GetContext().GetDispatcher().Process(GetContext().GetConnection().GetOpList(0));
-            }
         }
 
         protected int GetTickTimeMs()
