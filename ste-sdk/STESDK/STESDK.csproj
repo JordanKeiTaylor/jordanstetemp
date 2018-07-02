@@ -78,7 +78,39 @@
       <Name>Improbable.StandardLibraryCsharp</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Target Name="BeforeBuild">
     <Exec Command="nuget restore -PackagesDirectory ../packages" />
   </Target>
+  <Import Project="..\packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets" Condition="Exists('..\packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets')" />
+
+  <!-- Import the AssemblyInfo task -->
+<Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Community.Tasks.Targets"/>
+
+<!-- Overriding the Microsoft.CSharp.targets target dependency chain -->
+<!-- Call our custom AssemblyVersion target before build, even from VS -->
+<PropertyGroup>
+    <BuildDependsOn>
+        AssemblyVersion;
+        $(BuildDependsOn)
+    </BuildDependsOn>
+</PropertyGroup>
+
+<ItemGroup>
+    <AssemblyVersionFiles Include="$(MSBuildProjectDirectory)\AssemblyInfo.cs"/>
+</ItemGroup>
+
+<Target Name="AssemblyVersion" Outputs="UpdatedAssemblyVersionFiles">
+    <AssemblyInfo
+        CodeLanguage="CS"
+        OutputFile="AssemblyInfo.cs"
+        AssemblyCompany="Improbable Worlds"
+        AssemblyCopyright="Copyright Improbable Worlds, All rights reserved."
+        AssemblyVersion="$(Version)"
+        AssemblyFileVersion="$(Version)">
+        <Output TaskParameter="OutputFile" ItemName="UpdatedAssemblyVersionFiles"/>
+    </AssemblyInfo>
+</Target>
 </Project>
