@@ -155,7 +155,7 @@ namespace Improbable
             return GetEnumerator();
         }
 
-        protected void SetAuthority(AuthorityChangeOp authorityChange)
+        private void SetAuthority(AuthorityChangeOp authorityChange)
         {
             switch (authorityChange.Authority)
             {
@@ -174,7 +174,7 @@ namespace Improbable
             }
         }
 
-        protected void UpdateComponent(ComponentUpdateOp<T> update)
+        private void UpdateComponent(ComponentUpdateOp<T> update)
         {
             if (!HasAuthority(update.EntityId) && _components.ContainsKey(update.EntityId))
             {
@@ -183,13 +183,13 @@ namespace Improbable
             }
         }
 
-        protected void AddComponent(AddComponentOp<T> add)
+        private void AddComponent(AddComponentOp<T> add)
         {
             _components[add.EntityId] = add.Data;
             _hasUpdated = true;
         }
 
-        protected void RemoveEntity(RemoveEntityOp removeEntityOp)
+        private void RemoveEntity(RemoveEntityOp removeEntityOp)
         {
             if (_components.ContainsKey(removeEntityOp.EntityId))
             {

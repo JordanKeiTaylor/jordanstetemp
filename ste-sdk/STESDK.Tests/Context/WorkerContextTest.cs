@@ -17,8 +17,6 @@ namespace Tests.Context
             }
             
             Assert.AreEqual(Status.Uninitialized, _context.GetStatus());
-            
-            
         }
 
         [Test]
