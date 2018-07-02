@@ -21,6 +21,7 @@ namespace Tests.Worker
                 _tickCount++;
             }
         }
+        
         private class GenericTickWorkerImpl : GenericTickWorker
         {
             public GenericTickWorkerImpl(int tickTimeMs)
@@ -30,6 +31,7 @@ namespace Tests.Worker
             {
                 base.Run();
             }
+
             protected override Dictionary<string, ITickBehaviour> GetBehaviours()
             {
                 return new Dictionary<string, ITickBehaviour>
