@@ -14,6 +14,14 @@ msbuild {
     executable = "msbuild"
 }
 
+nunit {
+    testAssemblies = [
+        file("${buildDir}/STESDK.Tests/STESDK.Tests.dll"), 
+        file("${buildDir}/STESDK.Internal.Tests/STESDK.Internal.Tests.dll")
+    ]
+    nunitVersion = '3.8.0'
+}
+
 nuget {
     version = '4.4.1'
 }
