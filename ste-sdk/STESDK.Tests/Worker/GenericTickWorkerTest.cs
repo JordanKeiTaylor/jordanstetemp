@@ -34,7 +34,7 @@ namespace Tests.Worker
         {
             _tickCount = 0;
             var mockConnection = new Mock<IConnection>();
-            mockConnection.
+            mockConnection.Setup(_ => _.IsConnected).Returns(true);
             var mockDispatcher = new Mock<IDispatcher>();
             WorkerContext.GetInstance().Init(mockConnection.Object, mockDispatcher.Object);
         }
