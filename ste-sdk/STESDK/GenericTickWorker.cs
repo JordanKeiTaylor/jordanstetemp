@@ -42,7 +42,11 @@ namespace Improbable
         /// <summary>
         /// Test Constructor
         /// </summary>
-        protected GenericTickWorker() { }
+        protected GenericTickWorker(int tickTimeMs)
+        {
+            _tickTimeMs = tickTimeMs;
+            _tickTimeRollingMetric = new TickTimeRollingMetric(30);
+        }
 
         /// <summary>
         /// Implement this method to return all behaviours the worker will execute. 
