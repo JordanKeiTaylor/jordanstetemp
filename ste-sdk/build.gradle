@@ -14,13 +14,18 @@ def configureVersionNumber() {
     def versionRegex = /(?<major>\d+)\.(?<minor>\d+)\.(?<revision>\d+)(?:\-(?<tag>.*))?$/
     def versionMatch = gitVersion =~ versionRegex
     def buildNumber = System.getenv("TEAMCITY_VERSION") ?: "0"
-    def (major, minor, revision, tag) = ["0", "0", "0", ""]
+    def (major, minor, revision, tag) = ["0", "0", "0", null]
 
     if (versionMatch.matches()) {
-            (major, minor, revision, tag) = ['major', 'minor', 'revision', 'tag'].collect { versionMatch.group(it) }
+        (major, minor, revision, tag) = ['major', 'minor', 'revision', 'tag'].collect { versionMatch.group(it) }
     }
 
-    project.version = "$major.$minor.$revision-$tag"
+    if (tag) {
+        project.version = "$major.$minor.$revision-$tag"
+    } else {
+        project.version = "$major.$minor.$revision"
+    }
+
     def assemblyVersion = "$major.$minor.$revision.$buildNumber"
 
     println("Version: $version")
