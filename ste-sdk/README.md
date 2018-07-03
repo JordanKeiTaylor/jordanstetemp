@@ -1,10 +1,31 @@
 # STESDK
 
+## Pre-Build
+To build the STESDK, please ensure that the `recast-wrapper` is built first:
+```
+cd ../recast-wrapper/
+./gradlew build
+```
+
 ## Build
+To build the STESDK:
+```
+./gradlew build
+```
+
+## Test
+To test the STESDK:
+
+- First `nuget restore` if you haven't already to get the build targets used in the `.csproj` file.
+
+- Build the `recast-wrapper`
 ```
 ./recast-wrapper/gradlew build -p recast-wrapper
-nuget restore # required to grab the MSBuildTasks used by the build script
-msbuild /p:Configuration=Release
+```
+
+- Run the tests:
+```
+./gradlew nunit
 ```
 
 ## NuGet Configuration

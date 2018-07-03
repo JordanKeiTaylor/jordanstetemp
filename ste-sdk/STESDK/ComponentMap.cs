@@ -40,7 +40,7 @@ namespace Improbable
         public Dictionary<EntityId, IComponentData<T>>.KeyCollection Keys => _components.Keys;
         public Dictionary<EntityId, IComponentData<T>>.ValueCollection Values => _components.Values;
         
-        private bool _hasUpdated = true;
+        private bool _hasUpdated;
 
         /// <summary>
         /// Initializes a new instance of <see cref="ComponentMap{T}"/>.
@@ -194,6 +194,8 @@ namespace Improbable
             if (_components.ContainsKey(removeEntityOp.EntityId))
             {
                 _components.Remove(removeEntityOp.EntityId);
+                _authority.Remove(removeEntityOp.EntityId);
+                _authorityLossImminent.Remove(removeEntityOp.EntityId);
                 _hasUpdated = true;
             }
         }
