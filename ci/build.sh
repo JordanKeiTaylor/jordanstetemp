@@ -1,6 +1,9 @@
 #!/bin/sh
 set -eux
 
+VERSION=`git describe`
+echo "Version: $VERSION"
+
 tc_progress() {
     echo "##teamcity[progressMessage '$1']"
 }
