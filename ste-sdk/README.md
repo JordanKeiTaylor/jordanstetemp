@@ -3,6 +3,7 @@
 ## Build
 ```
 ./recast-wrapper/gradlew build -p recast-wrapper
+nuget restore # required to grab the MSBuildTasks used by the build script
 msbuild /p:Configuration=Release
 ```
 
