@@ -65,7 +65,7 @@ namespace Improbable.Navigation
             return Task.Factory.StartNew(() => FindNearestPoly(position, halfExtents));
         }
 
-        public PathNode FindNearestPoly(Coordinates position, Coordinates halfExtents)
+        private PathNode FindNearestPoly(Coordinates position, Coordinates halfExtents)
         {
             var result = _ctx.FindNearestPoly(_navMeshQuery, new[] {(float) position.x, (float) position.y, (float) position.z},
                 new[] {(float) halfExtents.x, (float) halfExtents.y, (float) halfExtents.z});
