@@ -12,5 +12,13 @@ namespace Improbable.Navigation.Api
         /// <param name="stop">Destination node</param>
         /// <returns>PathResult</returns>
         Task<PathResult> GetMeshPath(PathNode start, PathNode stop);
+
+        /// <summary>
+        /// Executes a Task that asynchronously samples a <<see cref="PathNode"/> from the navigation mesh.
+        /// </summary>
+        /// <returns></returns>
+        Task<PathNode> GetRandomPoint();
+
+        Task<PathNode> GetNearestPoly(Coordinates position, Coordinates halfExtents);
     }
 }

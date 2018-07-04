@@ -55,6 +55,51 @@ namespace Improbable.Navigation
             return Task.Factory.StartNew(() => CalculatePath(start, stop));
         }
 
+        public Task<PathNode> GetRandomPoint()
+        {
+            return Task.Factory.StartNew(FindRandomPoint);
+        }
+
+        public Task<PathNode> GetNearestPoly(Coordinates position, Coordinates halfExtents)
+        {
+            return Task.Factory.StartNew(() => FindNearestPoly(position, halfExtents));
+        }
+
+        public PathNode FindNearestPoly(Coordinates position, Coordinates halfExtents)
+        {
+            var result = _ctx.FindNearestPoly(_navMeshQuery, new[] {(float) position.x, (float) position.y, (float) position.z},
+                new[] {(float) halfExtents.x, (float) halfExtents.y, (float) halfExtents.z});
+
+            if (HasSucceed(result.status))
+            {
+                return new PathNode
+                {
+                    Coords = new Coordinates(result.point[0], result.point[1], result.point[2]),
+                    Id = (long) result.polyRef,
+                    Node = result.polyRef
+                };
+            }
+
+            return null;
+        }
+
+        private PathNode FindRandomPoint()
+        {
+            var randomPoint = _ctx.FindRandomPoint(_navMeshQuery);
+
+            if (!HasSucceed(randomPoint.status))
+            {
+                throw new NavigationException("Failure while sampling random point from navigation mesh");
+            }
+
+            return new PathNode
+            {
+                Id = (long) randomPoint.polyRef,
+                Coords = new Coordinates(randomPoint.point[0], randomPoint.point[1], randomPoint.point[2]),
+                Node = randomPoint.polyRef
+            };
+        }
+        
         private PathResult CalculatePath(PathNode start, PathNode stop)
         {
             var result = new PathResult();
