@@ -19,6 +19,13 @@ namespace Improbable.Navigation.Api
         /// <returns></returns>
         Task<PathNode> GetRandomPoint();
 
+        /// <summary>
+        /// Execute a Task that asynchronously finds the nearest polygon to a given position within the supplied
+        /// half extents.
+        /// </summary>
+        /// <param name="position">Position to search from</param>
+        /// <param name="halfExtents">Half extents to search</param>
+        /// <returns></returns>
         Task<PathNode> GetNearestPoly(Coordinates position, Coordinates halfExtents);
     }
 }
