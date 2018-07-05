@@ -65,9 +65,9 @@
       <Project>{ff482747-db6a-4977-95de-c0899a17a83b}</Project>
       <Name>STESDK</Name>
     </ProjectReference>
-    <ProjectReference Include="..\worker-sdk\Improbable.StandardLibraryCsharp.csproj">
+    <ProjectReference Include="..\worker-sdk\GeneratedCode.csproj">
       <Project>{2a8f3d05-a4bf-4f4a-83b1-6761ca9ce011}</Project>
-      <Name>Improbable.StandardLibraryCsharp</Name>
+      <Name>GeneratedCode</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
