@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using Improbable;
+﻿using Improbable;
 using Improbable.Navigation;
 using Improbable.Navigation.Api;
 using NUnit.Framework;
