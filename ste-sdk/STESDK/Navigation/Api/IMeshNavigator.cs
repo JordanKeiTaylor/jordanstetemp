@@ -26,6 +26,6 @@ namespace Improbable.Navigation.Api
         /// <param name="position">Position to search from</param>
         /// <param name="halfExtents">Half extents to search</param>
         /// <returns></returns>
-        Task<PathNode> GetNearestPoly(Coordinates position, Coordinates halfExtents);
+        Task<PathNode> GetNearestPoly(Coordinates position, Vector3d halfExtents);
     }
 }
