@@ -4,7 +4,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "STESDK", "STESDK\STESDK.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "STESDK.Internal", "STESDK.Internal\STESDK.Internal.csproj", "{61C522A2-0CF7-4BE5-87F3-203367B2ABB5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Improbable.StandardLibraryCsharp", "worker-sdk\Improbable.StandardLibraryCsharp.csproj", "{2A8F3D05-A4BF-4F4A-83B1-6761CA9CE011}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneratedCode", "worker-sdk\GeneratedCode.csproj", "{2A8F3D05-A4BF-4F4A-83B1-6761CA9CE011}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "STESDK.Tests", "STESDK.Tests\STESDK.Tests.csproj", "{F4E51F39-BF6B-43B3-A6D2-1E1E67259D39}"
 EndProject

@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using Improbable;
+﻿using Improbable;
 using Improbable.Navigation;
 using Improbable.Navigation.Api;
 using NUnit.Framework;
@@ -64,6 +62,39 @@ namespace Tests.Navigation
             
             Assert.AreEqual(0, result.Path.Count);
             Assert.AreEqual(PathStatus.Error, result.Status);
+        }
+        
+        [Test]
+        public void GetRandomPoints()
+        {
+            var result = _navigator.GetRandomPoint().Result;
+            Assert.NotNull(result);
+        }
+
+        [Test]
+        public void GetNearestPoly_Success()
+        {
+            var a = new Coordinates(-534.29, 93.625, -744.29);
+            var halfExtents = new Vector3d(10, 10, 10);
+            var result = _navigator.GetNearestPoly(a, halfExtents).Result;
+            
+            Assert.NotNull(result);
+            Assert.AreEqual(-534.289978027344, result.Coords.x, 1e-6);
+            Assert.AreEqual(93.6251068115234, result.Coords.y, 1e-6);
+            Assert.AreEqual(-744.289978027344, result.Coords.z, 1e-6);
+            Assert.AreEqual(281476476174342, result.Id);
+            Assert.AreEqual(281476476174342, result.Node);
+        }
+
+        [Test]
+        public void GetNearestPoly_FailureOutOfBounds()
+        {
+            var a = new Coordinates(1e5, 1e5, 1e5);
+            
+            var halfExtents = new Vector3d(10, 10, 10);
+            var result = _navigator.GetNearestPoly(a, halfExtents).Result;
+            
+            Assert.IsNull(result);
         }
     }
 }

@@ -70,7 +70,9 @@ def nuspecMetadata = [
     owners: 'Improbable',
     projectUrl: 'https://github.com/improbable/ste/ste-sdk',
     requireLicenseAcceptance: false,
-    dependencies: [],
+    dependencies: [
+        { -> dependency(id: "QuickGraph", version: "3.6.61114.0") }
+    ],
 ]
 
 def recastDir = "${projectDir}/../recast-wrapper/recast-csharp"
