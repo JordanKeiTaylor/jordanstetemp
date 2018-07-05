@@ -7,3 +7,4 @@ packages/*
 .vs/
 *.dll
 TestResult.xml
+STESDK/AssemblyInfo.cs

@@ -15,6 +15,15 @@ To build the STESDK:
 
 ## Test
 To test the STESDK:
+
+- First `nuget restore` if you haven't already to get the build targets used in the `.csproj` file.
+
+- Build the `recast-wrapper`
+```
+./recast-wrapper/gradlew build -p recast-wrapper
+```
+
+- Run the tests:
 ```
 ./gradlew nunit
 ```
