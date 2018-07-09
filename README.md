@@ -10,6 +10,9 @@ This repository will host tools and libraries built as part of the STE project.
 ## minisseur
 [minisseur](minisseur/README.md) is a utility for running `regisseur` checks against a prometheus instance for `spatial loco`.
 
+## navmesh-worker-example
+[navmesh-worker-example](navmesh-worker-example/README.md) is an example SpatialOS using the STE SDK to simulate entities walking around a terrain navigation mesh.
+
 ## recast-wrapper
 [recast-wrapper](recast-wrapper/README.md) is a wrapper around the Recast/Detour C++ library to allow basic generation and querying of navigation meshes in Java and C#.
 
