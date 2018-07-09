@@ -6,7 +6,7 @@ make --version
 gcc --version
 
 export MSBUILD_DIR="C:/Program Files (x86)/Microsoft Visual Studio/2017/BuildTools/MSBuild/15.0/Bin/"
-export PATH="$PWD/cmake-3.12.0-rc1-win64-x64/bin;$PATH"
+export PATH="$PWD/cmake-3.12.0-rc1-win64-x64/bin;/mingw64/bin:$PATH"
 
 cd recast-wrapper
 echo "PATH is: $PATH"
@@ -20,4 +20,4 @@ echo
 cmake --version
 echo
 
-./gradlew :recast-csharp:assemble
+./gradlew :recast-csharp:check
