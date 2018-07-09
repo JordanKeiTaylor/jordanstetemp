@@ -26,12 +26,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Improbable.Recast, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\packages\Improbable.STESDK.0.1.0-1-g6270759\lib\net45\Improbable.Recast.dll</HintPath>
-    </Reference>
-    <Reference Include="Improbable.STESDK, Version=0.0.1.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\packages\Improbable.STESDK.0.1.0-1-g6270759\lib\net45\Improbable.STESDK.dll</HintPath>
-    </Reference>
     <Reference Include="QuickGraph, Version=3.6.61114.0, Culture=neutral, PublicKeyToken=f3fb40175eec2af3">
       <HintPath>..\..\packages\QuickGraph.3.6.61119.6\lib\net4\QuickGraph.dll</HintPath>
     </Reference>

@@ -23,12 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Improbable.Recast, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\packages\Improbable.STESDK.0.1.0-1-g6270759\lib\net45\Improbable.Recast.dll</HintPath>
-    </Reference>
-    <Reference Include="Improbable.STESDK, Version=0.0.1.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\packages\Improbable.STESDK.0.1.0-1-g6270759\lib\net45\Improbable.STESDK.dll</HintPath>
-    </Reference>
     <Reference Include="Improbable.WorkerSdkCsharp, Version=12.2.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>../../build/dependencies/worker_sdk/Improbable.WorkerSdkCsharp.dll</HintPath>
     </Reference>
