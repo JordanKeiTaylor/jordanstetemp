@@ -1,0 +1,41 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Reference Include="Improbable.WorkerSdkCsharp.dll">
+      <HintPath>..\..\build\dependencies\worker_sdk\Improbable.WorkerSdkCsharp.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)' == 'ReleaseWindows'">
+    <Content Include="..\..\build\dependencies\worker_sdk\CoreSdkDll.dll">
+      <!-- %(Filename)%(Extension) does not work in xbuild -->
+      <Link>CoreSdkDll.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+    <ItemGroup Condition="'$(Configuration)' == 'ReleaseLinux'">
+    <Content Include="..\..\build\dependencies\worker_sdk\libCoreSdkDll.so">
+      <Link>libCoreSdkDll.so</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)' == 'ReleaseMacOS'">
+    <Content Include="..\..\build\dependencies\worker_sdk\libCoreSdkDll.dylib">
+      <Link>libCoreSdkDll.dylib</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <PropertyGroup Condition="'$(Platform)' == 'x64' And ('$(Configuration)' == 'DebugWindows' Or '$(Configuration)' == 'DebugMacOS' Or '$(Configuration)' == 'DebugLinux')">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Platform)' == 'x64' And ('$(Configuration)' == 'ReleaseWindows' Or '$(Configuration)' == 'ReleaseMacOS' Or '$(Configuration)' == 'ReleaseLinux')">
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+</Project>

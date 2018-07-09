@@ -1,0 +1,26 @@
+{
+    "template": "small",
+    "world": {
+        "chunk_edge_length_meters": 200,
+        "dimensions": {
+            "x_meters": 3000,
+            "z_meters": 3000
+        }
+    },
+    "workers": [
+        {
+            "worker_type": "Example",
+            "flags": [],
+            "permissions": [
+                {
+                    "all": {}
+                }
+            ],
+            "load_balancing": {
+                "auto_hex_grid": {
+                    "num_workers": 2
+                }
+            }
+        }
+    ]
+}

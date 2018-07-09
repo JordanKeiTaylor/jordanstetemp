@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- Note that order of imports of targets is important and should be preserved.
+       In particular, BuildTargets.targets should be imported before Microsoft.Csharp.targets.
+   -->
+  <Import Project="../../common/BuildTargets.targets" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">DebugWindows</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x64</Platform>
+    <ProjectGuid>{680BF5DA-90AC-4ABE-BAF1-3DD37B7818B3}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>Example</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>Example.Startup</StartupObject>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Improbable.Recast, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\packages\Improbable.STESDK.0.1.0-1-g6270759\lib\net45\Improbable.Recast.dll</HintPath>
+    </Reference>
+    <Reference Include="Improbable.STESDK, Version=0.0.1.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\packages\Improbable.STESDK.0.1.0-1-g6270759\lib\net45\Improbable.STESDK.dll</HintPath>
+    </Reference>
+    <Reference Include="QuickGraph, Version=3.6.61114.0, Culture=neutral, PublicKeyToken=f3fb40175eec2af3">
+      <HintPath>..\..\packages\QuickGraph.3.6.61119.6\lib\net4\QuickGraph.dll</HintPath>
+    </Reference>
+    <Reference Include="QuickGraph.Data, Version=3.6.61114.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\packages\QuickGraph.3.6.61119.6\lib\net4\QuickGraph.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="QuickGraph.Graphviz, Version=3.6.61114.0, Culture=neutral, PublicKeyToken=f3fb40175eec2af3">
+      <HintPath>..\..\packages\QuickGraph.3.6.61119.6\lib\net4\QuickGraph.Graphviz.dll</HintPath>
+    </Reference>
+    <Reference Include="QuickGraph.Serialization, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\packages\QuickGraph.3.6.61119.6\lib\net4\QuickGraph.Serialization.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml" />
+    <Reference Include="CommandLine">
+      <HintPath>..\..\packages\CommandLineParser.2.2.1\lib\net45\CommandLine.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="src\**\*.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../common/GeneratedCode/GeneratedCode.csproj">
+      <Project>{2a8f3d05-a4bf-4f4a-83b1-6761ca9ce011}</Project>
+      <Name>GeneratedCode</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ContentWithTargetPath Include="../../Tile_+007_+006_L21.obj.tiled.bin64" Condition=" '$(OS)' == 'Unix' and $([System.IO.File]::Exists('/usr/lib/libc.dylib')) ">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>Tile_+007_+006_L21.obj.tiled.bin64</TargetPath>
+    </ContentWithTargetPath>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="Common.targets" />
+  <Target Name="BeforeBuild">
+    <Copy SourceFiles="run.sh" DestinationFolder="$(OutputPath)" />
+  </Target>
+  <Import Project="..\..\packages\Improbable.STESDK.0.1.0-1-g6270759\build\net45\Improbable.STESDK.targets" Condition="Exists('..\..\packages\Improbable.STESDK.0.1.0-1-g6270759\build\net45\Improbable.STESDK.targets')" />
+</Project>
