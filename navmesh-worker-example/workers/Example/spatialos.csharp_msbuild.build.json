@@ -37,6 +37,7 @@
           "command": "nuget",
           "arguments": [
             "restore",
+            "-configFile", "../../nuget.config",
             "../../"
           ]
         },

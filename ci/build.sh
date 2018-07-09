@@ -26,7 +26,16 @@ nuget restore
 ./gradlew printVersion
 ./gradlew build
 ./gradlew nunit
-./gradlew nugetPack
+mkdir ../publish
+STE_PUBLISH_DIR=$PWD/../publish ./gradlew nugetPush
+export STE_SDK_VERSION=`cat VERSION`
+cd ..
+
+tc_progress "building navmesh-worker-example"
+cd navmesh-worker-example
+nuget restore -configFile nuget.config -PackagesDirectory packages
+./generate_snapshots.sh
+spatial build
 cd ..
 
 tc_progress "checking deploy"

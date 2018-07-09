@@ -13,7 +13,7 @@ namespace Example {
         Environment environment;
         private IMeshNavigator _navigator = new DefaultMeshNavigator("./Tile_+007_+006_L21.obj.tiled.bin64");
 
-        private Coordinates HalfExtents = new Coordinates(10.0, 10.0, 10.0);
+        private Vector3d HalfExtents = new Vector3d(10.0, 10.0, 10.0);
 
         public ExampleBehaviour(Environment env) {
             workerIndex = (uint)(env.Connection.GetWorkerId().GetHashCode() & 0xff);

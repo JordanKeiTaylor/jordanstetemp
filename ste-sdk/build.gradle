@@ -36,6 +36,12 @@ def configureVersionNumber() {
 
 def assemblyVersion = configureVersionNumber()
 
+task versionTxt()  {
+    doLast {
+        new File("$projectDir/VERSION").text = "$assemblyVersion"
+    }
+}
+
 msbuild {
     solutionFile = file('STESDK.sln')
     projectName = 'STESDK'
@@ -144,3 +150,4 @@ nugetPush {
 
 assemble.dependsOn(msbuild)
 nugetPack.dependsOn msbuild
+nugetPack.dependsOn versionTxt

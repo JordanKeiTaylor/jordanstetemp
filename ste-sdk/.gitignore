@@ -8,3 +8,4 @@ packages/*
 *.dll
 TestResult.xml
 STESDK/AssemblyInfo.cs
+VERSION
