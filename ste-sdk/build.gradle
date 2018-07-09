@@ -5,6 +5,37 @@ plugins {
     id 'com.palantir.git-version' version '0.11.0'
 }
 
+def configureVersionNumber() {
+    // Don't use the full version string as the .dirty suffix seems to get added erroneously
+    // See: https://github.com/palantir/gradle-git-version/issues/28
+    // This seems to return null in CI
+    def gitVersion = versionDetails().description() ?: "0.0.0"
+
+    def versionRegex = /(?<major>\d+)\.(?<minor>\d+)\.(?<revision>\d+)(?:\-(?<tag>.*))?$/
+    def versionMatch = gitVersion =~ versionRegex
+    def buildNumber = System.getenv("BUILD_NUMBER") ?: "0"
+    def (major, minor, revision, tag) = ["0", "0", "0", null]
+
+    if (versionMatch.matches()) {
+        (major, minor, revision, tag) = ['major', 'minor', 'revision', 'tag'].collect { versionMatch.group(it) }
+    }
+
+    if (tag) {
+        project.version = "$major.$minor.$revision-$tag"
+    } else {
+        project.version = "$major.$minor.$revision"
+    }
+
+    def assemblyVersion = "$major.$minor.$revision.$buildNumber"
+
+    println("Version: $version")
+    println("Assembly version: $assemblyVersion")
+
+    return assemblyVersion
+}
+
+def assemblyVersion = configureVersionNumber()
+
 msbuild {
     solutionFile = file('STESDK.sln')
     projectName = 'STESDK'
@@ -12,6 +43,7 @@ msbuild {
     intermediateDir = 'build/msbuild/obj'
     msbuildDir = System.getenv('MSBUILD_DIR')
     executable = "msbuild"
+    parameters.Version = assemblyVersion
 }
 
 nunit {
@@ -25,11 +57,6 @@ nunit {
 nuget {
     version = '4.4.1'
 }
-
-// Don't use the full version string as the .dirty suffix seems to get added erroneously
-// See: https://github.com/palantir/gradle-git-version/issues/28
-// This seems to return null in CI
-version = versionDetails().description() ?: "0.0.0"
 
 // See https://stackoverflow.com/questions/40104838/automatic-native-and-managed-dlls-extracting-from-nuget-package/40652794#40652794
 // and https://stackoverflow.com/questions/10198428/where-to-place-dlls-for-unmanaged-libraries

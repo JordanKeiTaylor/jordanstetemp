@@ -22,6 +22,7 @@ cd ..
 
 tc_progress "building ste-sdk"
 cd ste-sdk
+nuget restore
 ./gradlew printVersion
 ./gradlew build
 ./gradlew nunit
