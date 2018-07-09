@@ -34,7 +34,7 @@ cd ..
 tc_progress "building navmesh-worker-example"
 cd navmesh-worker-example
 nuget restore -configFile nuget.config -PackagesDirectory packages
-./generate_snapshots.sh
+bash ./generate_snapshots.sh
 spatial build
 cd ..
 
