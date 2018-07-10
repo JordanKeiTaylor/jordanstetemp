@@ -4,7 +4,7 @@ Contains a barebones snapshot generator and example worker layout.
 ## Publish the STE SDK
 ```
 cd ../ste-sdk
-./gradlew nugetPush
+STE_PUBLISH_DIR=$PWD/../publish ./gradlew nugetPush
 ```
 
 ## Nuget restore
