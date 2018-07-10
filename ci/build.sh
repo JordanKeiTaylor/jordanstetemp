@@ -26,7 +26,6 @@ nuget restore
 ./gradlew printVersion
 ./gradlew build
 ./gradlew nunit
-mkdir ../publish
 STE_PUBLISH_DIR=$PWD/../publish ./gradlew nugetPush
 export STE_SDK_VERSION=`cat VERSION`
 cd ..
