@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeographicLib", "GeographicLib\GeographicLib.csproj", "{ACA5A7AD-E65A-437C-A3DD-4EBE3A4D0665}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeographicLib.Test", "GeographicLib.Test\GeographicLib.Test.csproj", "{404F6118-6656-4B84-B6B5-6188BE987330}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{ACA5A7AD-E65A-437C-A3DD-4EBE3A4D0665}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACA5A7AD-E65A-437C-A3DD-4EBE3A4D0665}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACA5A7AD-E65A-437C-A3DD-4EBE3A4D0665}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACA5A7AD-E65A-437C-A3DD-4EBE3A4D0665}.Release|Any CPU.Build.0 = Release|Any CPU
+		{404F6118-6656-4B84-B6B5-6188BE987330}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{404F6118-6656-4B84-B6B5-6188BE987330}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{404F6118-6656-4B84-B6B5-6188BE987330}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{404F6118-6656-4B84-B6B5-6188BE987330}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
