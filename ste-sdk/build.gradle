@@ -36,6 +36,12 @@ def configureVersionNumber() {
 
 def assemblyVersion = configureVersionNumber()
 
+task versionTxt()  {
+    doLast {
+        new File("$projectDir/VERSION").text = "${project.version}"
+    }
+}
+
 msbuild {
     solutionFile = file('STESDK.sln')
     projectName = 'STESDK'
@@ -137,6 +143,8 @@ nugetSpec { spec ->
 }
 
 def publishDir = System.getenv("STE_PUBLISH_DIR") ?: "${System.getProperty("user.home")}/.nuget/packages"
+publishDir = file(publishDir).absolutePath
+
 nugetPush {
     serverUrl = "file://$publishDir"
     nupkgFile = nugetPack.packageFile
@@ -144,3 +152,4 @@ nugetPush {
 
 assemble.dependsOn(msbuild)
 nugetPack.dependsOn msbuild
+nugetPack.dependsOn versionTxt

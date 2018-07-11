@@ -1,0 +1,58 @@
+{
+  "build": {
+    "tasks_filename": "spatialos.csharp_msbuild.build.json"
+  },
+  "bridge": {
+    "worker_attribute_set": {
+      "attributes": [
+        "Example"
+      ]
+    },
+    "entity_interest": {
+      "range_entity_interest": {
+        "radius": 100
+      }
+    },
+    "component_delivery": {
+      "default": "RELIABLE_ORDERED",
+      "checkout_all_initially": true
+    }
+  },
+  "managed": {
+    "windows": {
+      "artifact_name": "Example@Windows.zip",
+      "command": "sh",
+      "arguments": ["run.sh", "${IMPROBABLE_RECEPTIONIST_HOST}", "${IMPROBABLE_RECEPTIONIST_PORT}", "${IMPROBABLE_WORKER_ID}"]
+    },
+    "linux": {
+      "artifact_name": "Example@Linux.zip",
+      "command": "sh",
+      "arguments": ["run.sh", "${IMPROBABLE_RECEPTIONIST_HOST}", "${IMPROBABLE_RECEPTIONIST_PORT}", "${IMPROBABLE_WORKER_ID}"]
+    },
+    "macos": {
+      "artifact_name": "Example@Mac.zip",
+      "command": "sh",
+      "arguments": ["run.sh", "${IMPROBABLE_RECEPTIONIST_HOST}", "${IMPROBABLE_RECEPTIONIST_PORT}", "${IMPROBABLE_WORKER_ID}"]
+    }
+  },
+  "external": {
+    "local": {
+      "run_type": "EXECUTABLE_ZIP",
+      "windows": {
+        "artifact_name": "Example@Windows.zip",
+        "command": "sh",
+        "arguments": ["run.sh", "localhost", "7777", "ExampleLocalWindows"]
+      },
+      "linux": {
+        "artifact_name": "Example@Linux.zip",
+        "command": "sh",
+        "arguments": ["run.sh", "localhost", "7777", "ExampleLocalLinux"]
+      },
+      "macos": {
+        "artifact_name": "Example@Mac.zip",
+        "command": "sh",
+        "arguments": ["run.sh", "localhost", "7777", "ExampleLocalMac"]
+      }
+    }
+  }
+}

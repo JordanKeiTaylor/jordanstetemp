@@ -1,0 +1,12 @@
+package world;
+
+import "improbable/vector3.schema";
+
+component Path {
+    id = 1002;
+    list<improbable.Vector3d> path = 1;
+    int32 index = 2;
+    uint32 dtstatus = 3;
+    int32 polypathcount = 4;
+    int32 smoothpathlen = 5;
+}

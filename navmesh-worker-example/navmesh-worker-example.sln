@@ -1,0 +1,64 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.16
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example", "workers\Example\Example.csproj", "{680BF5DA-90AC-4ABE-BAF1-3DD37B7818B3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneratedCode", "common\GeneratedCode\GeneratedCode.csproj", "{2A8F3D05-A4BF-4F4A-83B1-6761CA9CE011}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snapshots", "common\Snapshots\Snapshots.csproj", "{44E43D31-9942-4FD3-9FC5-2D1847415390}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		DebugLinux|x64 = DebugLinux|x64
+		DebugMacOS|x64 = DebugMacOS|x64
+		DebugWindows|x64 = DebugWindows|x64
+		ReleaseLinux|x64 = ReleaseLinux|x64
+		ReleaseMacOS|x64 = ReleaseMacOS|x64
+		ReleaseWindows|x64 = ReleaseWindows|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{680BF5DA-90AC-4ABE-BAF1-3DD37B7818B3}.DebugLinux|x64.ActiveCfg = DebugLinux|x64
+		{680BF5DA-90AC-4ABE-BAF1-3DD37B7818B3}.DebugLinux|x64.Build.0 = DebugLinux|x64
+		{680BF5DA-90AC-4ABE-BAF1-3DD37B7818B3}.DebugMacOS|x64.ActiveCfg = DebugMacOS|x64
+		{680BF5DA-90AC-4ABE-BAF1-3DD37B7818B3}.DebugMacOS|x64.Build.0 = DebugMacOS|x64
+		{680BF5DA-90AC-4ABE-BAF1-3DD37B7818B3}.DebugWindows|x64.ActiveCfg = DebugWindows|x64
+		{680BF5DA-90AC-4ABE-BAF1-3DD37B7818B3}.DebugWindows|x64.Build.0 = DebugWindows|x64
+		{680BF5DA-90AC-4ABE-BAF1-3DD37B7818B3}.ReleaseLinux|x64.ActiveCfg = ReleaseLinux|x64
+		{680BF5DA-90AC-4ABE-BAF1-3DD37B7818B3}.ReleaseLinux|x64.Build.0 = ReleaseLinux|x64
+		{680BF5DA-90AC-4ABE-BAF1-3DD37B7818B3}.ReleaseMacOS|x64.ActiveCfg = ReleaseMacOS|x64
+		{680BF5DA-90AC-4ABE-BAF1-3DD37B7818B3}.ReleaseMacOS|x64.Build.0 = ReleaseMacOS|x64
+		{680BF5DA-90AC-4ABE-BAF1-3DD37B7818B3}.ReleaseWindows|x64.ActiveCfg = ReleaseWindows|x64
+		{680BF5DA-90AC-4ABE-BAF1-3DD37B7818B3}.ReleaseWindows|x64.Build.0 = ReleaseWindows|x64
+		{2A8F3D05-A4BF-4F4A-83B1-6761CA9CE011}.DebugLinux|x64.ActiveCfg = DebugLinux|x64
+		{2A8F3D05-A4BF-4F4A-83B1-6761CA9CE011}.DebugLinux|x64.Build.0 = DebugLinux|x64
+		{2A8F3D05-A4BF-4F4A-83B1-6761CA9CE011}.DebugMacOS|x64.ActiveCfg = DebugMacOS|x64
+		{2A8F3D05-A4BF-4F4A-83B1-6761CA9CE011}.DebugMacOS|x64.Build.0 = DebugMacOS|x64
+		{2A8F3D05-A4BF-4F4A-83B1-6761CA9CE011}.DebugWindows|x64.ActiveCfg = DebugWindows|x64
+		{2A8F3D05-A4BF-4F4A-83B1-6761CA9CE011}.DebugWindows|x64.Build.0 = DebugWindows|x64
+		{2A8F3D05-A4BF-4F4A-83B1-6761CA9CE011}.ReleaseLinux|x64.ActiveCfg = ReleaseLinux|x64
+		{2A8F3D05-A4BF-4F4A-83B1-6761CA9CE011}.ReleaseLinux|x64.Build.0 = ReleaseLinux|x64
+		{2A8F3D05-A4BF-4F4A-83B1-6761CA9CE011}.ReleaseMacOS|x64.ActiveCfg = ReleaseMacOS|x64
+		{2A8F3D05-A4BF-4F4A-83B1-6761CA9CE011}.ReleaseMacOS|x64.Build.0 = ReleaseMacOS|x64
+		{2A8F3D05-A4BF-4F4A-83B1-6761CA9CE011}.ReleaseWindows|x64.ActiveCfg = ReleaseWindows|x64
+		{2A8F3D05-A4BF-4F4A-83B1-6761CA9CE011}.ReleaseWindows|x64.Build.0 = ReleaseWindows|x64
+		{44E43D31-9942-4FD3-9FC5-2D1847415390}.DebugLinux|x64.ActiveCfg = DebugLinux|x64
+		{44E43D31-9942-4FD3-9FC5-2D1847415390}.DebugLinux|x64.Build.0 = DebugLinux|x64
+		{44E43D31-9942-4FD3-9FC5-2D1847415390}.DebugMacOS|x64.ActiveCfg = DebugMacOS|x64
+		{44E43D31-9942-4FD3-9FC5-2D1847415390}.DebugMacOS|x64.Build.0 = DebugMacOS|x64
+		{44E43D31-9942-4FD3-9FC5-2D1847415390}.DebugWindows|x64.ActiveCfg = DebugWindows|x64
+		{44E43D31-9942-4FD3-9FC5-2D1847415390}.DebugWindows|x64.Build.0 = DebugWindows|x64
+		{44E43D31-9942-4FD3-9FC5-2D1847415390}.ReleaseLinux|x64.ActiveCfg = ReleaseLinux|x64
+		{44E43D31-9942-4FD3-9FC5-2D1847415390}.ReleaseLinux|x64.Build.0 = ReleaseLinux|x64
+		{44E43D31-9942-4FD3-9FC5-2D1847415390}.ReleaseMacOS|x64.ActiveCfg = ReleaseMacOS|x64
+		{44E43D31-9942-4FD3-9FC5-2D1847415390}.ReleaseMacOS|x64.Build.0 = ReleaseMacOS|x64
+		{44E43D31-9942-4FD3-9FC5-2D1847415390}.ReleaseWindows|x64.ActiveCfg = ReleaseWindows|x64
+		{44E43D31-9942-4FD3-9FC5-2D1847415390}.ReleaseWindows|x64.Build.0 = ReleaseWindows|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BECF8F2A-F60F-427F-BF5E-65584ACD1297}
+	EndGlobalSection
+EndGlobal

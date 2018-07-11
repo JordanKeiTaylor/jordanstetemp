@@ -1,0 +1,54 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Reference Include="Improbable.WorkerSdkCsharp.dll">
+      <HintPath>..\..\build\dependencies\worker_sdk\Improbable.WorkerSdkCsharp.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(Configuration)' == 'DebugWindows' Or '$(Configuration)' == 'ReleaseWindows'">
+    <Content Include="..\..\build\dependencies\worker_sdk\CoreSdkDll.dll">
+      <!-- %(Filename)%(Extension) does not work in xbuild -->
+      <Link>CoreSdkDll.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+    <ItemGroup Condition="'$(Configuration)' == 'DebugLinux' Or '$(Configuration)' == 'ReleaseLinux'">
+    <Content Include="..\..\build\dependencies\worker_sdk\libCoreSdkDll.so">
+      <Link>libCoreSdkDll.so</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)' == 'DebugMacOS' Or '$(Configuration)' == 'ReleaseMacOS'">
+    <Content Include="..\..\build\dependencies\worker_sdk\libCoreSdkDll.dylib">
+      <Link>libCoreSdkDll.dylib</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <PropertyGroup Condition="'$(Platform)' == 'x64' And ('$(Configuration)' == 'DebugWindows' Or '$(Configuration)' == 'DebugMacOS' Or '$(Configuration)' == 'DebugLinux')">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Platform)' == 'x64' And ('$(Configuration)' == 'ReleaseWindows' Or '$(Configuration)' == 'ReleaseMacOS' Or '$(Configuration)' == 'ReleaseLinux')">
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+
+
+  <Target Name="AfterBuild">
+    <PropertyGroup>
+      <OutputArtifact>&quot;../../build/assembly/worker/$(AssemblyName)&quot;</OutputArtifact>
+      <!-- Avoiding shell globbing on *nix -->
+      <InputGlob>&quot;*&quot;</InputGlob>
+      <WorkerPackageCommand>spatial</WorkerPackageCommand>
+    </PropertyGroup>
+    <Exec Command="$(WorkerPackageCommand) file zip --basePath=&quot;$(TargetDir.Replace('\', '/'))&quot; --output=$(OutputArtifact) --worker_platform=$(WorkerPlatform) $(InputGlob)" />
+  </Target>
+</Project>

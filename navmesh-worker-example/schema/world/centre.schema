@@ -1,0 +1,7 @@
+package world;
+
+component Centre {
+    id = 1001;
+    double lat = 1;
+    double lon = 2;
+}
