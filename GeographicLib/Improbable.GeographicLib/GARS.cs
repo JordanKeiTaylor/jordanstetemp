@@ -1,6 +1,6 @@
 ﻿namespace Improbable.GeographicLib
 {
-    public class GARS
+    internal class GARS
     {
         public GARS()
         {

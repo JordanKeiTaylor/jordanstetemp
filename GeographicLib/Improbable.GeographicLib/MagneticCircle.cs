@@ -1,6 +1,6 @@
 ﻿namespace Improbable.GeographicLib
 {
-	public class MagneticCircle
+	internal class MagneticCircle
     {
 		public MagneticCircle()
         {

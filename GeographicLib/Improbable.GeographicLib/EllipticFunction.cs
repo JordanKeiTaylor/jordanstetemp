@@ -1,6 +1,6 @@
 ﻿namespace Improbable.GeographicLib
 {
-    public class EllipticFunction
+    internal class EllipticFunction
     {
         public EllipticFunction()
         {

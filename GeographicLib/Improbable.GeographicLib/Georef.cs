@@ -1,6 +1,6 @@
 ﻿namespace Improbable.GeographicLib
 {
-    public class Georef
+    internal class Georef
     {
 		public Georef()
         {

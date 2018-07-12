@@ -1,6 +1,6 @@
 ﻿namespace Improbable.GeographicLib
 {
-    public class GravityModel
+    internal class GravityModel
     {
 		public GravityModel()
         {

@@ -1,6 +1,6 @@
 ﻿namespace Improbable.GeographicLib
 {
-    public class Geoid
+    internal class Geoid
     {
 		public Geoid()
         {

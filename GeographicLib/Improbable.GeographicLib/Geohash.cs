@@ -1,6 +1,6 @@
 ﻿namespace Improbable.GeographicLib
 {
-    public class Geohash
+    internal class Geohash
     {
 		public Geohash()
         {

@@ -1,6 +1,6 @@
 ﻿namespace Improbable.GeographicLib
 {
-	public class OSGB
+	internal class OSGB
     {
 		public OSGB()
         {

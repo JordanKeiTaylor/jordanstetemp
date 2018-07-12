@@ -1,6 +1,6 @@
 ﻿namespace Improbable.GeographicLib
 {
-	public class Rhumb
+	internal class Rhumb
     {
 		public Rhumb()
         {

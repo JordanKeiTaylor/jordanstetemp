@@ -1,6 +1,6 @@
 ﻿namespace Improbable.GeographicLib
 {
-    public class GeoCoords
+    internal class GeoCoords
     {
         public GeoCoords()
         {

@@ -1,6 +1,6 @@
 ﻿namespace Improbable.GeographicLib
 {
-	public class NormalGravity
+	internal class NormalGravity
     {
 		public NormalGravity()
         {

@@ -1,6 +1,6 @@
 ﻿namespace Improbable.GeographicLib
 {
-	public class PolygonArea
+	internal class PolygonArea
     {
 		public PolygonArea()
         {

@@ -1,6 +1,6 @@
 ﻿namespace Improbable.GeographicLib
 {
-    public class DMS
+    internal class DMS
     {
      
     }

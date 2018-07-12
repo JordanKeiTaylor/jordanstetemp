@@ -1,6 +1,6 @@
 ﻿namespace Improbable.GeographicLib
 {
-	public class UTMUPS
+	internal class UTMUPS
     {
 		public UTMUPS()
         {

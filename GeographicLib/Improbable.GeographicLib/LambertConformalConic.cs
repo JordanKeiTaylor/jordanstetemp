@@ -1,6 +1,6 @@
 ﻿namespace Improbable.GeographicLib
 {
-    public class LamberConformalConic
+    internal class LamberConformalConic
     {
 		public LamberConformalConic()
         {

@@ -1,6 +1,6 @@
 ﻿namespace Improbable.GeographicLib
 {
-    public class GeodesicExactC4
+    internal class GeodesicExactC4
     {
         public GeodesicExactC4()
         {

@@ -1,6 +1,6 @@
 ﻿namespace Improbable.GeographicLib
 {
-	public class MGRS
+	internal class MGRS
     {
 		public MGRS()
         {

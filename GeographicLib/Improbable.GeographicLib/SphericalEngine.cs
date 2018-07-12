@@ -1,6 +1,6 @@
 ﻿namespace Improbable.GeographicLib
 {
-    public class SphericalEngine
+    internal class SphericalEngine
     {
 
     }

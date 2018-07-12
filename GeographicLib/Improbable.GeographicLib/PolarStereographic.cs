@@ -1,6 +1,6 @@
 ﻿namespace Improbable.GeographicLib
 {
-	public class PolarStereographic
+	internal class PolarStereographic
     {
 		public PolarStereographic()
         {

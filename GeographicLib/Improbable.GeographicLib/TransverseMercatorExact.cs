@@ -1,6 +1,6 @@
 ﻿namespace Improbable.GeographicLib
 {
-	public class TransverseMercatorExact
+	internal class TransverseMercatorExact
     {
 		public TransverseMercatorExact()
         {

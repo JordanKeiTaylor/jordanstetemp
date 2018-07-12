@@ -1,6 +1,6 @@
 ﻿namespace Improbable.GeographicLib
 {
-    public class Gnomonic
+    internal class Gnomonic
     {
 		public Gnomonic()
         {
