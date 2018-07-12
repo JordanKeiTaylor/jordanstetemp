@@ -1,0 +1,33 @@
+plugins {
+    id 'com.ullink.msbuild' version '2.18'
+    id 'com.ullink.nunit' version '1.12'
+    id 'com.ullink.nuget' version '2.12'
+}
+
+nuget {
+    version = '4.4.1'
+}
+
+msbuild {
+    solutionFile = file('GeographicLib.sln')
+    configuration = 'Release'
+    projectName = 'Improbable.GeographicLib'
+    inputs.file(project.buildFile)
+    intermediateDir = 'build/msbuild/obj'
+    msbuildDir = System.getenv('MSBUILD_DIR')
+}
+
+nunit {
+    testAssemblies = [file("$buildDir/msbuild/bin/Release/Improbable.GeographicLib.Test.dll")]
+    nunitVersion = '3.8.0'
+}
+
+msbuild.dependsOn(nugetRestore)
+nunit.dependsOn(msbuild)
+
+assemble.dependsOn(msbuild)
+check.dependsOn(nunit)
+
+repositories {
+    mavenCentral()
+}

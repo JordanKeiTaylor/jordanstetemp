@@ -1,8 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeographicLib", "GeographicLib\GeographicLib.csproj", "{ACA5A7AD-E65A-437C-A3DD-4EBE3A4D0665}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Improbable.GeographicLib", "Improbable.GeographicLib\Improbable.GeographicLib.csproj", "{ACA5A7AD-E65A-437C-A3DD-4EBE3A4D0665}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeographicLib.Test", "GeographicLib.Test\GeographicLib.Test.csproj", "{404F6118-6656-4B84-B6B5-6188BE987330}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Improbable.GeographicLib.Test", "Improbable.GeographicLib.Test\Improbable.GeographicLib.Test.csproj", "{404F6118-6656-4B84-B6B5-6188BE987330}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
