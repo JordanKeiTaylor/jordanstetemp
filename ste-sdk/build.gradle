@@ -82,6 +82,7 @@ def nuspecMetadata = [
 ]
 
 def recastDir = "${projectDir}/../recast-wrapper/recast-csharp"
+def geolibDir = "${projectDir}/../geographiclib"
 def nugetFiles = [
     [
         src: "${buildDir}/msbuild/obj/Improbable.STESDK.dll", 
@@ -89,6 +90,10 @@ def nugetFiles = [
     ],
     [
         src: "${recastDir}/build/msbuild/bin/Release/Improbable.Recast.dll", 
+        target: 'lib/net45'
+    ],
+    [
+        src: "${geolibDir}/build/msbuild/bin/Release/Improbable.GeographicLib.dll", 
         target: 'lib/net45'
     ],
     [
