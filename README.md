@@ -7,6 +7,9 @@ This repository will host tools and libraries built as part of the STE project.
 ## deploy
 [deploy](deploy/README.md) contains tooling for deploying a `spatial loco` cluster.
 
+## geographiclib
+[geographiclib](geopraphiclib/README.md) is a C# port of GeographicLib that provides coordinate conversions.
+
 ## minisseur
 [minisseur](minisseur/README.md) is a utility for running `regisseur` checks against a prometheus instance for `spatial loco`.
 

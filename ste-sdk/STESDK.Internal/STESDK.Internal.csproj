@@ -39,8 +39,8 @@
     <AdditionalFiles Include="stylecop.json" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="GeographicLib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\geographiclib\GeographicLib\bin\Debug\GeographicLib.dll</HintPath>
+    <Reference Include="Improbable.GeographicLib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\geographiclib\build\msbuild\bin\Release\Improbable.GeographicLib.dll</HintPath>
     </Reference>
     <Reference Include="Improbable.Recast, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\..\recast-wrapper\recast-csharp\build\msbuild\bin\Release\Improbable.Recast.dll</HintPath>
