@@ -1,9 +1,17 @@
 # STESDK
 
 ## Pre-Build
-To build the STESDK, please ensure that the `recast-wrapper` is built first:
+To build the STESDK, please ensure that the following libraries are built first:
+
+1. Build `recast-wrapper`:
 ```
 cd ../recast-wrapper/
+./gradlew build
+```
+
+2. Build `geographiclib`:
+```
+cd ../geographiclib/
 ./gradlew build
 ```
 

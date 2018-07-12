@@ -20,6 +20,11 @@ cd recast-wrapper
 ./gradlew build
 cd ..
 
+tc_progress "building geographiclib"
+cd geographiclib
+./gradlew build
+cd ..
+
 tc_progress "building ste-sdk"
 cd ste-sdk
 nuget restore
