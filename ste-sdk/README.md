@@ -58,3 +58,41 @@ native_libs/windows/recastwrapper.dll # windows
 ```
 
 These paths will take preference over anything built in the `recast-wrapper` subprtoject.
+
+## Creating a Release (Mac)
+1. Checkout `master` (or a specific commit if you prefer).
+
+2. Tag `master` with  an appropriate version number `x.y.z`.
+
+```
+git tag -a x.y.z
+```
+
+3. `git push origin x.y.z` to upload your tag to github
+
+4. Grab the following files from the artifacts in CI:
+
+- `librecastwrapper.so` from the `Build and Test` job. Place this in `ste-sdk/native_libs/linux`.
+- `recastwrapper.dll` from the `Windows Build` job. Place this in `ste-sdk/native_libs/windows`
+
+5. Build `recast-wrapper`
+
+```
+cd ../recast-wrapper
+./gradlew clean :recast-csharp:build
+cd ../ste-sdk
+```
+
+6. Build the `nuget` package
+
+```
+./gradlew clean nugetPack
+```
+
+7. Check under `build/distributions` for the `.nupkg` file. Check the version number makes sense. Use `unzip -l` to check that it has `recastwrapper` native code for all 3 platforms.
+
+8. Add the `.nupkg` file to the ste-artifacts repo, `commit` and `push`.
+
+9. Go to the `Releases` page on Github for the `ste` repository. You should find the newly created release there. Click `Edit`. Attach the `.nupkg` file to the release here.
+
+10. Let people in `#combined_ste_dev` know that you've made the release ideally with a link to Github.
