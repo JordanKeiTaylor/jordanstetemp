@@ -9,7 +9,7 @@ nuget {
 }
 
 msbuild {
-    solutionFile = file('GeographicLib.sln')
+    solutionFile = file('geographiclib.sln')
     configuration = 'Release'
     projectName = 'Improbable.GeographicLib'
     inputs.file(project.buildFile)
