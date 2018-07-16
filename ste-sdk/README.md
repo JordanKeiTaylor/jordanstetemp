@@ -83,16 +83,23 @@ cd ../recast-wrapper
 cd ../ste-sdk
 ```
 
-6. Build the `nuget` package
+6. Build `geographiclib`:
+```
+cd ../geographiclib/
+./gradlew clean :build
+cd ../ste-sdk
+```
+
+7. Build the `nuget` package
 
 ```
 ./gradlew clean nugetPack
 ```
 
-7. Check under `build/distributions` for the `.nupkg` file. Check the version number makes sense. Use `unzip -l` to check that it has `recastwrapper` native code for all 3 platforms.
+8. Check under `build/distributions` for the `.nupkg` file. Check the version number makes sense. Use `unzip -l` to check that it has `recastwrapper` native code for all 3 platforms.
 
-8. Add the `.nupkg` file to the ste-artifacts repo, `commit` and `push`.
+9. Add the `.nupkg` file to the ste-artifacts repo, `commit` and `push`.
 
-9. Go to the `Releases` page on Github for the `ste` repository. You should find the newly created release there. Click `Edit`. Attach the `.nupkg` file to the release here.
+10. Go to the `Releases` page on Github for the `ste` repository. You should find the newly created release there. Click `Edit`. Attach the `.nupkg` file to the release here.
 
-10. Let people in `#combined_ste_dev` know that you've made the release ideally with a link to Github.
+11. Let people in `#combined_ste_dev` know that you've made the release ideally with a link to Github.
