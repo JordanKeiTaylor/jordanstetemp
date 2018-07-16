@@ -125,6 +125,36 @@ namespace Improbable.Recast.Tests
             }
         }
 
+        [Test]
+        public void handle_partial_result()
+        {
+            using (var ctx = new RecastContext())
+            {
+                var navMesh = LoadNavMeshBinFile(ctx);
+                var navMeshQuery = ctx.CreateNavMeshQuery(navMesh);
+
+                var stopwatch = Stopwatch.StartNew();
+                var pointA = new PolyPointResult
+                {
+                    status = 1073741824,
+                    point = new[] {-373.413f, 107.4798f, -271.1656f},
+                    polyRef = 281474994536448
+                };
+                var pointB = new PolyPointResult
+                {
+                    status = 1073741824,
+                    point = new[] {-370.4435f, 100.7469f, -221.2217f},
+                    polyRef = 281475063742464
+                };
+                var result = FindPathSafer(pointA, pointB, ctx, navMeshQuery, stopwatch);
+                var smoothResult = ctx.FindSmoothPath(navMeshQuery, navMesh, result, pointA, pointB);
+
+                Assert.AreEqual(5, result.pathCount);
+                Assert.True(PartialResult(result.status));
+                Assert.AreEqual(3, smoothResult.pathCount);
+            }
+        }
+
         private float be_fast_work(RecastContext ctx, NavMesh navMesh)
         {
             var navMeshQuery = ctx.CreateNavMeshQuery(navMesh);
@@ -141,7 +171,13 @@ namespace Improbable.Recast.Tests
                 if (Success(result.status))
                 {
                     var smoothResult = ctx.FindSmoothPath(navMeshQuery, navMesh, result, pointA, pointB);
-                    Assert.GreaterOrEqual(smoothResult.pathCount, result.pathCount, $"smoothResult.pathCount [{ smoothResult.pathCount}] < result.pathCount [{result.pathCount}]");
+
+                    if (!PartialResult(result.status))
+                    {
+                        Assert.GreaterOrEqual(smoothResult.pathCount, result.pathCount,
+                            $"smoothResult.pathCount [{smoothResult.pathCount}] < result.pathCount [{result.pathCount}]. PointA = {pointA}, PointB={pointB}");
+                    }
+
                 }
                 NRan++;
             }
