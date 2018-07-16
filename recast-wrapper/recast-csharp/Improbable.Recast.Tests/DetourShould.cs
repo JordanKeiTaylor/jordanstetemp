@@ -177,7 +177,6 @@ namespace Improbable.Recast.Tests
                         Assert.GreaterOrEqual(smoothResult.pathCount, result.pathCount,
                             $"smoothResult.pathCount [{smoothResult.pathCount}] < result.pathCount [{result.pathCount}]. PointA = {pointA}, PointB={pointB}");
                     }
-
                 }
                 NRan++;
             }
