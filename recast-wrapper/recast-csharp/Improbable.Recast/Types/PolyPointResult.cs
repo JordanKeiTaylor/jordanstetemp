@@ -17,7 +17,7 @@ namespace Improbable.Recast.Types
 
         public override string ToString()
         {
-            return $"[PolyPointResult ({status}): ({point[0]}, {point[1]}, {point[2]}). Polyref={polyRef}";
+            return $"[PolyPointResult ({status}): ({point[0]}, {point[1]}, {point[2]}). Polyref={polyRef}]";
         }
     }
 }
