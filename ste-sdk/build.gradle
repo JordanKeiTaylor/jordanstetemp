@@ -46,7 +46,7 @@ msbuild {
     solutionFile = file('STESDK.sln')
     projectName = 'STESDK'
     inputs.file(project.buildFile)
-    intermediateDir = 'build/msbuild/obj'
+    intermediateDir = file("build/msbuild/obj")
     msbuildDir = System.getenv('MSBUILD_DIR')
     executable = "msbuild"
     parameters.Version = assemblyVersion
@@ -85,6 +85,10 @@ def recastDir = "${projectDir}/../recast-wrapper/recast-csharp"
 def nugetFiles = [
     [
         src: "${buildDir}/msbuild/obj/Improbable.STESDK.dll", 
+        target: 'lib/net45'
+    ],
+    [
+        src: "${buildDir}/msbuild/obj/Improbable.STESDK.xml",
         target: 'lib/net45'
     ],
     [

@@ -10,6 +10,7 @@
     <RootNamespace>Improbable</RootNamespace>
     <AssemblyName>Improbable.STESDK</AssemblyName>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <DocumentationFile>$(IntermediateOutputPath)/$(AssemblyName).xml</DocumentationFile>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
