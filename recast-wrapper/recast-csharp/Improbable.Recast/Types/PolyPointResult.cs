@@ -14,5 +14,10 @@ namespace Improbable.Recast.Types
 
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
         public float[] point;
+
+        public override string ToString()
+        {
+            return $"[PolyPointResult ({status}): ({point[0]}, {point[1]}, {point[2]}). Polyref={polyRef}]";
+        }
     }
 }
