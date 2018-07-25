@@ -159,6 +159,7 @@ nugetPush {
     nupkgFile = nugetPack.packageFile
 }
 
+msbuild.dependsOn(nugetRestore)
 assemble.dependsOn(msbuild)
 nugetPack.dependsOn msbuild
 nugetPack.dependsOn versionTxt
