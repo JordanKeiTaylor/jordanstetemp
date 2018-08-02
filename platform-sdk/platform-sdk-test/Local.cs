@@ -7,6 +7,8 @@ namespace platform_sdk_test
 {
     internal static class Local
     {
+        private static readonly int StartChecks = 10;
+        
         private static readonly string PlatformPath = Path.Combine(Utility.ProjectPath(), "platform-sdk");
         
         private static readonly string ProjectPath = Path.Combine(Utility.ProjectPath(), "navmesh-worker-example");
@@ -30,10 +32,7 @@ namespace platform_sdk_test
             };
             Process.Start(startInfo);
 
-            while (!HasStarted())
-            {
-                Thread.Sleep(500);
-            }
+            WaitForStart(StartChecks);
         }
 
         public static void Stop()
@@ -49,7 +48,7 @@ namespace platform_sdk_test
             Process.Start(startInfo)?.WaitForExit();
         }
 
-        private static Boolean HasStarted()
+        private static Boolean HasStarted(out string output)
         {
             var startInfo = new ProcessStartInfo
             {
@@ -62,13 +61,31 @@ namespace platform_sdk_test
             var process = Process.Start(startInfo);
             if (process != null)
             {
-                var output = process.StandardOutput.ReadToEnd();
+                output = process.StandardOutput.ReadToEnd();
                 if (output.Contains("is running"))
                 {
                     return true;
                 }
+                return false;
             }
+            output = "Process to check spatiald status failed to start";
             return false;
+        }
+
+        private static void WaitForStart(int checkAttempts)
+        {
+            var output = "";
+            var checks = 0;
+            while (!HasStarted(out output) && checks < checkAttempts)
+            {
+                Thread.Sleep(500);
+                checks++;
+            }
+
+            if (checks == checkAttempts)
+            {
+                throw new Exception("spatiald process failed to start: " + output);
+            }
         }
     }
 }
