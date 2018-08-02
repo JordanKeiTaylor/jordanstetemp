@@ -119,6 +119,12 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ContentWithTargetPath Include="../lib/spatiald">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>../../../lib/spatiald</TargetPath>
+    </ContentWithTargetPath>
+  </ItemGroup>
+  <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
