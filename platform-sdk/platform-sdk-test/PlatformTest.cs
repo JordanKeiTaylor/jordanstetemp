@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Improbable.SpatialOS.Deployment.V1Alpha1;
@@ -7,27 +8,17 @@ using NUnit.Framework;
 namespace platform_sdk_test
 {
     [TestFixture]
-    public class PlatformTest
+    public class PlatformTest : IDisposable
     {
-//        [SetUp]
-//        public void SetUp()
-//        {
-//            Local.Start();
-//            Platform.Setup();
-//        }
-//
-//        [TearDown]
-//        public void TearDown()
-//        {
-//            Platform.Cleanup();
-//            Local.Stop();
-//        }
+        public PlatformTest()
+        {
+            Local.Start();
+            Platform.Setup();
+        }
         
         [Test]
         public void Should_ListDeployments()
         {
-            Local.Start();
-            
             var listRequest = new ListDeploymentsRequest
             {
                 ProjectName = Platform.ProjectName,
@@ -43,6 +34,12 @@ namespace platform_sdk_test
                 Assert.AreEqual(Platform.ProjectName, deployment.ProjectName);
                 Assert.AreEqual(Platform.DeploymentName, deployment.Name);
             }
+        }
+
+        public void Dispose()
+        {
+            Platform.Cleanup();
+            Local.Stop();
         }
     }
 }
