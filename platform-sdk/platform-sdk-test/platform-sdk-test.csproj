@@ -121,7 +121,7 @@
   <ItemGroup>
     <ContentWithTargetPath Include="../lib/spatiald">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <TargetPath>../../../lib/spatiald</TargetPath>
+      <TargetPath>platform-sdk/lib/spatiald</TargetPath>
     </ContentWithTargetPath>
   </ItemGroup>
   <ItemGroup>

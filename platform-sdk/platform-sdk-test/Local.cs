@@ -17,7 +17,7 @@ namespace platform_sdk_test
         {
             var startInfo = new ProcessStartInfo
             {
-                FileName = Path.Combine(PlatformPath, "build/lib/spatiald"),
+                FileName = Path.Combine(PlatformPath, "lib/spatiald"),
                 Arguments = $"start " +
                             $"--port={Port} " +
                             $"--project_file={Path.Combine(ProjectPath, "spatialos.json")} " +
