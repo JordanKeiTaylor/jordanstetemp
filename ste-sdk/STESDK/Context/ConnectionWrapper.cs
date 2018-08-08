@@ -32,7 +32,7 @@ namespace Improbable.Context
 
         public void SendLogMessage(LogLevel level, string loggerName, string message, Option<EntityId> entityId)
         {
-            _connection.SendLogMessage(level, loggerName, message);
+            _connection.SendLogMessage(level, loggerName, message, entityId);
         }
 
         public void SendComponentInterest(EntityId entityId, System.Collections.Generic.Dictionary<uint, InterestOverride> interestOverrides)
