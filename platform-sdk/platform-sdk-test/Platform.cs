@@ -41,8 +41,8 @@ namespace platform_sdk_test
         public static void Setup()
         {
             var launchConfig = File.ReadAllText(LaunchConfigFilePath);
-            
-            _deployment = LocalDeploymentServiceClient.CreateDeployment(new CreateDeploymentRequest
+
+            var operation = LocalDeploymentServiceClient.CreateDeployment(new CreateDeploymentRequest
             {
                 Deployment = new Deployment
                 {
@@ -51,20 +51,23 @@ namespace platform_sdk_test
                     LaunchConfig = new LaunchConfig
                     {
                         ConfigJson = launchConfig
-                    },
-                    
-                        
+                    }, 
                 }
-            }).PollUntilCompleted().GetResultOrNull();
+            });
+//            operation.PollUntilCompleted();
+            _deployment = operation.GetResultOrNull();
         }
 
         public static void Cleanup()
         {
-            LocalDeploymentServiceClient.StopDeployment(new StopDeploymentRequest
+            if (_deployment != null)
             {
-                Id = _deployment.Id,
-                ProjectName = _deployment.ProjectName
-            });
+                LocalDeploymentServiceClient.StopDeployment(new StopDeploymentRequest
+                {
+                    Id = _deployment.Id,
+                    ProjectName = _deployment.ProjectName
+                });
+            }
         }
     }
 }

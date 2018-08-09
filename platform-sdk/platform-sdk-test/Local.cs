@@ -19,14 +19,17 @@ namespace platform_sdk_test
         {
             var startInfo = new ProcessStartInfo
             {
-                FileName = Path.Combine(PlatformPath, "lib/spatiald"),
-                Arguments = $"start " +
-                            $"--port={Port} " +
-                            $"--project_file={Path.Combine(ProjectPath, "spatialos.json")} " +
-                            $"--dev_components=thor, gcontroller " +
-                            $"--log_level=debug " +
-                            $"--data_directory={Path.Combine(PlatformPath, "lib/data")}",
+//                FileName = Path.Combine(PlatformPath, "lib/spatiald"),
+//                Arguments = $"start " +
+//                            $"--port={Port} " +
+//                            $"--project_file={Path.Combine(ProjectPath, "spatialos.json")} " +
+//                            $"--dev_components=thor, gcontroller " +
+//                            $"--log_level=debug " +
+//                            $"--data_directory={Path.Combine(PlatformPath, "lib/data")}",
+                FileName = Path.Combine("spatial"),
+                Arguments = "service start --port=9090",
                 RedirectStandardOutput = true,
+                WorkingDirectory = ProjectPath,
                 UseShellExecute = false,
                 CreateNoWindow = true,
             };
