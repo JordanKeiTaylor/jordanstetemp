@@ -10,7 +10,7 @@ using NUnit.Framework;
 namespace platform_sdk_test
 {
     [TestFixture]
-    public class PlatformTest : IDisposable
+    public class PlatformTest : IDisposable 
     {
         public PlatformTest()
         {
@@ -173,7 +173,7 @@ namespace platform_sdk_test
         public void Dispose()
         {
             Platform.Cleanup();
-            Local.Stop();
+            // Local.Stop();
         }
     }
 }

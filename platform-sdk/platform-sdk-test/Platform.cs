@@ -18,7 +18,7 @@ namespace platform_sdk_test
 
         private static string LaunchConfigFilePath => Path.Combine(Utility.ProjectPath(), "navmesh-worker-example/default_launch.json");
 
-        public const int Port = 9090;
+        public const int Port = 8080;
         
         public static readonly SnapshotServiceClient LocalSnapshotServiceClient = SnapshotServiceClient.Create(
             new PlatformApiEndpoint
@@ -46,6 +46,7 @@ namespace platform_sdk_test
             {
                 Deployment = new Deployment
                 {
+                    Id = "0",
                     ProjectName = LocalProjectName,
                     Name = DeploymentName,
                     LaunchConfig = new LaunchConfig

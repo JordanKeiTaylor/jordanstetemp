@@ -103,6 +103,9 @@
     <Compile Include="Local.cs" />
     <Compile Include="PlatformTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SkrullClientTests\SkrullPlatformClients.cs" />
+    <Compile Include="SkrullClientTests\TestDeploymentService.cs" />
+    <Compile Include="SkrullClientTests\TestSnapshotService.cs" />
     <Compile Include="Utility.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -117,6 +120,7 @@
     <Content Include="..\lib\Improbable.SpatialOS.Platform.xml">
       <Link>Improbable.SpatialOS.Platform.xml</Link>
     </Content>
+    <Content Include="SkrullClientTests\README.md" />
   </ItemGroup>
   <ItemGroup>
     <ContentWithTargetPath Include="../lib/spatiald">
