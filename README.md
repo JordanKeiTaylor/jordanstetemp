@@ -21,3 +21,6 @@ This repository will host tools and libraries built as part of the STE project.
 
 ## STESDK
 [STESDK](ste-sdk/README.md) is a C# library of Worker SDK extentions, utilities, and STE API's to facilitate the development of STE applications.
+
+## Skrull C# client
+[Skrull C# client](skrull_client/csharp/README.md) is a C# program that can access the snapshot and deployment services of a Skrull deployment.
