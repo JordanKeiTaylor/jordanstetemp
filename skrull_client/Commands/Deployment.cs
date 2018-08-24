@@ -28,6 +28,9 @@ namespace Commands
         [Option('t', Separator = ',', HelpText = "tags to match")]
         public IEnumerable<string> Tags { get; set; }
         
+        [Option('s', HelpText = "snapshot id to use", Required = true)]
+        public string SnapshotId { get; set; }
+        
         public static void ExecuteVerb(DeploymentCreateOptions opts)
         {
             Console.WriteLine("Create deployment");
@@ -44,6 +47,7 @@ namespace Commands
                         ConfigJson = File.ReadAllText(opts.LaunchConfigFilePath)
                     },
                     Tag = { opts.Tags },
+                    StartingSnapshotId = opts.SnapshotId,
                     AssemblyId = opts.AssemblyId
                 }
             };
