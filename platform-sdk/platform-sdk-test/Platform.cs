@@ -7,32 +7,23 @@ using Improbable.SpatialOS.Snapshot.V1Alpha1;
 namespace platform_sdk_test
 {
     internal class Platform
-    { 
-        private static Deployment _deployment;
-
-        private static string LocalProjectName => "navmesh_walker";
-
-        public static string ProjectName => "navmesh_walker";
-
-        public static string DeploymentName => "local_navmesh_walker";
-
-        private static string LaunchConfigFilePath => Path.Combine(Utility.ProjectPath(), "navmesh-worker-example/default_launch.json");
-
+    {
+        public const string Hostname = "localhost";
         public const int Port = 8080;
         
-        public static readonly SnapshotServiceClient LocalSnapshotServiceClient = SnapshotServiceClient.Create(
+        public static readonly SnapshotServiceClient SnapshotService = SnapshotServiceClient.Create(
             new PlatformApiEndpoint
             (
-                "localhost",
+                Hostname,
                 Port,
                 true
             )
         );
 
-        public static readonly DeploymentServiceClient LocalDeploymentServiceClient = DeploymentServiceClient.Create(
+        public static readonly DeploymentServiceClient DeploymentService = DeploymentServiceClient.Create(
             new PlatformApiEndpoint
             (
-                "localhost",
+                Hostname,
                 Port,
                 true
             )
@@ -40,35 +31,36 @@ namespace platform_sdk_test
 
         public static void Setup()
         {
-            var launchConfig = File.ReadAllText(LaunchConfigFilePath);
-
-            var operation = LocalDeploymentServiceClient.CreateDeployment(new CreateDeploymentRequest
-            {
-                Deployment = new Deployment
-                {
-                    Id = "0",
-                    ProjectName = LocalProjectName,
-                    Name = DeploymentName,
-                    LaunchConfig = new LaunchConfig
-                    {
-                        ConfigJson = launchConfig
-                    }, 
-                }
-            });
-//            operation.PollUntilCompleted();
-            _deployment = operation.GetResultOrNull();
+            // TODO: Tag = {"my_live_tag"}
+//            var launchConfig = File.ReadAllText(LaunchConfigFilePath);
+//
+//            var operation = LocalDeploymentServiceClient.CreateDeployment(new CreateDeploymentRequest
+//            {
+//                Deployment = new Deployment
+//                {
+//                    Id = "0",
+//                    ProjectName = LocalProjectName,
+//                    Name = DeploymentName,
+//                    LaunchConfig = new LaunchConfig
+//                    {
+//                        ConfigJson = launchConfig
+//                    }, 
+//                }
+//            });
+////            operation.PollUntilCompleted();
+//            _deployment = operation.GetResultOrNull();
         }
 
         public static void Cleanup()
         {
-            if (_deployment != null)
-            {
-                LocalDeploymentServiceClient.StopDeployment(new StopDeploymentRequest
-                {
-                    Id = _deployment.Id,
-                    ProjectName = _deployment.ProjectName
-                });
-            }
+//            if (_deployment != null)
+//            {
+//                LocalDeploymentServiceClient.StopDeployment(new StopDeploymentRequest
+//                {
+//                    Id = _deployment.Id,
+//                    ProjectName = _deployment.ProjectName
+//                });
+//            }
         }
     }
 }

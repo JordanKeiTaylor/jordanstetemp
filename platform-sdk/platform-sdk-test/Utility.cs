@@ -3,7 +3,7 @@ using System.IO;
 
 namespace platform_sdk_test
 {
-    internal class Utility
+    internal static class Utility
     {
         private static string _projectPath = null;
         
