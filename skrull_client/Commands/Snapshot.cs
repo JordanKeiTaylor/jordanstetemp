@@ -90,10 +90,8 @@ namespace Commands
                 Console.Error.WriteLine("Snapshot not uploaded properly.  The size and/or MD5 checksum does not match." +
                                         "  Please consider snapshot id [" + snapshotToUpload.Id + "] to be corrupt.");
             }
-            else
-            {
-                Console.WriteLine("Snapshot uploaded properly.  id: " + snapshotToUpload.Id);
-            }
+
+            Console.WriteLine("Snapshot uploaded with id: " + snapshotToUpload.Id);
         }
     }
 }
