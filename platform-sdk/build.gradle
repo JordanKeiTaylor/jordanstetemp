@@ -17,13 +17,13 @@ msbuild {
     msbuildDir = System.getenv('MSBUILD_DIR')
 }
 
-// nunit {
-//     testAssemblies = [file("$buildDir/msbuild/bin/Release/platform_sdk_test.dll")]
-//     nunitVersion = '3.8.0'
-// }
+nunit {
+    testAssemblies = [file("$buildDir/msbuild/bin/Release/platform_sdk_test.dll")]
+    nunitVersion = '3.8.0'
+}
 
 msbuild.dependsOn(nugetRestore)
-// nunit.dependsOn(msbuild)
+// nunit.dependsOn(msbuild)?
 
 assemble.dependsOn(msbuild)
 // check.dependsOn(nunit)
