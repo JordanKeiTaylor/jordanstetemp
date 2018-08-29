@@ -12,11 +12,14 @@ namespace Commands
         [Option('p', "port", Default = 8080, HelpText = "Skrull port")]
         public int Port { get; set; }
         
-        [Option('j', "projectname", HelpText = "project name")]
+        [Option('j', "project-name", HelpText = "project name")]
         public string ProjectName { get; set; }
         
-        [Option('d', "deploymentname", HelpText = "deployment name")]
+        [Option('d', "deployment-name", HelpText = "deployment name")]
         public string DeploymentName { get; set; }
+        
+        [Option('v', "verbose", Required = false, HelpText = "verbose messages (only used in some commands)")]
+        public bool Verbose { get; set; }
     }
     
     internal class OptionsParser

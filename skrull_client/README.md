@@ -18,8 +18,9 @@ dotnet build --configuration Release csharp.sln
 
 Execute:
 ```bash
-dotnet ./bin/Release/netcoreapp2.0/Program.dll
+dotnet ./bin/Release/netcoreapp2.0/SkrullClient.dll
 ```
+Note: Do not use `dotnet run` because it will gobble up command-line parameters meant for the actual DLL program.  Additionally, `run` builds the solution by default-- though one can use `--no-build` to disable that.
 
 ## Installing C# Platform SDK
 * Please see the [SpatialOS documentation](https://docs.improbable.io/reference/latest/platform-sdk/csharp/introduction)

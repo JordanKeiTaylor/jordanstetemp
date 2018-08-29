@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -17,7 +18,7 @@ namespace Commands
         }
     }
 
-    [Verb("snapshot_list", HelpText = "list snapshots")]
+    [Verb("snapshot-list", HelpText = "list snapshots")]
     public class SnapshotListOptions : SnapshotOptions
     {
         public static void ExecuteVerb(SnapshotListOptions opts)
@@ -35,16 +36,43 @@ namespace Commands
             Console.WriteLine("Found [{0}] snapshot(s)", snapshots.Count);
             snapshots.ForEach(snapshot =>
             {
-                Console.WriteLine("Snapshot id found: {0} [{1} bytes]", snapshot.Id, snapshot.Size);
+                if (opts.Verbose)
+                {
+                    ListVerboseOutput(snapshot);
+                }
+                else
+                {
+                    ListNonVerboseOutput(snapshot);
+                }
             });
+        }
+
+        private static void ListVerboseOutput(Snapshot snapshot)
+        {
+            Console.WriteLine("Snapshot id found: {0}", snapshot.Id);
+            Console.WriteLine("    Project name: {0}", snapshot.ProjectName);
+            Console.WriteLine("    Deployment name: {0}", snapshot.DeploymentName);
+            Console.WriteLine("    Byte size: {0}", snapshot.Size);
+            Console.WriteLine("    Checksum: {0}", snapshot.Checksum);
+            Console.WriteLine("    Create time: {0}", snapshot.CreateTime);
+            Console.WriteLine("    Download URL: {0}", snapshot.DownloadUrl);
+            Console.WriteLine("    Tags: {0}", snapshot.Tags);
+        }
+        
+        private static void ListNonVerboseOutput(Snapshot snapshot)
+        {
+            Console.WriteLine("Snapshot id found: {0} [{1} bytes] (checksum: {2})", snapshot.Id, snapshot.Size, snapshot.Checksum);
         }
     }
 
-    [Verb("snapshot_upload", HelpText = "upload snapshot")]
+    [Verb("snapshot-upload", HelpText = "upload snapshot")]
     public class SnapshotUploadOptions : SnapshotOptions
     {
-        [Option('s', "snapshotfilepath", HelpText = "snapshot absolute file path", Required = true)]
+        [Option('s', "snapshot-filepath", HelpText = "snapshot absolute filepath", Required = true)]
         public string SnapshotFilePath { get; set;  }
+        
+        [Option('t', "tags", Separator = ',', HelpText = "snapshot tags (comma separated with no leading or trailing spaces)")]
+        public IEnumerable<string> Tags { get; set; }
         
         public static void ExecuteVerb(SnapshotUploadOptions opts)
         {
@@ -53,7 +81,8 @@ namespace Commands
             var snapshotOnDisk = new Snapshot
             {
                 ProjectName = opts.ProjectName,
-                DeploymentName = opts.DeploymentName
+                DeploymentName = opts.DeploymentName,
+                Tags = { opts.Tags }
             };
             using (var md5 = MD5.Create())
             {
