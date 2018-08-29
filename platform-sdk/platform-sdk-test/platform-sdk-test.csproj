@@ -81,6 +81,10 @@
       <HintPath>..\packages\Grpc.Core.1.6.1\lib\net45\Grpc.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Improbable.SpatialOS.Platform, Version=13.2.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\Improbable.SpatialOS.Platform.13.2.0\lib\net45\Improbable.SpatialOS.Platform.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
       <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
@@ -105,11 +109,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Test_SnapshotService.cs" />
     <Compile Include="Utility.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="Improbable.SpatialOS.Platform, Version=999.9.9.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\lib\Improbable.SpatialOS.Platform.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
