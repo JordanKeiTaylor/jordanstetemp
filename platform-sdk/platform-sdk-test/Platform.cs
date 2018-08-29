@@ -8,8 +8,8 @@ namespace platform_sdk_test
 {
     internal class Platform
     {
-        public const string Hostname = "localhost";
-        public const int Port = 8080;
+        private const int Port = 8080;
+        private const string Hostname = "localhost";
         
         public static readonly SnapshotServiceClient SnapshotService = SnapshotServiceClient.Create(
             new PlatformApiEndpoint
@@ -28,39 +28,5 @@ namespace platform_sdk_test
                 true
             )
         );
-
-        public static void Setup()
-        {
-            // TODO: Tag = {"my_live_tag"}
-//            var launchConfig = File.ReadAllText(LaunchConfigFilePath);
-//
-//            var operation = LocalDeploymentServiceClient.CreateDeployment(new CreateDeploymentRequest
-//            {
-//                Deployment = new Deployment
-//                {
-//                    Id = "0",
-//                    ProjectName = LocalProjectName,
-//                    Name = DeploymentName,
-//                    LaunchConfig = new LaunchConfig
-//                    {
-//                        ConfigJson = launchConfig
-//                    }, 
-//                }
-//            });
-////            operation.PollUntilCompleted();
-//            _deployment = operation.GetResultOrNull();
-        }
-
-        public static void Cleanup()
-        {
-//            if (_deployment != null)
-//            {
-//                LocalDeploymentServiceClient.StopDeployment(new StopDeploymentRequest
-//                {
-//                    Id = _deployment.Id,
-//                    ProjectName = _deployment.ProjectName
-//                });
-//            }
-        }
     }
 }

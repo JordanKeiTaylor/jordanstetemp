@@ -1,16 +1,16 @@
 ﻿
+using System.IO;
+
 namespace platform_sdk_test
 {
-    internal class Project
+    internal static class Project
     {
-        public static string Id => "0";
+        public static string Id => "2";
         
-        public static string Name => "navmesh_walker";
+        public static string Name => "solutions";
 
-        public static string DeploymentName => "local_navmesh_walker";
-
-        public static string Path => "some/where";
+        public static string DeploymentName => "ebu_starter_proj";
         
-        public static string LaunchConfigPath => System.IO.Path.Combine(Utility.ProjectPath(), "navmesh-worker-example/default_launch.json");
+        public static string LaunchConfigPath => Path.Combine(Utility.ProjectPath(), "../platform/local-cluster/2nodes.pb.json");
     }
 }

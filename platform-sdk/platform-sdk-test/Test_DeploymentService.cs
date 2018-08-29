@@ -16,7 +16,7 @@ namespace platform_sdk_test
             {
                 Deployment = new Deployment
                 {
-                    Id = "1",
+                    Id = Project.Id,
                     ProjectName = Project.Name,
                     Name = Project.DeploymentName,
                     LaunchConfig = new LaunchConfig
