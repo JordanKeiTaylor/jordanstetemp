@@ -5,6 +5,11 @@ tc_progress() {
     echo "##teamcity[progressMessage '$1']"
 }
 
+tc_progress "building Skrull client"
+cd skrull_client
+dotnet build --configuration Release csharp.sln
+cd ..
+
 tc_progress "building obj-tools"
 cd obj-tools
 ./gradlew check

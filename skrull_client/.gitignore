@@ -1,0 +1,12 @@
+*.idea/
+*.vs/
+bin/
+build/
+logs/
+obj/
+packages/
+x64/
+
+.DS_Store
+JetBrains*
+TestResult.xml

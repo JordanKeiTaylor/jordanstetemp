@@ -8,7 +8,7 @@ This repository will host tools and libraries built as part of the STE project.
 [deploy](deploy/README.md) contains tooling for deploying a `spatial loco` cluster.
 
 ## geographiclib
-[geographiclib](geopraphiclib/README.md) is a C# port of GeographicLib that provides coordinate conversions.
+[geographiclib](geographiclib/README.md) is a C# port of GeographicLib that provides coordinate conversions.
 
 ## minisseur
 [minisseur](minisseur/README.md) is a utility for running `regisseur` checks against a prometheus instance for `spatial loco`.
@@ -24,3 +24,6 @@ This repository will host tools and libraries built as part of the STE project.
 
 ## STESDK
 [STESDK](ste-sdk/README.md) is a C# library of Worker SDK extentions, utilities, and STE API's to facilitate the development of STE applications.
+
+## Skrull C# client
+[Skrull C# client](skrull_client/README.md) is a C# program that can access the snapshot and deployment services of a Skrull deployment.
