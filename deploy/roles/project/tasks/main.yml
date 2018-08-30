@@ -4,8 +4,8 @@
     dest: ~/skrull
     state: directory
 - name: Create docker-compose.yml
-  template:
-    src: docker-compose.yml.j2
+  copy:
+    src: docker-compose.yml
     dest: ~/skrull/docker-compose.yml
 
 - name: Copy prometheus.yml

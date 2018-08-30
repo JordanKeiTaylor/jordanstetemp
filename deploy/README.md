@@ -18,16 +18,10 @@ For instance, to launch a deployment of 4 nodes using the `ff-hexadeca-rhel7` te
 First you need to grab some files from your SpatialOS project, a `fabric` bundle zip and prometheus rules:
 
 ```
-./stage_dependencies.sh <spatial_project_dir> <prometheus_rules_repo> <path_to_fabric_bundle_zip>
+./stage_dependencies.sh <prometheus_rules_repo>
 ```
 
 This will tar/copy files into `roles/project/files` and `roles/fabric/files`. NOTE: Changes to the code, snapshots or configuration files will necessitate rerunning this script.
-
-You also need a repository of `docker` images built from platform. Once these are built, run:
-
-```
-./stage_docker_images.sh
-```
 
 ### Configuring the machines
 To configure one or more machines to run `spatial local cluster`, first point `ansible` at your inventory file, e.g.
@@ -46,7 +40,7 @@ NOTE: `remote_username` should be an existing user on the remote host with `sudo
 
 Then setup the machines with:
 ```
-./do apply_roles
+./do apply_base_roles
 ```
 
 This should be idempotent so can be rerun if needed.
@@ -66,6 +60,11 @@ To start a `docker swarm` on a set of hosts:
 ### Stopping deployment
 ```
 ./do stop_stack
+```
+
+### Proxying stuff
+```
+./do proxy
 ```
 
 ### Proxying Prometheus

@@ -15,7 +15,7 @@ usage() {
 	echo "    apply_base_roles         - apply base roles (base,docker) to all hosts"
 	echo "    run_stack                - start the SpatialOS stack"
 	echo "    stop_stack               - stop the SpatialOS stack"
-	echo "    proxt_skrull <host>      - proxy a load of useful stuff (including Skrull APi)"
+	echo "    proxt <host>             - proxy a load of useful stuff (including Skrull APi)"
 	echo "    proxy_prometheus <host>  - proxy Prometheus to localhost:9092"
 	echo "    proxy_inspector <host>   - proxy Inspector to localhost:21002"
 	echo "    cmd <role|all> <command> - Run an ad-hoc command on hosts"
@@ -79,10 +79,16 @@ do_proxy() {
 	set +x
 }
 
-do_proxy_skrull() {
+do_proxy_all() {
 	local remote_host="$1"
 	set -x
-	ssh -N -L 21000:localhost:21000 -L 8080:localhost:8080 -L 8081:localhost:8081 -L 8082:localhost:8082 $remote_host
+	ssh -N \
+	    -L 21002:localhost:21000 \
+		-L 8080:localhost:8080 \
+		-L 8081:localhost:8081 \
+		-L 8082:localhost:8082 \
+		-L 9092:localhost:9090 \
+		$remote_host
 	set +x
 }
 
@@ -124,13 +130,13 @@ case "$1" in
 	stop_stack)
 		do_stop_stack ${@:2}
 	;;
-	proxy_skrull)
+	proxy)
 		if [ -z "$2" ]; then
 			echo "MISSING REMOTE_HOST" >&2
 			echo
 			usage
 		fi
-		do_proxy_skrull $2
+		do_proxy_all $2
 	;;
 	proxy_prometheus)
 		if [ -z "$2" ]; then
