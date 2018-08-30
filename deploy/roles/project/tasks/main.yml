@@ -1,60 +1,25 @@
 ---
-- name: Check project dir exists
+- name: Check skrull dir exists
   file:
-    dest: ~/project
+    dest: ~/skrull
     state: directory
-
-- name: Extract project
-  unarchive:
-    src: project.tar.gz
-    dest: ~/project
-
 - name: Create docker-compose.yml
   template:
     src: docker-compose.yml.j2
-    dest: ~/project/docker-compose.yml
-
-- name: Copy .env file
-  copy:
-    src: .env
-    dest: ~/project
-
-- name: "[HACK] Create gsim dir"
-  file:
-    dest: ~/project/build/assembly/gsim
-    state: directory
-
-- name: Create fabric bundle dir
-  file:
-    dest: ~/project/build/assembly/fabric
-    state: directory
-
-- name: Copy fabric bundle
-  copy:
-    src: fabric_bundle.zip
-    dest: ~/project/build/assembly/fabric
-
-# TODO: The nodes should probably be tracked in ansible config
-- shell: cd ~/project && docker-compose config --services 2>/dev/null | grep fabric
-  register: fabric_svcs
+    dest: ~/skrull/docker-compose.yml
 
 - name: Copy prometheus.yml
   copy:
     src: prometheus.yml
-    dest: ~/project/
-
-- name: Create fabric scrape config
-  template:
-    src: fabric_scrape_configs.yml.j2
-    dest: ~/project/fabric_scrape_configs.yml
+    dest: ~/skrull
 
 - name: Create node scrape config
   template:
     src: node_scrape_configs.yml.j2
-    dest: ~/project/node_scrape_configs.yml
+    dest: ~/skrull/node_scrape_configs.yml
 
 - name: Create run.sh
   template:
     src: run.sh.j2
-    dest: ~/project/run.sh
+    dest: ~/skrull/run.sh
     mode: +x

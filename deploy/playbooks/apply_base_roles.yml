@@ -4,6 +4,7 @@
     - { role: base, tags: "base" }
     - { role: docker, tags: "docker" }
     - { role: docker_client, tags: "docker_client" }
+    - { role: fabric, tags: "fabric" }
 
 - hosts: manager
   roles:

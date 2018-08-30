@@ -1,5 +1,7 @@
 - hosts: manager
+  roles:
+    - { role: project, tags: "project" }
   tasks:
     - shell: |
-        cd ~/project
-        ./run.sh {{ snapshot }} {{ config_file }}
+        cd ~/skrull
+        ./run.sh

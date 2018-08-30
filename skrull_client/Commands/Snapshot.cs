@@ -105,7 +105,13 @@ namespace Commands
                 dataStream.Write(bytesToSend, 0, bytesToSend.Length);
             }
 
-            httpRequest.GetResponse();
+            HttpWebResponse response = (HttpWebResponse) httpRequest.GetResponse();
+            if (response.StatusCode.CompareTo(HttpStatusCode.OK) < 0 || response.StatusCode.CompareTo(HttpStatusCode.PartialContent) > 0)
+            {
+                Console.Error.WriteLine("Invalid status code from snapshot upload: " + response.StatusCode);
+                System.Environment.Exit(1);
+            }
+
             var confirmUploadResponse = client.ConfirmUpload(new ConfirmUploadRequest
             {
                 ProjectName = snapshotToUpload.ProjectName,

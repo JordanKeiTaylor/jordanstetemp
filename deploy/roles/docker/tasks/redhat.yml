@@ -43,6 +43,7 @@
     - restart docker
 
 - name: Disable firewall
+  become: true
   systemd:
     name: firewalld
     enabled: no

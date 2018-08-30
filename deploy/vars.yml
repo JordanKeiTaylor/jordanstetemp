@@ -3,18 +3,16 @@
 docker_registry: master:5000
 
 docker_images:
-  toolbelt: 
-    tag: 17b8242f39
+  skrull: 
+    tag: 5c118e12fc.dirty
   fnanny:
-    tag: 17b8242f39
+    tag: 143d01256c.dirty
   prometheus: 
-    tag: 17b8242f39-prometheus.e9cd0b5
+    tag: 11fe61decd
   node-exporter:
     tag: latest
 
 gcloud_docker: "{{ docker_registry | match(\".*.gcr.io\")}}"
 
-snapshot: poland-100k.snapshot
-config_file: local_100k.pb.json
 swarm_iface: eth0 # Cloud
 #swarm_iface: em1 # Hardware

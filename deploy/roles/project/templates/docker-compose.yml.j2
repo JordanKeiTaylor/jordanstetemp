@@ -14,7 +14,6 @@ services:
           - node.hostname == slave1
     volumes:
       - ./prometheus.yml:/prometheus.yml
-      - ./fabric_scrape_configs.yml:/fabric_scrape_configs.yml
       - ./node_scrape_configs.yml:/node_scrape_configs.yml
       - $PROM_RULES_DIR:/rules
     command: >
@@ -45,78 +44,39 @@ services:
     deploy:
         mode: global
 
-  toolbelt:
-    image: $TOOLBELT_IMAGE
-    networks:
-      - outside
+  skrull:
+    image: $SKRULL_IMAGE
+    ports:
+     - target: 21000
+       published: 21000
+       protocol: tcp
+       mode: host
+     - "22000:22000"  #skrull toolbelt grpc services
+     - target: 8080
+       published: 8080
+       protocol: tcp
+       mode: host
+     - target: 8081
+       published: 8081
+       protocol: tcp
+       mode: host
+     - target: 8082
+       published: 8082
+       protocol: tcp
+       mode: host
     volumes:
-     - $SPATIAL_PROJECT_DIR:/improbable/project
      - $HOME/.improbable/local_inspector:/root/.improbable/local_inspector
+     - /var/run/docker.sock:/var/run/docker.sock
     command: >
-           local launch
-            --enable_pre_run_check=false
-            --no_fabric
-            --runtime_ip=slave1
-            --master_ip=slave1
-            --disable_networking
-            --snapshot=/improbable/project/snapshots/$SNAPSHOT
-            /improbable/project/configs/launch/$CONFIG_FILE
-            --fabric_bundle_path=/improbable/project/build/assembly/fabric/fabric_bundle.zip
-    deploy:
-      placement:
-        constraints:
-          - node.hostname == slave1
- 
-  fabric-master:
-    image: $FNANNY_IMAGE
-    networks:
-      - outside
+            start
+            --port=8080
+            --project_file=/improbable/project/spatialos.json
     environment:
-      - COREOS_PRIVATE_IPV4=master
-      - COREOS_PUBLIC_IPV4=master
-    # volumes:
-    #   - ./master-logs:/improbable/logs
-    command: $FNANNY_COMMAND --node=master
+     - FNANNY_IMAGE=$FNANNY_IMAGE
+     - SKRULL_ORCHESTRATOR=$SKRULL_ORCHESTRATOR
+
     deploy:
       placement:
         constraints:
           - node.hostname == master
  
-  fabric-slave-1:
-    image: $FNANNY_IMAGE
-    networks:
-      - outside
-    environment:
-      - COREOS_PRIVATE_IPV4=slave1
-      - COREOS_PUBLIC_IPV4=slave1
-    command: $FNANNY_COMMAND --node=slave1
-    deploy:
-      placement:
-        constraints:
-          - node.hostname == slave1
-
-  fabric-slave-2:
-      image: $FNANNY_IMAGE
-      networks:
-        - outside
-      environment:
-        - COREOS_PRIVATE_IPV4=slave2
-        - COREOS_PUBLIC_IPV4=slave2
-      command: $FNANNY_COMMAND --node=slave2
-      deploy:
-        placement:
-          constraints:
-            - node.hostname == slave2
-
-  fabric-slave-3:
-    image: $FNANNY_IMAGE
-    networks:
-      - outside
-    environment:
-      - COREOS_PRIVATE_IPV4=slave3
-      - COREOS_PUBLIC_IPV4=slave3
-    command: $FNANNY_COMMAND --node=slave3
-    deploy:
-      placement:
-        constraints:
-          - node.hostname == slave3

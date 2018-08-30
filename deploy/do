@@ -12,11 +12,10 @@ usage() {
 	echo "    bootstrap               - bootstrap machines"
 	echo "    swarm_up                 - bring up the swarm"
 	echo "    swarm_down               - take down the swarm"
-	echo "    apply_roles              - apply all roles to all hosts"
 	echo "    apply_base_roles         - apply base roles (base,docker) to all hosts"
-	echo "    apply_proj_roles         - apply project roles (fabric,project) to all hosts"
 	echo "    run_stack                - start the SpatialOS stack"
 	echo "    stop_stack               - stop the SpatialOS stack"
+	echo "    proxt_skrull <host>      - proxy a load of useful stuff (including Skrull APi)"
 	echo "    proxy_prometheus <host>  - proxy Prometheus to localhost:9092"
 	echo "    proxy_inspector <host>   - proxy Inspector to localhost:21002"
 	echo "    cmd <role|all> <command> - Run an ad-hoc command on hosts"
@@ -58,16 +57,8 @@ do_swarm_down() {
 	run_playbook swarm_down.yml ${@}
 }
 
-do_apply_roles() {
-	run_playbook apply_roles.yml ${@}
-}
-
 do_apply_base_roles() {
 	run_playbook apply_base_roles.yml ${@}
-}
-
-do_apply_proj_roles() {
-	run_playbook apply_proj_roles.yml ${@}
 }
 
 do_run_stack() {
@@ -85,6 +76,13 @@ do_proxy() {
 	local local_port="$4"
 	set -x
 	ssh -N -L $local_port:$local_host:$remote_port $remote_host
+	set +x
+}
+
+do_proxy_skrull() {
+	local remote_host="$1"
+	set -x
+	ssh -N -L 21000:localhost:21000 -L 8080:localhost:8080 -L 8081:localhost:8081 -L 8082:localhost:8082 $remote_host
 	set +x
 }
 
@@ -125,6 +123,14 @@ case "$1" in
 	;;
 	stop_stack)
 		do_stop_stack ${@:2}
+	;;
+	proxy_skrull)
+		if [ -z "$2" ]; then
+			echo "MISSING REMOTE_HOST" >&2
+			echo
+			usage
+		fi
+		do_proxy_skrull $2
 	;;
 	proxy_prometheus)
 		if [ -z "$2" ]; then
