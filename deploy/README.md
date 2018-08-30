@@ -57,6 +57,18 @@ To start a `docker swarm` on a set of hosts:
 ./do run_stack
 ```
 
+### Launching a deployment
+First set up a proxy to `skrull`
+
+```
+./do proxy
+```
+
+Then deploy your SpatialOS project:
+```
+PLATFORM_REPO_DIR=<path_to_platform_repo> ./yolo.sh  <spatial_project_dir> <spatial_legacy_config_path>
+```
+
 ### Stopping deployment
 ```
 ./do stop_stack
