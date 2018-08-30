@@ -2,7 +2,7 @@
 
 namespace Skrull
 {
-    internal class Program
+    internal class Client
     {
         private static void Main(string[] args)
         {

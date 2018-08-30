@@ -16,19 +16,19 @@ namespace Commands
         }
     }
 
-    [Verb("deployment_create", HelpText = "interact with the deployment service: create deployment")]
+    [Verb("deployment-create", HelpText = "interact with the deployment service: create deployment")]
     public class DeploymentCreateOptions : DeploymentOptions
     {
-        [Option('a', HelpText = "assembly id", Required = true)]
+        [Option('a', "assembly-id", HelpText = "assembly id", Required = true)]
         public string AssemblyId { get; set; }
 
-        [Option('c', HelpText = "JSON launch config absolute file path", Required = true)]
+        [Option('c', "launch-config-filepath", HelpText = "JSON launch config absolute filepath", Required = true)]
         public string LaunchConfigFilePath { get; set; }
         
-        [Option('t', Separator = ',', HelpText = "tags to match")]
+        [Option('t', "tags", Separator = ',', HelpText = "deployment tags (comma separated with no leading or trailing spaces)")]
         public IEnumerable<string> Tags { get; set; }
         
-        [Option('s', HelpText = "snapshot id to use", Required = true)]
+        [Option('s', "snapshot-id", HelpText = "snapshot id to use", Required = true)]
         public string SnapshotId { get; set; }
         
         public static void ExecuteVerb(DeploymentCreateOptions opts)
@@ -75,13 +75,12 @@ namespace Commands
         }
     }
     
-    [Verb("deployment_list", HelpText = "interact with the deployment service: list deployments")]
+    [Verb("deployment-list", HelpText = "interact with the deployment service: list all deployments")]
     public class DeploymentListOptions : DeploymentOptions
     {
         public static void ExecuteVerb(DeploymentListOptions opts)
         {
             Console.WriteLine("List deployments");
-
             var response = GetDeploymentServiceClient(opts.Host, opts.Port)
                 .ListDeployments(new ListDeploymentsRequest{
                     ProjectName = opts.ProjectName,
@@ -90,8 +89,33 @@ namespace Commands
             Console.WriteLine("Found [{0}] deployment(s)", deployments.Count);
             deployments.ForEach(deployment =>
             {
-                Console.WriteLine("Deployment found: {0} [{1}]", deployment.Name, deployment.Status);
+                if (opts.Verbose)
+                {
+                    ListVerboseOutput(deployment);
+                }
+                else
+                {
+                    ListNonVerboseOutput(deployment);
+                }
             });
+        }
+            
+        private static void ListVerboseOutput(Deployment deployment) {
+            Console.WriteLine("Deployment found: {0} [{1}]", deployment.Name, deployment.Id);
+            Console.WriteLine("    Status: {0}", deployment.Status);
+            Console.WriteLine("    Project name: {0}", deployment.ProjectName);
+            Console.WriteLine("    Assembly id: {0}", deployment.AssemblyId);
+            Console.WriteLine("    Start snapshot id: {0}", deployment.StartingSnapshotId);
+            Console.WriteLine("    Start-time: {0}", deployment.StartTime);
+            Console.WriteLine("    Stop-time: {0}", deployment.StopTime);
+            Console.WriteLine("    Tags: {0}", deployment.Tag);
+            Console.WriteLine("    Worker flags: {0}", deployment.WorkerFlags);
+            Console.WriteLine("    Launch config: {0}", deployment.LaunchConfig);
+            Console.WriteLine("    Note: did not display [ClusterCode, PlayerInfo, PlayerName, RegionCode]");
+        }
+        
+        private static void ListNonVerboseOutput(Deployment deployment) {
+            Console.WriteLine("Deployment found: {0} [{1}] ({2})", deployment.Name, deployment.Id, deployment.Status);
         }
     }
 }
