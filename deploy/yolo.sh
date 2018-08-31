@@ -46,8 +46,8 @@ source .envrc
 popd
 
 go run "$PLATFORM_REPO_DIR/go/src/improbable.io/cmd/skrull-client/main.go" assembly create  -s "$PROJECT_DIR"
-RESULT=$(dotnet "$SKRULL_CLIENT_PATH/bin/Release/netcoreapp2.0/Program.dll" snapshot_upload -s "$PROJECT_DIR/snapshots/default.snapshot" -d test -j test)
+RESULT=$(dotnet "$SKRULL_CLIENT_PATH/bin/Release/netcoreapp2.0/SkrullClient.dll" snapshot-upload -s "$PROJECT_DIR/snapshots/default.snapshot" -d test -j test)
 echo "$RESULT"
 SNAPSHOT_ID=$(echo "$RESULT" | awk -F':' '{print $2}' | tr -d '[:space:]')
 
-dotnet "$SKRULL_CLIENT_PATH/bin/Release/netcoreapp2.0/Program.dll" deployment_create -c "$LAUNCH_CONFIG" -a test -d test -j test -s "$SNAPSHOT_ID"
+dotnet "$SKRULL_CLIENT_PATH/bin/Release/netcoreapp2.0/SkrullClient.dll" deployment-create -c "$LAUNCH_CONFIG" -a test -d test -j test -s "$SNAPSHOT_ID"
