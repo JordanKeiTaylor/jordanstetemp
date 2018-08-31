@@ -84,6 +84,7 @@ namespace Commands
                 DeploymentName = opts.DeploymentName,
                 Tags = { opts.Tags }
             };
+
             using (var md5 = MD5.Create())
             {
                 var bytes = File.ReadAllBytes(opts.SnapshotFilePath);
@@ -109,7 +110,7 @@ namespace Commands
             if (response.StatusCode.CompareTo(HttpStatusCode.OK) < 0 || response.StatusCode.CompareTo(HttpStatusCode.PartialContent) > 0)
             {
                 Console.Error.WriteLine("Invalid status code from snapshot upload: " + response.StatusCode);
-                System.Environment.Exit(1);
+                Environment.Exit(1);
             }
 
             var confirmUploadResponse = client.ConfirmUpload(new ConfirmUploadRequest
