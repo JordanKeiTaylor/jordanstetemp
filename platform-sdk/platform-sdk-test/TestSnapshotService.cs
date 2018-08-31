@@ -1,60 +1,76 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Security.Cryptography;
 using Improbable.SpatialOS.Snapshot.V1Alpha1;
 using NUnit.Framework;
 
 namespace platform_sdk_test
 {
     [TestFixture]
-    public class SnapshotServiceTest
+    public class TestSnapshotService
     {
+        public TestSnapshotService()
+        {
+            Platform.Setup();
+        }
+        
         [Test]
         public static void Should_ListSnapshots()
         {
+            var id = Test.Deployment.Ids().First();
+            var projectName = Test.Project.Prefix + id;
+            var deploymentName = Test.Deployment.Prefix + id;
+            
             var snapshots = Platform.SnapshotService.ListSnapshots(
                 new ListSnapshotsRequest
                 {
-                    ProjectName = Project.Name,
-                    DeploymentName = Project.DeploymentName
+                    ProjectName = projectName,
+                    DeploymentName = deploymentName
                 }
             );
             
-            Assert.Greater(snapshots.Count(), 0);
-            foreach (var snapshot in snapshots)
-            {
-                Assert.AreEqual(Project.Name, snapshot.ProjectName);
-                Assert.AreEqual(Project.DeploymentName, snapshot.DeploymentName);
-            }
+            Assert.IsTrue(snapshots.Any(snapshot => snapshot.DeploymentName == deploymentName));
+            Assert.IsTrue(snapshots.Any(snapshot => snapshot.ProjectName == projectName));
         }
 
         [Test]
         public static void Should_GetSnapshot()
         {
-            var id = "0";
+            var id = Test.Deployment.Ids().First();
+            var projectName = Test.Project.Prefix + id;
+            var deploymentName = Test.Deployment.Prefix + id;
+            
             var snapshot = Platform.SnapshotService.GetSnapshot(
                 new GetSnapshotRequest
                 {
-                    Id = id
+                    Id = Test.Snapshot.Ids.First(),
+                    ProjectName = projectName,
+                    DeploymentName = deploymentName
                 }
             ).Snapshot;
             
-            Assert.AreEqual(id, snapshot.Id);
-            Assert.Greater(snapshot.Size, 0);
-            Assert.AreEqual(Project.DeploymentName, snapshot.DeploymentName);
-            Assert.AreEqual(Project.Name, snapshot.ProjectName);
+            Assert.IsTrue(Test.Snapshot.Ids.Any(snapshotId => snapshotId == snapshot.Id));
+            Assert.AreEqual(deploymentName, snapshot.DeploymentName);
+            Assert.AreEqual(projectName, snapshot.ProjectName);
         }
         
         [Test]
+        [Ignore("Deployments are currently created in the 'Error' state and snapshots cannot be taken")]
         public static void Should_TakeSnapshot()
         {
+            var id = Test.Deployment.Ids().First();
+            var projectName = Test.Project.Prefix + id;
+            var deploymentName = Test.Deployment.Prefix + id;
+            
             var operation = Platform.SnapshotService.TakeSnapshot(
                 new TakeSnapshotRequest
                 {
                     Snapshot = new Snapshot
                     {
-                        ProjectName = Project.Name,
-                        DeploymentName = Project.DeploymentName
+                        ProjectName = projectName,
+                        DeploymentName = deploymentName
                     }
                 }
             );
@@ -63,19 +79,30 @@ namespace platform_sdk_test
             
             Assert.IsNotEmpty(snapshot.Id);
             Assert.Greater(snapshot.Size, 0);
-            Assert.AreEqual(Project.DeploymentName, snapshot.DeploymentName);
-            Assert.AreEqual(Project.Name, snapshot.ProjectName);
+            Assert.AreEqual(id, snapshot.Id);
+            Assert.AreEqual(deploymentName, snapshot.DeploymentName);
+            Assert.AreEqual(projectName, snapshot.ProjectName);
         }
 
         [Test]
         public static void Should_UploadSnapshot_And_ConfirmUpload()
         {
-            var snapshotFile = "path_to_snapshot_file";
+            var id = Test.Deployment.Ids().First();
+            var projectName = Test.Project.Prefix + id;
+            var deploymentName = Test.Deployment.Prefix + id;
+            
             var snapshot = new Snapshot
             {
-                ProjectName = Project.Name,
-                DeploymentName = Project.DeploymentName
+                ProjectName = projectName,
+                DeploymentName = deploymentName
             };
+            
+            var bytes = File.ReadAllBytes(Test.Snapshot.File);
+            using (var md5 = MD5.Create())
+            {
+                snapshot.Checksum = Convert.ToBase64String(md5.ComputeHash(bytes));
+                snapshot.Size = bytes.Length;
+            }
 
             var uploadResponse = Platform.SnapshotService.UploadSnapshot(
                 new UploadSnapshotRequest
@@ -93,7 +120,6 @@ namespace platform_sdk_test
                 httpRequest.Headers.Set("Content-MD5", newSnapshot.Checksum);
                 using (var dataStream = httpRequest.GetRequestStream())
                 {
-                    var bytes = File.ReadAllBytes(snapshotFile);
                     dataStream.Write(bytes, 0, bytes.Length);
                 }
                 httpRequest.GetResponse();
@@ -103,8 +129,8 @@ namespace platform_sdk_test
                 new ConfirmUploadRequest
                 {
                     Id = newSnapshot.Id,
-                    ProjectName = Project.Name,
-                    DeploymentName = Project.DeploymentName
+                    ProjectName = projectName,
+                    DeploymentName = deploymentName
                 }
             );
             
