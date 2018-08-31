@@ -66,7 +66,7 @@ First set up a proxy to `skrull`
 
 Then deploy your SpatialOS project:
 ```
-PLATFORM_REPO_DIR=<path_to_platform_repo> ./yolo.sh  <spatial_project_dir> <spatial_legacy_config_path>
+PLATFORM_REPO_DIR=<path_to_platform_repo> ./yolo.sh <spatial_project_dir> <spatial_legacy_config_path>
 ```
 
 ### Stopping deployment
