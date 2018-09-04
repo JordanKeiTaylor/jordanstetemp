@@ -70,7 +70,7 @@ To start a `docker swarm` on a set of hosts:
 
 ### Create a proxy
 First set up a local proxy to `skrull`. This allows you to connect to Skrull's inspector using `localhost:21002` 
-and Skrull's Prometheus on `localhost:9002`. This is achieved by creating an SSH tunnel. Note that
+and Prometheus on `localhost:9002`. This is achieved by creating an SSH tunnel. Note that
 this process does not terminate automatically and the tunnel exists for as long as this process is running.
 
 ```
