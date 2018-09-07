@@ -12,7 +12,7 @@ docker_images:
   node-exporter:
     tag: latest
 
-gcloud_docker: "{{ docker_registry | match(\".*.gcr.io\")}}"
+gcloud_docker: "{{ docker_registry is match(\".*.gcr.io\")}}"
 
 swarm_iface: eth0 # Cloud
 #swarm_iface: em1 # Hardware

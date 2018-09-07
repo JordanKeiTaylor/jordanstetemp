@@ -23,6 +23,7 @@ then
 fi
 
 FABRIC_ASSEMBLY_BUNDLE_DIR="$PROJECT_DIR/build/assembly/fabric"
+mkdir -p "$FABRIC_ASSEMBLY_BUNDLE_DIR"
 if [ ! -f "$FABRIC_ASSEMBLY_BUNDLE_DIR/fabric_bundle.zip" ];
 then
     mkdir -p "$FABRIC_BUNDLE_DIR"

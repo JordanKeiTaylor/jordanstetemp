@@ -10,7 +10,7 @@
 # We need to be on 18.01 until https://github.com/moby/moby/issues/36247 is fixed
 - name: Install docker
   yum:
-    name: docker-ce-18.01.0.ce-1.el7.centos
+    name: docker-ce-18.06.1.ce
     state: installed
     allow_downgrade: yes
   when: ansible_distribution == 'CentOS' or ansible_distribution == 'RedHat'
