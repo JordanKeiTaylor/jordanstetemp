@@ -27,11 +27,8 @@ mkdir -p "$FABRIC_ASSEMBLY_BUNDLE_DIR"
 cp "$FABRIC_BUNDLE_DIR/$FABRIC_VERSION" "$FABRIC_ASSEMBLY_BUNDLE_DIR/fabric_bundle.zip"
 
 GSIM_DIR="$PROJECT_DIR/build/assembly/gsim"
-if [ ! -f "$GSIM_DIR/FAKE" ];
-then
-    mkdir -p "$GSIM_DIR"
-    touch "$GSIM_DIR/FAKE"
-fi
+mkdir -p "$GSIM_DIR"
+touch "$GSIM_DIR/FAKE"
 
 SKRULL_CLIENT_PATH="$DIR/../skrull_client"
 pushd "$SKRULL_CLIENT_PATH"
