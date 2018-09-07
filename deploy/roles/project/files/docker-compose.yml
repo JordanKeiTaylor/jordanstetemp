@@ -3,6 +3,9 @@ networks:
   outside:
     external:
       name: "host"
+  default:
+    driver: overlay
+    attachable: true
 services:
   prometheus:
     image: $PROMETHEUS_IMAGE
@@ -11,7 +14,7 @@ services:
     deploy:
       placement:
         constraints:
-          - node.hostname == slave1
+          - node.hostname == master
     volumes:
       - ./prometheus.yml:/prometheus.yml
       - ./node_scrape_configs.yml:/node_scrape_configs.yml
