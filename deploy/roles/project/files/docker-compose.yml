@@ -1,0 +1,85 @@
+version: '3.2'
+networks:
+  outside:
+    external:
+      name: "host"
+  default:
+    driver: overlay
+    attachable: true
+services:
+  prometheus:
+    image: $PROMETHEUS_IMAGE
+    networks:
+      - outside
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == master
+    volumes:
+      - ./prometheus.yml:/prometheus.yml
+      - ./node_scrape_configs.yml:/node_scrape_configs.yml
+      - $PROM_RULES_DIR:/rules
+    command: >
+           /prometheus/prometheus
+            -log.level=${PROM_LOGLEVEL}
+            -config.file=/prometheus.yml
+            -query.timeout=45s
+            -query.max-concurrency=100
+            -query.staleness-delta=${PROM_QUERYSTALENESS}
+            -storage.local.chunk-encoding-version=2
+            -storage.local.retention=${PROM_RETENTION_DURATION}
+            -storage.local.path=/prometheus-data
+            -storage.local.memory-chunks=${PROM_MEMORY_CHUNKS}
+            -storage.local.max-chunks-to-persist=${PROM_MEMORY_CHUNKS_TO_PERSIST}
+            -storage.local.index-cache-size.fingerprint-to-metric=209715200
+            -storage.local.index-cache-size.fingerprint-to-timerange=104857600
+            -storage.local.index-cache-size.label-name-to-label-values=209715200
+            -storage.local.index-cache-size.label-pair-to-fingerprints=419430400
+            -web.console.libraries=/go/src/github.com/prometheus/prometheus/console_libraries
+            -web.listen-address=:9090
+            -web.console.templates=/consoles
+
+  exporter:
+    image: $NODE_EXPORTER_IMAGE
+    networks:
+      - outside
+    pid: host
+    deploy:
+        mode: global
+
+  skrull:
+    image: $SKRULL_IMAGE
+    ports:
+     - target: 21000
+       published: 21000
+       protocol: tcp
+       mode: host
+     - "22000:22000"  #skrull toolbelt grpc services
+     - target: 8080
+       published: 8080
+       protocol: tcp
+       mode: host
+     - target: 8081
+       published: 8081
+       protocol: tcp
+       mode: host
+     - target: 8082
+       published: 8082
+       protocol: tcp
+       mode: host
+    volumes:
+     - $HOME/.improbable/local_inspector:/root/.improbable/local_inspector
+     - /var/run/docker.sock:/var/run/docker.sock
+    command: >
+            start
+            --port=8080
+            --project_file=/improbable/project/spatialos.json
+    environment:
+     - FNANNY_IMAGE=$FNANNY_IMAGE
+     - SKRULL_ORCHESTRATOR=$SKRULL_ORCHESTRATOR
+
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == master
+ 

@@ -1,5 +1,0 @@
----
-- hosts: all
-  roles:
-    - { role: fabric, tags: "fabric" }
-    - { role: project, tags: "project" }
