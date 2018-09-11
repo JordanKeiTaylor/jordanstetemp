@@ -47,6 +47,11 @@ bash ./generate_snapshots.sh
 spatial build
 cd ..
 
+tc_progress "building platform-sdk"
+cd platform-sdk
+./gradlew build
+cd ..
+
 tc_progress "checking deploy"
 cd deploy
 ./check.sh
