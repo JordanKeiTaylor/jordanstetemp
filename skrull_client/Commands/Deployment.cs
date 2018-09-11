@@ -59,13 +59,13 @@ namespace Commands
                     .PollUntilCompleted()
                     .GetResultOrNull();
 
-                if (null == response)
+                if (response != null && response.Status == Deployment.Types.Status.Running)
                 {
-                    Console.Error.WriteLine("Failed to create new deployment!");
+                    Console.WriteLine("Successfully made a new deployment.");
                 }
                 else
                 {
-                    Console.WriteLine("Successfully made a new deployment.");
+                    Console.Error.WriteLine("Failed to create new deployment!");
                 }
             }
             catch (Grpc.Core.RpcException rpce)
