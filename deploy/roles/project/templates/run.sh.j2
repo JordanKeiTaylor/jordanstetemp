@@ -1,31 +1,13 @@
 #!/bin/sh
 DIR="$( cd "$(dirname "$0")" ; pwd -P )"
+set -eux
 
 usage() {
 	echo "$(basename $0) <snapshot> <config_file>"
     exit 0
 }
 
-if [ "$#" -ne 2 ]; then
-    usage
-fi
-
-export SNAPSHOT="$1"
-SNAPSHOT_PATH="$DIR/snapshots/$SNAPSHOT"
-if [ ! -f "$SNAPSHOT_PATH" ]; then
-    echo "Snapshot file does not exist: $SNAPSHOT_PATH" >&2
-    exit 1
-fi
-
-export CONFIG_FILE="$2"
-CONFIG_PATH="$DIR/configs/launch/$CONFIG_FILE"
-if [ ! -f "$CONFIG_PATH" ]; then
-    echo "Configuration file does not exist: $CONFIG_PATH" >&2
-    exit 1
-fi
-
-export SPATIAL_PROJECT_DIR="$DIR"
-export TOOLBELT_IMAGE={{ docker_registry }}/toolbelt:{{ docker_images.toolbelt.tag }}
+export SKRULL_IMAGE={{ docker_registry }}/skrull:{{ docker_images.skrull.tag }}
 export FNANNY_IMAGE={{ docker_registry }}/fnanny:{{ docker_images.fnanny.tag }}
 export PROMETHEUS_IMAGE={{ docker_registry }}/prometheus:{{ docker_images.prometheus.tag }}
 export NODE_EXPORTER_IMAGE={{ docker_registry }}/node-exporter:{{ docker_images["node-exporter"].tag }}
@@ -39,6 +21,7 @@ export PROM_MEMORY_CHUNKS_TO_PERSIST=${PROM_MEMORY_CHUNKS_TO_PERSIST-$(($PROM_ME
 export PROM_RETENTION_DURATION=${PROM_RETENTION_DURATION-"216h0m0s"}
 
 export PROM_RULES_DIR=~/prometheus_rules
+export SKRULL_ORCHESTRATOR=swarm
 
 docker-compose config > stack.yml
 docker stack deploy --compose-file stack.yml fabric
