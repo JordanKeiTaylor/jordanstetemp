@@ -15,7 +15,7 @@ usage() {
 	echo "    apply_base_roles         - apply base roles (base,docker) to all hosts"
 	echo "    run_stack                - start the SpatialOS stack"
 	echo "    stop_stack               - stop the SpatialOS stack"
-	echo "    proxt <host>             - proxy a load of useful stuff (including Skrull APi)"
+	echo "    proxy <host>             - proxy a load of useful stuff (including Skrull APi)"
 	echo "    proxy_prometheus <host>  - proxy Prometheus to localhost:9092"
 	echo "    proxy_inspector <host>   - proxy Inspector to localhost:21002"
 	echo "    cmd <role|all> <command> - Run an ad-hoc command on hosts"
