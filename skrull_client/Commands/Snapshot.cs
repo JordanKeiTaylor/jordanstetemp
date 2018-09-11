@@ -84,6 +84,7 @@ namespace Commands
                 DeploymentName = opts.DeploymentName,
                 Tags = { opts.Tags }
             };
+
             using (var md5 = MD5.Create())
             {
                 var bytes = File.ReadAllBytes(opts.SnapshotFilePath);
@@ -105,7 +106,13 @@ namespace Commands
                 dataStream.Write(bytesToSend, 0, bytesToSend.Length);
             }
 
-            httpRequest.GetResponse();
+            HttpWebResponse response = (HttpWebResponse) httpRequest.GetResponse();
+            if (response.StatusCode.CompareTo(HttpStatusCode.OK) < 0 || response.StatusCode.CompareTo(HttpStatusCode.PartialContent) > 0)
+            {
+                Console.Error.WriteLine("Invalid status code from snapshot upload: " + response.StatusCode);
+                Environment.Exit(1);
+            }
+
             var confirmUploadResponse = client.ConfirmUpload(new ConfirmUploadRequest
             {
                 ProjectName = snapshotToUpload.ProjectName,
@@ -119,10 +126,8 @@ namespace Commands
                 Console.Error.WriteLine("Snapshot not uploaded properly.  The size and/or MD5 checksum does not match." +
                                         "  Please consider snapshot id [" + snapshotToUpload.Id + "] to be corrupt.");
             }
-            else
-            {
-                Console.WriteLine("Snapshot uploaded properly.  id: " + snapshotToUpload.Id);
-            }
+
+            Console.WriteLine("Snapshot uploaded with id: " + snapshotToUpload.Id);
         }
     }
 }
